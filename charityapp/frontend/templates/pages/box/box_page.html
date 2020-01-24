@@ -1,0 +1,109 @@
+{% extends "base_templates/box_base.html" %}  {# base_templates/page_base.html extends base_templates/base.html #}
+
+{% block headerscripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.js"></script>
+
+<script type="text/javascript">
+  var temp = {{latestsample.temp}};
+  var rh = {{latestsample.rh}};
+  var latest_timestamp = '{{latestsample.timestamp}}' + ' UTC';
+  var latest_date = new Date(latest_timestamp);
+
+  function getLatestDateStrings() {
+    var year = latest_date.getFullYear();
+    var month = latest_date.getMonth() + 1;
+    var day = latest_date.getDate();
+
+    return {
+      year: String(year),
+      month: String(month),
+      day: String(day)
+    }
+  }
+
+  
+
+  function makeCalUrl(sensor, range) {
+    var latest = getLatestDateStrings();
+    var date_now  = new Date();
+    var tzoffsetmins = date_now.getTimezoneOffset()*-1;
+    return '{{ url_for('calview.index', serial=box.serial) }}' + range +'/'+ sensor +'/'+ latest.year +'/'+ latest.month +'/' + latest.day +'/'+ tzoffsetmins;
+  }
+
+  function makeWrapperAnchor(sensor, tileid, range) {
+    var sensoranchor = document.createElement('a');
+    var sensorurl = makeCalUrl(sensor, range);
+    var sensortile = document.getElementById(tileid);
+    var tileinner = sensortile.getElementsByClassName('innertile')[0];
+
+    sensoranchor.style.display = 'block';
+    sensoranchor.setAttribute('href', sensorurl);
+    sensoranchor.appendChild(tileinner);
+
+    sensortile.appendChild(sensoranchor);
+  }
+
+
+  function initialise() {
+    var range = 'day';
+
+    var tempurl = makeWrapperAnchor('temp', 'temptile', range);
+    var rhurl = makeWrapperAnchor('rh', 'rhtile', range);
+
+    var herosub = document.getElementById('lastscan');
+    var subtextnode = herosub.getElementsByTagName("p")[0];
+    subtextnode.append(moment(latest_date).format('HH:mm on MMMM Do YYYY UTCZZ'));
+  }
+
+  window.addEventListener('load', initialise);
+</script>
+{% endblock %}
+
+{% block main %}
+<section class="section">
+  <div id="lastscan" class="container">
+      <p>Last scan at </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="tile is-ancestor">
+      <div class="tile is-6 is-vertical is-parent">
+        <div class="tile is-child box" id="temptile">
+          <div class="innertile">
+            <span class="icon is-large temperature is-pulled-right">
+              <i class="fas fa-thermometer-half fa-3x"></i>
+            </span>
+            <p class="title">Temperature</p>
+            <p class="subtitle">{{ latestsample.temp|round(2) }} °C</p>
+          </div>
+        </div>
+        <div class="tile is-child box" id="rhtile">
+          <div class="innertile">
+            <span class="icon is-large rh is-pulled-right">
+              <i class="fas fa-tint fa-3x"></i>
+            </span>
+            <p class="title">Relative Humidity</p>
+            <p class="subtitle">{{ latestsample.rh|round(2) }} %</p>
+          </div>
+        </div>
+      </div>
+      <div class="tile is-6 is-vertical is-parent">
+        <div class="tile is-child box">
+          <span class="icon is-large battery is-pulled-right">
+            <i class="fas fa-battery-full fa-3x"></i>
+          </span>
+          <p class="title">Battery</p>
+          <p class="subtitle">{{ latestcapture.batvoltage }}</p>
+        </div>
+        <div class="tile is-child box">
+          {#<p>Scanned {{ box.captures|length }} times</p>#}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

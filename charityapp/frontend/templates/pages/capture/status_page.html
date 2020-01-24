@@ -1,0 +1,56 @@
+{% extends "base_templates/page_base.html" %}  {# base_templates/page_base.html extends base_templates/base.html #}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('boxview.box', serial=capture.boxserial ) }}">Box {{ capture.boxserial }}</a></li>
+{% endblock %}
+
+{% block title %}
+Capture {{ capture.id }}
+{% endblock %}
+{% block subtitle %}
+{{ capture.name }}
+{% endblock %}
+
+{% block main %}
+<div class="tabs">
+<ul>
+  <li><a href="{{ url_for('captureview.temp', captid=capture.id) }}">Temperature</a></li>
+  <li><a href="{{ url_for('captureview.rh', captid=capture.id) }}">Humidity</a></li>
+  <li class="is-active"><a href="{{ url_for('captureview.status', captid=capture.id) }}">Status</a></li>
+</ul>
+</div>
+
+<table class="table">
+    <tbody>
+      <tr>
+        <td>Status</td>
+        <td>{{ capture.status }}</td>
+      </tr>
+      <tr>
+        <td>Loop count</td>
+        <td>{{ capture.loopcount }}</td>
+      </tr>
+      <tr>
+        <td>Cursor Position</td>
+        <td>{{ capture.cursorpos }}</td>
+      </tr>
+      <tr>
+        <td>Battery voltage</td>
+        <td>{{ capture.batvoltagemv }} mV</td>
+      </tr>
+      <tr>
+        <td>Samples in list</td>
+        <td>{{ capture.samplecount }}</td>
+      </tr>
+      <tr>
+        <td>MD5</td>
+        <td>{{capture.md5}}</td>
+      </tr>
+      <tr>
+        <td>Time interval </td>
+        <td>{{capture.timeintmins}} minutes</td>
+      </tr>
+    </tbody>
+  </table>
+
+{% endblock %}

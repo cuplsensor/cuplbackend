@@ -1,0 +1,113 @@
+# Every test file has one or more tests
+test_name: No access to boxes with no token
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+# ...and each test has one or more stages (e.g. an HTTP request)
+stages:
+  - name: Without supplying a token in the header an error code is returned
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/admin/v1/boxes"
+      method: POST
+
+    # and the expected response code and body
+    response:
+      status_code: 401
+
+---
+
+test_name: Access granted with a token
+
+marks:
+  - usefixtures:
+      - baseurl
+      - clientid
+      - clientsecret
+
+stages:
+  - name: With a client_id and a client_secret a token is returned
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/admin/v1/token"
+      method: POST
+      json:
+        client_id: "{clientid}"
+        client_secret: "{clientsecret}"
+      headers:
+        content-type: application/json
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      save:
+        body:
+          admin_token: token
+
+  - name: Use the token to create a new box
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/admin/v1/boxes"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        captures: !anything
+        boxviews: !anything
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        serial: !anystr
+      save:
+        body:
+          test_box_id: id
+
+
+  - name: Verify that the box can be retrieved by running a GET request
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/admin/v1/box/{test_box_id}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        id: !int '{test_box_id}'
+        secretkey: !anystr
+        serial: !anystr
+        captures: !anything
+        boxviews: !anything
+        timeregistered: !anything
+
+  - name: Delete the box by ID.
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/admin/v1/box/{test_box_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 204

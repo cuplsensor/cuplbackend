@@ -1,0 +1,222 @@
+# Every test file has one or more tests
+test_name: No capture is created without supplying data
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+# ...and each test has one or more stages (e.g. an HTTP request)
+stages:
+  - name: Without supplying required fields in the body an error code is returned
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/captures"
+      method: POST
+
+    # and the expected response code and body
+    response:
+      status_code: 400
+
+---
+
+test_name: Create a box, add a capture to it then delete the box.
+
+marks:
+  - usefixtures:
+      - baseurl
+      - clientid
+      - clientsecret
+
+stages:
+  - name: Obtain a token
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/admin/v1/token"
+      method: POST
+      json:
+        client_id: "{clientid}"
+        client_secret: "{clientsecret}"
+      headers:
+        content-type: application/json
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      save:
+        body:
+          admin_token: token
+
+  - name: Use the token to create a new box
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/admin/v1/boxes"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        captures: !anything
+        boxviews: !anything
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        serial: !anystr
+      save:
+        $ext:
+          function: utils:create_capture_for_box
+        body:
+          test_box_id: id
+
+
+
+  - name: Create a capture and add it to the box with the serial
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        ver: "{ver}"
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        batvoltagemv: !anyfloat
+        boxserial: !anystr
+        cursorpos: !anyint
+        id: !anyint
+        loopcount: !anyint
+        md5: !anystr
+        status:
+          brownout: !anybool
+          parent_capture: !anyint
+          clockfail: !anybool
+          id: !anyint
+          lpm5wakeup: !anybool
+          misc: !anybool
+          resetsalltime: !anyint
+          supervisor: !anybool
+          watchdog: !anybool
+        timeintmins: !anyint
+        timestamp: !anystr
+        version: !anyint
+      save:
+        body:
+          test_capture_id: id
+
+  - name: GET this list of captures for this box and verify that it contains the one we just created.
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/captures"
+      method: GET
+      params:
+        serial: "{serial}"
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        - batvoltagemv: !anyfloat
+          boxserial: !anystr
+          cursorpos: !anyint
+          id: !int "{test_capture_id:d}"
+          loopcount: !anyint
+          md5: !anystr
+          status:
+            brownout: !anybool
+            parent_capture: !anyint
+            clockfail: !anybool
+            id: !anyint
+            lpm5wakeup: !anybool
+            misc: !anybool
+            resetsalltime: !anyint
+            supervisor: !anybool
+            watchdog: !anybool
+          timeintmins: !anyint
+          timestamp: !anystr
+          version: !anyint
+
+
+  - name: GET the capture for this box and verify that it contains the correct fields
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/captures/{test_capture_id}"
+      method: GET
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        batvoltagemv: !anyfloat
+        boxserial: !anystr
+        cursorpos: !anyint
+        id: !int "{test_capture_id:d}"
+        loopcount: !anyint
+        md5: !anystr
+        status:
+          brownout: !anybool
+          parent_capture: !anyint
+          clockfail: !anybool
+          id: !anyint
+          lpm5wakeup: !anybool
+          misc: !anybool
+          resetsalltime: !anyint
+          supervisor: !anybool
+          watchdog: !anybool
+        timeintmins: !anyint
+        timestamp: !anystr
+        version: !anyint
+
+  - name: GET samples from the capture
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/captures/{test_capture_id}/samples"
+      method: GET
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        $ext:
+          function: utils:check_samples
+
+  - name: Delete the box by ID.
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/admin/v1/box/{test_box_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 204

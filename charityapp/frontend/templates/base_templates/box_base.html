@@ -1,0 +1,14 @@
+{% extends "base_templates/base.html" %}
+
+{% block breadcrumbs %}
+<div class="buttons has-addons is-centered" style="display:flex;justify-content:flex-start;flex-wrap:nowrap">
+  <a id="serialbutton" class="button is-rounded" href="{{ url_for('boxview.box', serial=box.serial ) }}">@{{ box.serial }}</a>
+  <div id="locationtags" class="button is-rounded" style="flex-grow:1; justify-content: flex-start;overflow:hidden;">
+    <div class="tags">
+      <span class="tag is-link">One</span>
+      <span class="tag is-link">Two</span>
+      <span class="tag is-link">Three</span>
+    </div>
+  </div>
+</div>
+{% endblock %}

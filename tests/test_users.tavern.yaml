@@ -1,0 +1,178 @@
+# Every test file has one or more tests
+test_name: No user is retrieved without a user token
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+# ...and each test has one or more stages (e.g. an HTTP request)
+stages:
+  - name: No user is retrieved without a user token
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/me"
+      method: GET
+
+    # and the expected response code and body
+    response:
+      status_code: 401
+
+---
+
+# Every test file has one or more tests
+test_name: No user is retrieved with an invalid user token
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+# ...and each test has one or more stages (e.g. an HTTP request)
+stages:
+  - name: No user is retrieved with an invalid user token
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/me"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer xyz"
+
+    # and the expected response code and body
+    response:
+      status_code: 403
+
+---
+
+# Every test file has one or more tests
+test_name: Running a GET for a user that does not exist returns 404
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+# ...and each test has one or more stages (e.g. an HTTP request)
+stages:
+  - name: Running a GET for a user that does not exist returns 404
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/me"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {user_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 404
+
+---
+
+test_name: Running a POST creates and returns a user object
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+stages:
+  - name: Use the token to post a user
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/users"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {user_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 201
+      body:
+        id: !anyint
+        oauth_id: !anystr
+        timeregistered: !anystr
+        userinfo:
+          family_name: !anystr
+          given_name: !anystr
+          nickname: !anystr
+
+---
+
+test_name: Running a GET returns the user object
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+stages:
+  - name: Use the token to get a user
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/me"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {user_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        id: !anyint
+        oauth_id: !anystr
+        timeregistered: !anystr
+        userinfo:
+          family_name: !anystr
+          given_name: !anystr
+          nickname: !anystr
+
+---
+
+test_name: DELETE the user object
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+stages:
+  - name: Use the token to get a user
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/me"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {user_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 204

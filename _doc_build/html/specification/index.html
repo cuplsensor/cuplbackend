@@ -1,0 +1,354 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Software Requirement Specification &#8212; PSWebApp 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Welcome to PSWebApp’s documentation!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="software-requirement-specification">
+<h1>Software Requirement Specification<a class="headerlink" href="#software-requirement-specification" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="platform-requirements">
+<h2>Platform Requirements<a class="headerlink" href="#platform-requirements" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pr-1">
+<h3>PR-1<a class="headerlink" href="#pr-1" title="Permalink to this headline">¶</a></h3>
+<p>There must be a low barrier-to-entry in terms of setup costs and knowledge.</p>
+</div>
+<div class="section" id="pr-2">
+<h3>PR-2<a class="headerlink" href="#pr-2" title="Permalink to this headline">¶</a></h3>
+<p>The platform must be secure.</p>
+</div>
+<div class="section" id="pr-3">
+<h3>PR-3<a class="headerlink" href="#pr-3" title="Permalink to this headline">¶</a></h3>
+<p>The platform shall be testable. Tests shall be automated where possible.</p>
+</div>
+</div>
+<div class="section" id="functional-requirements">
+<h2>Functional Requirements<a class="headerlink" href="#functional-requirements" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="fr-sec-1">
+<h3>FR-SEC-1<a class="headerlink" href="#fr-sec-1" title="Permalink to this headline">¶</a></h3>
+<p>The web application shall be secured at the application layer using HTTPS. Connections with HTTP must be rejected.</p>
+</div>
+<div class="section" id="fr-sec-2">
+<h3>FR-SEC-2<a class="headerlink" href="#fr-sec-2" title="Permalink to this headline">¶</a></h3>
+<p>HTTPS shall be enabled using Let’s Encrypt certificates. These are free-of-charge in order to comply with <a class="reference internal" href="#pr-1">PR-1</a>.</p>
+</div>
+<div class="section" id="fr-sec-3">
+<h3>FR-SEC-3<a class="headerlink" href="#fr-sec-3" title="Permalink to this headline">¶</a></h3>
+<p>No sensitive user data such as passwords shall be stored by the web application.</p>
+</div>
+<div class="section" id="fr-auth-1">
+<h3>FR-AUTH-1<a class="headerlink" href="#fr-auth-1" title="Permalink to this headline">¶</a></h3>
+<p>The user does not need to authenticate in order to make basic use of the web application. For example, <a class="reference internal" href="#fr-web-12">FR-WEB-12</a> and <a class="reference internal" href="#fr-web-1">FR-WEB-1</a>.</p>
+</div>
+<div class="section" id="fr-auth-2">
+<h3>FR-AUTH-2<a class="headerlink" href="#fr-auth-2" title="Permalink to this headline">¶</a></h3>
+<p>The user has the option to authenticate to enable extra functionality. In general this is limited to cases where the user needs to write to the database, other than for capturing data from a sensor.</p>
+</div>
+<div class="section" id="fr-auth-3">
+<h3>FR-AUTH-3<a class="headerlink" href="#fr-auth-3" title="Permalink to this headline">¶</a></h3>
+<p>Authentication shall be provided by a third party (See <a class="reference internal" href="#ng-1">NG-1</a>, <a class="reference internal" href="#pr-1">PR-1</a>).</p>
+</div>
+<div class="section" id="fr-auth-4">
+<h3>FR-AUTH-4<a class="headerlink" href="#fr-auth-4" title="Permalink to this headline">¶</a></h3>
+<p>The web application shall determine user authenticity with access tokens.</p>
+</div>
+<div class="section" id="fr-auth-5">
+<h3>FR-AUTH-5<a class="headerlink" href="#fr-auth-5" title="Permalink to this headline">¶</a></h3>
+<p>It shall be possible to designate a user as an Administrator.</p>
+</div>
+<div class="section" id="fr-db-1">
+<h3>FR-DB-1<a class="headerlink" href="#fr-db-1" title="Permalink to this headline">¶</a></h3>
+<p>The web application shall store data in an SQL database. The chosen DB is PostgresSQL.</p>
+</div>
+<div class="section" id="fr-db-2">
+<h3>FR-DB-2<a class="headerlink" href="#fr-db-2" title="Permalink to this headline">¶</a></h3>
+<p>It shall be possible to migrate the DB schema when it changes. The chosen DB migration tool is Alembic.</p>
+</div>
+<div class="section" id="fr-db-3">
+<h3>FR-DB-3<a class="headerlink" href="#fr-db-3" title="Permalink to this headline">¶</a></h3>
+<p>Given a capturesample, it shall be possible to know where the box was located, based on the sparse location markers that the user has created.
+The capturesample will have a function for retrieving the most recent location marker for the box that the capturesample belongs to.</p>
+</div>
+<div class="section" id="fr">
+<h3>FR<a class="headerlink" href="#fr" title="Permalink to this headline">¶</a></h3>
+<p>The web application must not be URL specific. This must be passed in as an environment variable.</p>
+</div>
+<div class="section" id="fr-api-1">
+<h3>FR-API-1<a class="headerlink" href="#fr-api-1" title="Permalink to this headline">¶</a></h3>
+<p>Only Administrators can create a box.</p>
+</div>
+<div class="section" id="fr-web-0">
+<h3>FR-WEB-0<a class="headerlink" href="#fr-web-0" title="Permalink to this headline">¶</a></h3>
+<p>There shall be a colour scheme associated with each sensor. This will be red for temperature data and light blue for RH data.</p>
+</div>
+<div class="section" id="fr-web-1">
+<h3>FR-WEB-1<a class="headerlink" href="#fr-web-1" title="Permalink to this headline">¶</a></h3>
+<p>There shall be a &lt;calendar_page&gt; for viewing sensor data. Parameters of this page are:</p>
+<ul class="simple">
+<li>Sensor</li>
+<li>Range (day, week, month).</li>
+<li>Start date DD/MM/YYYY</li>
+<li>Timezone offset in minutes.</li>
+</ul>
+</div>
+<div class="section" id="fr-web-2">
+<h3>FR-WEB-2<a class="headerlink" href="#fr-web-2" title="Permalink to this headline">¶</a></h3>
+<p>The timezone on the &lt;calendar_page&gt; shall default to the user’s timezone if none is supplied in the URL.</p>
+</div>
+<div class="section" id="fr-web-3">
+<h3>FR-WEB-3<a class="headerlink" href="#fr-web-3" title="Permalink to this headline">¶</a></h3>
+<p>The date of the &lt;calendar_page&gt; shall default to todays date if none is supplied in the URL.</p>
+</div>
+<div class="section" id="fr-web-4">
+<h3>FR-WEB-4<a class="headerlink" href="#fr-web-4" title="Permalink to this headline">¶</a></h3>
+<p>Sensor data shall be browseable by selecting a date, sensor and range on the &lt;calendar_page&gt;.</p>
+</div>
+<div class="section" id="fr-web-5">
+<h3>FR-WEB-5<a class="headerlink" href="#fr-web-5" title="Permalink to this headline">¶</a></h3>
+<p>The URL must be consistent with the parameters selected on the &lt;calendar_page&gt;. These include year, month, day and timezone.</p>
+</div>
+<div class="section" id="fr-web">
+<h3>FR-WEB<a class="headerlink" href="#fr-web" title="Permalink to this headline">¶</a></h3>
+<p>If Alice in timezone A sends the URL of a &lt;calendar_page&gt; to Bob in timezone B, Bob must see the same sensor data as Alice, as if he were in timezone A. For this to work, the timezone must be included in the URL.</p>
+</div>
+<div class="section" id="id1">
+<h3>FR-WEB<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>If there is no timezone included in the URL, the web application should detect the user’s timezone and write this to the URL (see <a class="reference internal" href="#fr-web-5">FR-WEB-5</a>)</p>
+</div>
+<div class="section" id="id2">
+<h3>FR-WEB<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>If there is no date included in the URL, the web application should detect the current date for the user and write this to the URL.</p>
+</div>
+<div class="section" id="id3">
+<h3>FR-WEB<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>If there is no range included in the URL, the web application should default to ‘day’.</p>
+</div>
+<div class="section" id="id4">
+<h3>FR-WEB<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>If there is no sensor included in the URL, the web application should default to ‘temp’.</p>
+</div>
+<div class="section" id="fr-web-6">
+<h3>FR-WEB-6<a class="headerlink" href="#fr-web-6" title="Permalink to this headline">¶</a></h3>
+<p>The &lt;calendar_page&gt; must update without reloading the entire page when the parameters are changed.</p>
+</div>
+<div class="section" id="fr-web-7">
+<h3>FR-WEB-7<a class="headerlink" href="#fr-web-7" title="Permalink to this headline">¶</a></h3>
+<p>The &lt;calendar_page&gt; must include a plot of sensor data and a table of the same data.</p>
+</div>
+<div class="section" id="fr-web-9">
+<h3>FR-WEB-9<a class="headerlink" href="#fr-web-9" title="Permalink to this headline">¶</a></h3>
+<p>The &lt;calendar_page&gt; will have a button for downloading displayed data as a CSV file.</p>
+</div>
+<div class="section" id="fr-web-10">
+<h3>FR-WEB-10<a class="headerlink" href="#fr-web-10" title="Permalink to this headline">¶</a></h3>
+<p>The &lt;calendar_page&gt; will have a button for copying the current URL. This is a way for one user to share the current view with others, even if they are in a different timezone (see architecture, front end).</p>
+</div>
+<div class="section" id="fr-web-11-1">
+<h3>FR-WEB-11-1<a class="headerlink" href="#fr-web-11-1" title="Permalink to this headline">¶</a></h3>
+<p>It shall be possible to add location markers. These describe where the sensor was at a given time.</p>
+</div>
+<div class="section" id="fr-web-11-2">
+<h3>FR-WEB-11-2<a class="headerlink" href="#fr-web-11-2" title="Permalink to this headline">¶</a></h3>
+<p>Each sample inside the table on &lt;calendar_page&gt; will have a button for adding a location.</p>
+</div>
+<div class="section" id="fr-web-11-3">
+<h3>FR-WEB-11-3<a class="headerlink" href="#fr-web-11-3" title="Permalink to this headline">¶</a></h3>
+<p>If the sample has a location stored against it, the text on the button will be the description for that location. The button colour will be blue.</p>
+</div>
+<div class="section" id="fr-web-11-4">
+<h3>FR-WEB-11-4<a class="headerlink" href="#fr-web-11-4" title="Permalink to this headline">¶</a></h3>
+<p>If the box has previous locations stored against it, the text on the button will be the description for the most recent location (FR-DB-3). The button colour will be grey.</p>
+</div>
+<div class="section" id="id5">
+<h3>FR-WEB-11-3<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>If the box has no previous locations stored against it, the text on the button will be ‘Add Location’. The button colour will be grey.</p>
+</div>
+<div class="section" id="fr-web-11-5">
+<h3>FR-WEB-11-5<a class="headerlink" href="#fr-web-11-5" title="Permalink to this headline">¶</a></h3>
+<p>Clicking on a grey location button will make a modal window appear that prompts the user to describe a new sensor location.</p>
+</div>
+<div class="section" id="fr-web-11-6">
+<h3>FR-WEB-11-6<a class="headerlink" href="#fr-web-11-6" title="Permalink to this headline">¶</a></h3>
+<p>Clicking on a blue location button will make a modal window appear for the user to edit the location description or to delete the location marker entirely.</p>
+</div>
+<div class="section" id="fr-web-12">
+<h3>FR-WEB-12<a class="headerlink" href="#fr-web-12" title="Permalink to this headline">¶</a></h3>
+<p>The web application must be capable of parsing, decoding and storing samples from a URL that has been created by a sensor. Data must be stored permanently in the database.</p>
+</div>
+</div>
+<div class="section" id="non-goals">
+<h2>Non-goals<a class="headerlink" href="#non-goals" title="Permalink to this headline">¶</a></h2>
+<p>It is outside the scope of this project to do the following:</p>
+<div class="section" id="ng-1">
+<h3>NG-1<a class="headerlink" href="#ng-1" title="Permalink to this headline">¶</a></h3>
+<p>Providing a user-authentication mechanism. (See <a class="reference internal" href="#user-authentication">User Authentication</a> ).</p>
+</div>
+</div>
+</div>
+<div class="section" id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="end-user">
+<h2>End-user<a class="headerlink" href="#end-user" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="android">
+<h3>Android<a class="headerlink" href="#android" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="ios">
+<h3>iOS<a class="headerlink" href="#ios" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="administrator">
+<h2>Administrator<a class="headerlink" href="#administrator" title="Permalink to this headline">¶</a></h2>
+<p>Quickstart shall cover how to install the web application using Docker and Docker-machine.</p>
+</div>
+</div>
+<div class="section" id="feature-documentation">
+<h1>Feature Documentation<a class="headerlink" href="#feature-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="end-user-docs">
+<h2>End-user Docs<a class="headerlink" href="#end-user-docs" title="Permalink to this headline">¶</a></h2>
+<p>USR-FEAT-4 How to download sensor data as a CSV file.</p>
+<p>USR-FEAT-5 How to share sensor data with others.</p>
+<p>USR-FEAT-6 How to browse sensor data.</p>
+<p>USR-FEAT-7 How to add and edit location markers.</p>
+</div>
+<div class="section" id="administrator-docs">
+<h2>Administrator Docs<a class="headerlink" href="#administrator-docs" title="Permalink to this headline">¶</a></h2>
+<p>ADMIN-FEAT-1 How to renew the HTTPS certificate.</p>
+<p>ADMIN-FEAT-2 How to designate a user as admin.</p>
+<p>ADMIN-FEAT-3 How to migrate the DB using alembic.</p>
+</div>
+<div class="section" id="developer-docs">
+<h2>Developer Docs<a class="headerlink" href="#developer-docs" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="software-architecture">
+<h1>Software Architecture<a class="headerlink" href="#software-architecture" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="front-end">
+<h2>Front end<a class="headerlink" href="#front-end" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="back-end">
+<h2>Back end<a class="headerlink" href="#back-end" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="user-authentication">
+<h3>User Authentication<a class="headerlink" href="#user-authentication" title="Permalink to this headline">¶</a></h3>
+<p>This is better handled by a 3rd party that has a better understanding of web security</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PSWebApp</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Software Requirement Specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#platform-requirements">Platform Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functional-requirements">Functional Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#non-goals">Non-goals</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#quickstart">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#end-user">End-user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#administrator">Administrator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#feature-documentation">Feature Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#end-user-docs">End-user Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#administrator-docs">Administrator Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#developer-docs">Developer Docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#software-architecture">Software Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#front-end">Front end</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#back-end">Back end</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to PSWebApp’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Malcolm Mackay.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/specification/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

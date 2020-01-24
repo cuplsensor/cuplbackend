@@ -1,0 +1,30 @@
+{% extends "base_templates/page_base.html" %}  {# base_templates/page_base.html extends base_templates/base.html #}
+
+{% block title %}
+Sign in
+{% endblock %}
+{% block subtitle %}
+{% endblock %}
+
+{% block main %}
+
+<a href="{{returl}}">Return</a>
+<div id="lockhere">
+</div>
+
+<script>
+  var lock = new Auth0Lock('{{ auth0clientid }}', '{{ auth0url }}', {
+    container: 'lockhere',
+    auth: {
+      redirectUrl: '{{callbackurl}}',
+      responseType: 'code',
+      state: '{{returl}}',
+      params: {
+        scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+      }
+    }
+  });
+  lock.show();
+</script>
+
+{% endblock %}

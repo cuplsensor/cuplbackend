@@ -1,0 +1,166 @@
+{% extends "base_templates/plot.html" %}  {# base_templates/page_base.html extends base_templates/base.html #}
+
+{% block morescripts %}
+<link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+      rel="stylesheet">
+      <script src="{{ url_for('dashboard.static', filename='csvexport.js') }}"></script>
+
+<script src="{{ url_for('dashboard.static', filename='dayindex.js') }}"></script>
+<script>
+var respobj;
+var range = {{range|tojson}};
+var sensor = {{sensor|tojson}};
+var dateymd = {
+  'year': {{year|tojson}},
+  'month': {{month|tojson}},
+  'day': {{day|tojson}}
+};
+var baseurl = '{{ url_for('calview.index', serial=box.serial) }}';
+var locationsurl = '{{ url_for('locations.locations', boxserial=box.serial) }}'
+
+function initialise() {
+  let calsubject = new CalendarSubject(locationsurl);
+  let calcontroller = new CalendarController(calsubject, sensor, range, dateymd);
+  let chartview = new ChartView(calcontroller);
+  let tableview = new TableView(calcontroller);
+  let navview = new NavView(calcontroller);
+  let urlview = new UrlView(calcontroller, baseurl);
+  let loclistview = new LocationListView(calcontroller, baseurl);
+
+  calsubject.notifyAll();
+}
+
+window.addEventListener('load', initialise);
+</script>
+{% endblock %}
+
+
+
+
+
+{% block main %}
+<p id="heading"></p>
+<section class="section">
+  <div class="container">
+    <nav id="daynav" class="level">
+      <div class="level-left">
+        <div class="level-item is-pulled-left">
+        <div id="daybuttons" class="buttons has-addons is-pulled-left">
+          <a class="button" id="leftbutton">
+            <span class="icon is-small">
+              <i class="fas fa-angle-left"></i>
+            </span>
+          </a>
+          <a class="button" id="todaybutton">
+            Today
+          </a>
+          <a class="button" id="rightbutton">
+            <span class="icon is-small">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+        <div class="level-item">
+        <input type="date" id="datepicker" style="height:2.25em; margin-left:0.5em">
+      </div>
+
+
+      </div>
+
+      <div class="level-right">
+        <div class="level-item">
+        <div id="rangebuttons" class="buttons has-addons">
+          <span id="daybutton" class="button">Day</span>
+          <span id="weekbutton" class="button">Week</span>
+          <span id="monthbutton" class="button">Month</span>
+        </div>
+      </div>
+      </div>
+    </nav>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="tabs">
+      <ul>
+        <li id="tempbutton">
+          <a>Temperature</a>
+        </li>
+        <li id="humiditybutton">
+          <a>Humidity</a>
+        </li>
+      </ul>
+    </div>
+    <div class="chart-container" style="position: relative; height:45vh;">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+
+<div class="container" id="samplesdiv">
+  <div class="is-pulled-right">
+  <a href='#' class="button" id="csvbutton">
+    <span class="icon">
+      <i class="fas fa-download"></i>
+    </span>
+    <span>Download CSV</span>
+  </a>
+  <a href='#' class="button" id="copybutton">
+    <span class="icon">
+<i class="fas fa-link"></i>
+</span>
+    <span>Copy Link</span>
+  </a>
+</div>
+</div>
+</section>
+
+<div id="editdescmodal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Edit Sensor Location</p>
+      <button id="editdesc_closebtn" class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- Content ... -->
+      <form id="editlocation" enctype="application/json" action="{{ url_for('locations.location', locationid=0) }}">
+        {{ editlocform.csrf_token }}
+        {{ editlocform.location_id }}
+        {{ editlocform.description(class_="input", placeholder="e.g. cupboard under the stairs") }}
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button id="editdesc_savebtn" class="button is-success">Save</button>
+      <button id="editdesc_cancelbtn" class="button">Cancel</button>
+      <button id="editdesc_deletebtn" class="button is-danger">Delete</button>
+    </footer>
+  </div>
+</div>
+
+<div id="newdescmodal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Add Sensor Location</p>
+      <button id="newdesc_closebtn" class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- Content ... -->
+      <form id="newlocation" enctype="application/json" action="{{ url_for('locations.locations') }}">
+        {{ newlocform.csrf_token }}
+        {{ newlocform.capturesample_id }}
+        {{ newlocform.description(class_="input", placeholder="e.g. cupboard under the stairs") }}
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button id="newdesc_savebtn" class="button is-success">Save</button>
+      <button id="newdesc_cancelbtn" class="button">Cancel</button>
+    </footer>
+  </div>
+</div>
+{% endblock %}

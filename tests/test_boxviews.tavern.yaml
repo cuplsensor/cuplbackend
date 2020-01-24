@@ -1,0 +1,75 @@
+test_name: Create a box, add a capture to it then delete the box.
+
+marks:
+  - usefixtures:
+      - baseurl
+      - clientid
+      - clientsecret
+      - user_fixture
+      - box_fixture
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+stages:
+  - name: Create a boxview and add it to the box with the serial
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/me/boxviews"
+      method: POST
+      json:
+        boxserial: "{box_fixture.serial}"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {user_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        boxserial: !anystr
+        id: !anyint
+        timestamp: !anystr
+      save:
+        body:
+          boxview_id: id
+          boxview_timestamp: timestamp
+          boxview_boxserial: boxserial
+
+  - name: GET a list of boxviews for the current user. Verify that it contains the one we created.
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/me/boxviews"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {user_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        - boxserial: "{boxview_boxserial}"
+          id: !int "{boxview_id:d}"
+          timestamp: "{boxview_timestamp}"
+
+  - name: GET the capture for this box and verify that it contains the correct fields
+
+    # Define the request to be made
+    request:
+      url: "https://{baseurl}/api/consumer/v1/me/boxviews/{boxview_id}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {user_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        boxserial: "{boxview_boxserial}"
+        id: !int "{boxview_id:d}"
+        timestamp: "{boxview_timestamp}"

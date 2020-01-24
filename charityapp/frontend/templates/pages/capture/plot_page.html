@@ -1,0 +1,104 @@
+{% extends "base_templates/page_base.html" %}  {# base_templates/page_base.html extends base_templates/base.html #}
+
+{% block headerscripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('boxview.box', serial=capture.boxserial ) }}">{{ capture.boxserial }}</a></li>
+{% endblock %}
+
+{% block title %}
+Capture {{ capture.id }}
+{% endblock %}
+{% block subtitle %}
+{{ capture.name }}
+{% endblock %}
+
+{% block main %}
+<div class="tabs">
+  <ul>
+    {% if "temp" in sensor %}
+    <li class="is-active">
+      {% else %}
+      <li>
+        {% endif %}
+      <a href="{{ url_for('captureview.temp', captid=capture.id) }}">Temperature</a>
+    </li>
+    {% if "rh" in sensor %}
+<li class="is-active">
+    {% else %}
+    <li>
+      {% endif %}
+      <a href="{{ url_for('captureview.rh', captid=capture.id) }}">Humidity</a>
+    </li>
+    <li>
+      <a href="{{ url_for('captureview.status', captid=capture.id) }}">Status</a>
+    </li>
+  </ul>
+</div>
+<div class="chart-container" style="position: relative; height:80vh; width:100%">
+  <canvas id="myChart"></canvas>
+</div>
+<script>
+  var ctx = document.getElementById("myChart");
+  var plotdata = {{temps|tojson}};
+  var linechartdata = {
+    datasets: [{
+      {% if "rh" in sensor %}
+      label: "Relative Humidity (%)",
+      backgroundColor: "rgba(153,226,255,0.5)",
+      borderColor: "rgba(153,226,235,1)",
+      pointBackgroundColor: "rgba(153,226,235,1)",
+      {% else %}
+      label: "Temperature (°C)",
+      backgroundColor: "rgba(220,100,94,0.5)",
+      borderColor: "rgba(220,100,94,1)",
+      pointBackgroundColor: "rgba(220,100,94,1)",
+      {% endif %}
+      data: {{temps|tojson}}
+    }]
+  }
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: linechartdata,
+    options: {
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+          type: 'time',
+          distribution: 'linear',
+          time: {
+            tooltipFormat: 'h:mm'
+          }
+
+        }],
+        yAxes: [{
+          ticks: {
+            suggestedMin: {{miny}}-4,
+            suggestedMax: {{maxy}}+4
+          }
+        }]
+      }
+    }
+  });
+</script>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Reading</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for smpl in temps %}
+    <tr>
+      <td>{{smpl.tHM.strftime('%H:%M')}}</td>
+      <td>{{smpl.y|round(2)}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+{% endblock %}

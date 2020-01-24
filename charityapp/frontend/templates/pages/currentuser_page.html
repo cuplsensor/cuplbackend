@@ -1,0 +1,62 @@
+{% extends "base_templates/page_base.html" %}  {# base_templates/page_base.html extends base_templates/base.html #}
+
+{% block headerscripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.js"></script>
+<script type="text/javascript">
+var vlogitemsjson = {{vlogitemsjson|tojson}};
+var boxurl = {{ url_for('boxview.box', serial='') }};
+
+function initialise() {
+  var tablebody = document.getElementsByTagName("tbody")[0]
+
+  for (var el in vlogitemsjson) {
+    var ts = moment(vlogitemsjson[el].timestamp).fromNow();
+    var boxserial = vlogitemsjson[el].box.serial;
+    var tr = document.createElement('tr');
+    var td_ts = document.createElement('td');
+    var td_boxserial = document.createElement('td');
+    var ts_text = document.createTextNode(ts);
+
+    var boxserial_anchor = document.createElement('a');
+    boxserial_anchor.setAttribute('href', boxurl+boxserial);
+    boxserial_anchor.innerHTML = boxserial;
+
+    td_ts.appendChild(ts_text);
+    td_boxserial.appendChild(boxserial_anchor);
+
+    tr.appendChild(td_boxserial);
+    tr.appendChild(td_ts);
+
+    tablebody.appendChild(tr);
+  }
+
+}
+
+window.addEventListener('load', initialise);
+</script>
+{% endblock %}
+
+{% block title %}
+{{ userobj.first_name }}
+{% endblock %}
+{% block subtitle %}
+{% endblock %}
+
+{% block main %}
+<section class="section">
+  <div class="container">
+    <h6>Recently viewed</h6>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Box</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% endblock %}

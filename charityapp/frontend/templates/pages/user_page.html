@@ -1,0 +1,96 @@
+{% extends "base_templates/page_base.html" %}  {# base_templates/page_base.html extends base_templates/base.html #}
+
+{% block headerscripts %}
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+$(function() {
+function split( val ) {
+        return val.split( /,\s*/ );
+      }
+      function extractLast( term ) {
+        return split( term ).pop();
+      }
+      $( "#charityname" )
+        // don't navigate away from the field on tab when selecting an item
+        .bind( "keydown", function( event ) {
+          if ( event.keyCode === $.ui.keyCode.TAB &&
+              $( this ).autocomplete( "instance" ).menu.active ) {
+            event.preventDefault();
+          }
+        })
+        .autocomplete({
+          source: function( request, response ) {
+            $.getJSON('/autocomplete', {
+              term: extractLast( request.term )
+            }, response );
+          },
+          search: function() {
+          // custom minLength
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
+          }
+        }
+        });
+});
+</script>
+
+{% endblock %}
+
+{% block main %}
+
+<h1>{{ username(userobj) }}</h1>
+
+<div id="addbox" class="userform">
+ <summary>Add a box</summary>
+ <form actions="/" method="POST">
+<table>
+  <tr>
+    <td>Box ID</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>IMEI</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Phone number</td>
+    <td></td>
+  </tr>
+</table>
+</div>
+
+List of campaigns
+Charity name, money raised, last donation, active, enable
+
+<div id="addcampaign" class="userform">
+  <summary>Add a campaign</summary>
+  <form actions="/" method="POST">
+
+  <table>
+    <tr>
+      <td>Charity Name</td>
+
+    </tr>
+    <tr>
+      <td>Box ID</td>
+
+    </tr>
+    <tr>
+      <td>Box location</td>
+
+    </tr>
+    <tr>
+
+    </tr>
+
+  </table>-->
+
+  </form>
+</div>
+
+
+
+{% endblock %}
