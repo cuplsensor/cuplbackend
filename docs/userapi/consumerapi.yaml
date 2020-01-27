@@ -1,0 +1,910 @@
+basePath: /api/consumer/v1
+definitions:
+  Box:
+    properties:
+      serial:
+        description: Serial of the box that made the capture
+        example: YWJjZGVM
+        type: string
+      timeregistered:
+        description: Time the box was created
+        example: '2019-01-15T13:09:52.456Z'
+        format: date-time
+        type: string
+    title: Box
+    type: object
+  BoxView:
+    properties:
+      boxserial:
+        description: Serial of box that was viewed
+        example: YWJjZGVM
+        type: string
+      id:
+        description: Unique ID of the Boxview item
+        example: 20
+        readOnly: 'true'
+        type: integer
+      timestamp:
+        description: Timestamp the box was viewed in seconds since January 1st 1970
+        example: '2019-01-15T13:09:52.456Z'
+        format: date-time
+        readOnly: 'true'
+        type: string
+    title: Box View
+    type: object
+  Capture:
+    properties:
+      batvoltagemv:
+        example: 3000
+        readOnly: 'true'
+        type: integer
+      boxserial:
+        description: Serial of the box that made the capture
+        example: YWJjZGVM
+        type: string
+      cursorpos:
+        example: 20
+        readOnly: 'true'
+        type: integer
+      id:
+        example: 232
+        format: int32
+        readOnly: 'true'
+        type: integer
+      loopcount:
+        description: >-
+          Number of times the circularbuffer pointer has wrapped from the end to
+          the beginning
+        example: 2
+        readOnly: 'true'
+        type: integer
+      md5:
+        example: 2f324022a223
+        readOnly: 'true'
+        type: string
+      status:
+        $ref: '#/definitions/CaptureStatus'
+      timeintmins:
+        example: 12
+        readOnly: 'true'
+        type: integer
+      timestamp:
+        example: '2019-01-15T13:09:52.456Z'
+        format: date-time
+        readOnly: 'true'
+        type: string
+      version:
+        example: 1
+        type: integer
+    title: Capture
+    type: object
+  CaptureSample:
+    properties:
+      capture_id:
+        description: ID of the parent Capture object
+        example: 1
+        format: int32
+        type: integer
+      id:
+        description: CaptureSample ID
+        example: 1
+        format: int32
+        type: integer
+      location:
+        $ref: '#/definitions/Location'
+      rh:
+        description: Relative Humidity in percent
+        example: 55
+        format: double
+        type: number
+      temp:
+        description: Temperature in degrees Celsius
+        example: 21
+        format: double
+        type: number
+      timestamp:
+        description: Unix timestamp in seconds since January 1st 1970
+        example: '2019-01-15T13:09:52.456Z'
+        format: date-time
+        type: string
+    required:
+      - id
+      - capture_id
+      - timestamp
+      - temp
+    title: CaptureSample
+    type: object
+  CaptureStatus:
+    properties:
+      brownout:
+        description: True if the cause of the most recentreset was a brown out condition.
+        example: 'false'
+        type: boolean
+      clockfail:
+        description: True if the most recent reset was caused by an MCU clock failure.
+        example: 'false'
+        type: boolean
+      id:
+        description: CaptureStatus ID
+        example: 1
+        format: int32
+        type: integer
+      lpm5wakeup:
+        description: True if the MCU has woken up from LPM (Low Power Mode) x.5
+        example: 'false'
+        type: boolean
+      misc:
+        description: True if a reset has occured for miscellaneous reasons
+        example: 'false'
+        type: boolean
+      parent_capture:
+        description: Parent Capture ID
+        example: 232
+        format: int32
+        type: integer
+      resetsalltime:
+        example: 20
+        type: integer
+      supervisor:
+        description: True if the supply voltage supervisor caused the most recent reset
+        example: 'false'
+        type: boolean
+      watchdog:
+        description: True if the MCU watchdog caused the most recent reset.
+        example: 'false'
+        type: boolean
+    readOnly: 'true'
+    title: CaptureStatus
+    type: object
+  EncodedCapture:
+    properties:
+      circbufb64:
+        description: Circular buffer including samples encoded as base64.
+        example: Add example here
+        type: string
+        writeOnly: 'true'
+      serial:
+        description: Serial of the box that made the capture
+        example: YWJjZGVM
+        type: string
+      statusb64:
+        description: 12 character status string
+        example: AAAAAAAA
+        type: string
+        writeOnly: 'true'
+      timeintb64:
+        description: Time interval in minutes in base64
+        example: Awg=
+        type: string
+        writeOnly: 'true'
+      versionStr:
+        example: '0001'
+        type: string
+    title: Base64 Encoded Capture
+    type: object
+  Location:
+    properties:
+      capturesample_id:
+        description: ID of the parent CaptureSample object
+        example: 1
+        format: int32
+        type: integer
+      description:
+        description: Description of where a box was located at the time of a capturesample.
+        example: Cupboard under the stairs
+        type: string
+      id:
+        description: Location ID
+        example: 1
+        format: int32
+        readOnly: 'true'
+        type: integer
+      timestamp:
+        description: Unix timestamp in seconds since January 1st 1970
+        example: '2019-01-15T13:09:52.456Z'
+        format: date-time
+        readOnly: 'true'
+        type: string
+    title: Location
+    type: object
+  User:
+    properties:
+      id:
+        format: int32
+        type: integer
+      oauth_id:
+        format: uuid
+        type: string
+      roles:
+        example: end-user
+        type: string
+      timeregistered:
+        example: '2019-01-06T22:43:33.196Z'
+        format: uuid
+        type: date-time
+      userinfo:
+        $ref: '#/definitions/UserInfo'
+    required:
+      - oauth_id
+      - email
+      - first_name
+      - last_name
+      - locale
+      - roles
+    title: User
+    type: object
+  UserInfo:
+    properties:
+      family_name:
+        example: Bruce
+        type: string
+      given_name:
+        example: Almighty
+        type: string
+      locale:
+        example: en-GB
+        type: string
+      name:
+        example: Bruce Almighty
+        type: string
+      nickname:
+        example: bruce.almighty
+        type: string
+      picture:
+        example: >-
+          https://lh5.googleusercontent.com/--nU_M9gooPA/AAAAAAAAAAI/AAAAAAAAAAA/AKxrwcZvgYJFq7AjYyLe6fih5f20MbPU0Q/mo/photo.jpg
+        type: string
+      sub:
+        example: google-oauth2|115758583297709853721
+        type: string
+      updated_at:
+        example: '2019-01-06T22:43:33.196Z'
+        format: date-time
+        type: string
+    title: UserInfo
+    type: object
+host: websensor.io
+info:
+  contact:
+    email: me@me.com
+    responsibleDeveloper: Me
+    responsibleOrganization: ME
+    url: www.me.com
+  description: API for my data
+  termsOfService: 'http://me.com/terms'
+  title: Plotsensor consumer API
+  version: 0.0.1
+operationId: getmyData
+paths:
+  '/box/{serial}':
+    get:
+      operationId: BoxGet
+      parameters:
+        - description: Box serial
+          in: query
+          name: serial
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A box object
+          headers: {}
+          schema:
+            $ref: '#/definitions/Box'
+        '400':
+          description: Bad input parameter.
+          schema: {}
+        '404':
+          description: Box not found.
+      summary: Get a box by its serial.
+      tags:
+        - Open
+  '/box/{serial}/scanned':
+    get:
+      operationId: HasScannedBox
+      parameters:
+        - description: Box serial
+          in: query
+          name: serial
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: True if the box has a capture taken by the current user.
+          headers: {}
+          type: boolean
+        '400':
+          description: Bad input parameter
+          schema: {}
+        '404':
+          description: Box or user not found.
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Has a box with a given serial been scanned by the current user?
+      tags:
+        - Access Token Required
+  /captures:
+    get:
+      operationId: CapturesGet
+      parameters:
+        - description: Box serial
+          in: query
+          name: serial
+          required: true
+          type: string
+        - description: Return samples starting from this index.
+          in: query
+          name: offset
+          required: false
+          type: integer
+        - description: Limit the number of samples returned.
+          in: query
+          name: limit
+          required: false
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A capture object
+          headers: {}
+          schema:
+            $ref: '#/definitions/Capture'
+        '400':
+          description: 'invalid input, object invalid'
+          schema: {}
+        '404':
+          description: Box with serial not found.
+          schema: {}
+      summary: Get a list of captures for a box
+      tags:
+        - Open
+    post:
+      operationId: CapturesPost
+      parameters:
+        - description: Capture creation fields
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/EncodedCapture'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A capture object
+          headers: {}
+          schema:
+            $ref: '#/definitions/Capture'
+        '400':
+          description: 'invalid input, object invalid'
+          schema: {}
+        '401':
+          description: Not authorised. HMAC does not correspond to input data.
+          schema: {}
+        '404':
+          description: Box not found
+          schema: {}
+        '409':
+          description: >-
+            Conflict. A capture with this HMAC already exists. Dead battery or
+            replay attack.
+          schema: {}
+      summary: Create a capture
+      tags:
+        - Open
+  '/captures/{id}':
+    get:
+      operationId: CaptureGet
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A capture object
+          headers: {}
+          schema:
+            $ref: '#/definitions/Capture'
+        '400':
+          description: 'invalid input, object invalid'
+          schema: {}
+        '404':
+          description: Capture not found.
+          schema: {}
+      summary: Get a capture by ID
+      tags:
+        - Open
+  '/captures/{id}/samples':
+    get:
+      operationId: SamplesGet
+      parameters:
+        - description: Return samples starting from this index.
+          in: query
+          name: offset
+          required: false
+          type: integer
+        - description: Limit the number of samples returned.
+          in: query
+          name: limit
+          required: false
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of sample objects
+          headers: {}
+          schema:
+            items:
+              $ref: '#/definitions/CaptureSample'
+            type: array
+        '400':
+          description: bad input parameter
+          schema: {}
+      summary: Get samples for a capture.
+      tags:
+        - Open
+  /locations:
+    get:
+      operationId: LocationGetList
+      parameters:
+        - description: Box serial
+          in: query
+          name: serial
+          required: true
+          type: string
+        - description: start timestamp as an ISO-8601 string.
+          format: datetime
+          in: query
+          name: starttime
+          required: false
+          type: string
+        - description: end timestamp as an ISO-8601 string.
+          format: datetime
+          in: query
+          name: endtime
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of locations ordered from newest to oldest.
+          headers: {}
+          schema:
+            items:
+              $ref: '#/definitions/Location'
+            type: array
+        '400':
+          description: 'invalid input, object invalid'
+          schema: {}
+        '404':
+          description: Location not found.
+          schema: {}
+      summary: Get a list of locations for a box ordered by most recent
+      tags:
+        - Open
+    post:
+      operationId: LocationPost
+      parameters:
+        - description: Location fields
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Location'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A capture object
+          headers: {}
+          schema:
+            $ref: '#/definitions/Location'
+        '400':
+          description: 'invalid input, object invalid'
+          schema: {}
+        '401':
+          description: Not authorised. The user has no scanned this box.
+          schema: {}
+        '403':
+          description: Not authorised. Invalid JWT.
+          schema: {}
+        '404':
+          description: Parent resource not found.
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Add location information to a box
+      tags:
+        - Capture by User Required
+  '/locations/{id}':
+    delete:
+      operationId: LocationDelete
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: Location deleted
+          schema: {}
+        '400':
+          description: Bad input parameter
+          schema: {}
+        '401':
+          description: Not authorised. The user has no scanned this box.
+          schema: {}
+        '403':
+          description: Not authorised. Invalid JWT.
+          schema: {}
+        '404':
+          description: Location not found.
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Delete a location
+      tags:
+        - Capture by User Required
+    get:
+      operationId: LocationGet
+      parameters:
+        - description: Location ID
+          in: query
+          name: id
+          required: false
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of locations ordered from newest to oldest.
+          headers: {}
+          schema:
+            $ref: '#/definitions/Location'
+        '400':
+          description: 'invalid input, object invalid'
+          schema: {}
+        '404':
+          description: Location not found.
+          schema: {}
+      summary: Get a list of locations for a box ordered by most recent
+      tags:
+        - Open
+    patch:
+      operationId: LocationPut
+      parameters:
+        - description: Location fields
+          in: body
+          name: body
+          required: true
+          schema:
+            description: description
+            type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A capture object
+          headers: {}
+          schema:
+            $ref: '#/definitions/Location'
+        '400':
+          description: 'invalid input, object invalid'
+          schema: {}
+        '401':
+          description: Not authorised. The user has no scanned this box.
+          schema: {}
+        '403':
+          description: Not authorised. Invalid JWT.
+          schema: {}
+        '404':
+          description: Parent resource not found.
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Edit location information for a box
+      tags:
+        - Capture by User Required
+  /me:
+    delete:
+      operationId: BoxDelete
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: User deleted
+          schema: {}
+        '400':
+          description: Bad input parameter
+          schema: {}
+        '404':
+          description: User not found
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Delete current user.
+      tags:
+        - Access Token Required
+    get:
+      description: Auth0 ID of the user.
+      operationId: UserGet
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A user object
+          headers: {}
+          schema:
+            $ref: '#/definitions/User'
+        '403':
+          description: invalid JWT
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Get current user from the Auth0 access token.
+      tags:
+        - Access Token Required
+  /me/boxviews:
+    get:
+      description: Auth0 ID of the user.
+      operationId: BoxViewsGet
+      parameters:
+        - description: Return only the latest BoxView for each scanned box.
+          in: query
+          name: distinctOnBox
+          required: false
+          type: boolean
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of boxview objects ordered from newest to oldest.
+          headers: {}
+          schema:
+            items:
+              $ref: '#/definitions/BoxView'
+            type: array
+        '403':
+          description: Invalid JWT
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Get a list of BoxViews for the current user.
+      tags:
+        - Access Token Required
+    post:
+      operationId: BoxViewsPost
+      parameters:
+        - description: Box view object
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/BoxView'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: BoxView created
+          headers: {}
+          schema:
+            $ref: '#/definitions/BoxView'
+        '400':
+          description: 'Invalid input, object invalid'
+          schema: {}
+        '403':
+          description: Invalid JWT
+          schema: {}
+        '404':
+          description: Parent resource not found.
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Post a box view
+      tags:
+        - Access Token Required
+  '/me/boxviews/{id}':
+    delete:
+      operationId: BoxViewDelete
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: BoxView deleted
+          schema: {}
+        '400':
+          description: Bad input.
+          schema: {}
+        '404':
+          description: BoxView not found
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Delete box view from the current user.
+      tags:
+        - Access Token Required
+    get:
+      description: Auth0 ID of the user.
+      operationId: BoxViewGet
+      parameters:
+        - description: Box view ID
+          in: query
+          name: id
+          required: false
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A boxview object
+          headers: {}
+          schema:
+            $ref: '#/definitions/BoxView'
+        '403':
+          description: Invalid JWT
+          schema: {}
+        '404':
+          description: BoxView not found.
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Get a boxview for the current user
+      tags:
+        - Access Token Required
+  /me/captures:
+    get:
+      operationId: MeCapturesGet
+      parameters:
+        - description: Return only the latest capture for each scanned box.
+          in: query
+          name: distinctOnBox
+          required: false
+          type: boolean
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of capture objects ordered from newest to oldest
+          headers: {}
+          schema:
+            items:
+              $ref: '#/definitions/Capture'
+            type: array
+        '400':
+          description: 'invalid input, object invalid'
+          schema: {}
+        '401':
+          description: >-
+            Not authorised. HMAC does not correspond to input data or invalid
+            JWT.
+          schema: {}
+        '404':
+          description: Box not found.
+          schema: {}
+      security:
+        - Bearer: []
+      summary: >-
+        Get a list of captures taken by the current user ordered by most recent
+        first.
+      tags:
+        - Access Token Required
+    post:
+      operationId: MeCapturesPost
+      parameters:
+        - description: Capture creation fields
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/EncodedCapture'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A capture object
+          headers: {}
+          schema:
+            $ref: '#/definitions/Capture'
+        '400':
+          description: 'Invalid input, object invalid'
+          schema: {}
+        '401':
+          description: Not authorised. HMAC does not correspond to input data.
+          schema: {}
+        '403':
+          description: Not authorised. Invalid JWT.
+          schema: {}
+        '404':
+          description: Parent box or user not found.
+          schema: {}
+        '409':
+          description: >-
+            Conflict. A capture with this HMAC already exists. Dead battery or
+            replay attack.
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Create a capture for a user
+      tags:
+        - Access Token Required
+  /samples:
+    get:
+      operationId: UniqueSamplesGet
+      parameters:
+        - description: Box serial
+          in: query
+          name: serial
+          required: true
+          type: string
+        - description: start timestamp as an ISO-8601 string.
+          format: datetime
+          in: query
+          name: starttime
+          required: true
+          type: string
+        - description: end timestamp as an ISO-8601 string.
+          format: datetime
+          in: query
+          name: endtime
+          required: true
+          type: string
+        - description: Return samples starting from this index.
+          in: query
+          name: offset
+          required: false
+          type: integer
+        - description: Limit the number of samples returned.
+          in: query
+          name: limit
+          required: false
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of samples from newest to oldest
+          headers: {}
+          schema:
+            items:
+              $ref: '#/definitions/CaptureSample'
+            type: array
+        '400':
+          description: bad input parameter
+          schema: {}
+      summary: Get unique samples for a box in a given time range
+      tags:
+        - Open
+  /users:
+    post:
+      operationId: UserPost
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: User created
+          headers: {}
+        '400':
+          description: 'Invalid input, object invalid'
+          schema: {}
+        '403':
+          description: Invalid JWT
+          schema: {}
+        '409':
+          description: Conflict. User already exists.
+          schema: {}
+      security:
+        - Bearer: []
+      summary: Create a new user from the Auth0 access token.
+      tags:
+        - Access Token Required
+schemes:
+  - https
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: '2.0'

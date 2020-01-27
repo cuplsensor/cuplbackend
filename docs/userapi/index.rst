@@ -1,4 +1,4 @@
-PS User API
+wsbackend API
 ============
 
-.. openapi:: userapiv2.yaml
+.. openapi:: consumerapi.yaml
