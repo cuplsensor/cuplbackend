@@ -13,9 +13,9 @@ wsbackend API Reference
 Box
 ---
 .. openapi:: consumerapi.yaml
-       :paths:
-          /box
-       :encoding: utf-8
+   :paths:
+      /box
+   :encoding: utf-8
 
 .. _Captures:
 Captures
@@ -29,30 +29,30 @@ Captures
 Samples
 -------
 .. openapi:: consumerapi.yaml
-       :paths:
-          /samples
-       :encoding: utf-8
+   :paths:
+      /samples
+   :encoding: utf-8
 
 .. _Users:
 Users
 -----
 .. openapi:: consumerapi.yaml
-       :paths:
-          /users
-       :encoding: utf-8
+   :paths:
+      /users
+   :encoding: utf-8
 
 .. _Me:
 Me
 --
 .. openapi:: consumerapi.yaml
-       :paths:
-          /me
-       :encoding: utf-8
+   :paths:
+      /me
+   :encoding: utf-8
 
 .. _Locations:
 Locations
 ---------
 .. openapi:: consumerapi.yaml
-       :paths:
-          /locations
-       :encoding: utf-8
+   :paths:
+      /locations
+   :encoding: utf-8
