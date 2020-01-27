@@ -16,6 +16,7 @@ Box
    :include:
       /box/*
    :encoding: utf-8
+   :examples:
 
 .. _Captures:
 Captures
@@ -24,6 +25,7 @@ Captures
    :include:
       /captures/*
    :encoding: utf-8
+   :examples:
 
 .. _Samples:
 Samples
@@ -32,6 +34,7 @@ Samples
    :include:
       /samples/*
    :encoding: utf-8
+   :examples:
 
 .. _Users:
 Users
@@ -40,6 +43,7 @@ Users
    :include:
       /users/*
    :encoding: utf-8
+   :examples:
 
 .. _Me:
 Me
@@ -48,6 +52,7 @@ Me
    :include:
       /me/*
    :encoding: utf-8
+   :examples:
 
 .. _Locations:
 Locations
@@ -56,3 +61,4 @@ Locations
    :include:
       /locations/*
    :encoding: utf-8
+   :examples:
