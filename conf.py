@@ -19,8 +19,8 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'PSWebApp'
-copyright = '2018, Malcolm Mackay'
+project = 'wsbackend'
+copyright = '2020, Malcolm Mackay'
 author = 'Malcolm Mackay'
 
 # The short X.Y version
