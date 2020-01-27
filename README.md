@@ -1,4 +1,8 @@
 # wsbackend
+Websensor Web Application Backend. 
+
+Documentation in progress at https://wsbackend.readthedocs.io/en/latest/
+
 This (the app) is a Python [WSGI](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface) web application.
 The app has been built atop of Armin Ronacher's excellent [Flask](https://palletsprojects.com/p/flask/) framework. 
 It primarily uses [wscodec](https://github.com/websensor/wscodec) to extract timestamped temperature and humidity 
