@@ -14,7 +14,7 @@ Box
 ---
 .. openapi:: consumerapi.yaml
    :paths:
-      /box
+      /box/
    :encoding: utf-8
 
 .. _Captures:
@@ -22,7 +22,7 @@ Captures
 --------
 .. openapi:: consumerapi.yaml
    :paths:
-      /captures
+      /captures/
    :encoding: utf-8
 
 .. _Samples:
@@ -30,7 +30,7 @@ Samples
 -------
 .. openapi:: consumerapi.yaml
    :paths:
-      /samples
+      /samples/
    :encoding: utf-8
 
 .. _Users:
@@ -38,7 +38,7 @@ Users
 -----
 .. openapi:: consumerapi.yaml
    :paths:
-      /users
+      /users/
    :encoding: utf-8
 
 .. _Me:
@@ -46,7 +46,7 @@ Me
 --
 .. openapi:: consumerapi.yaml
    :paths:
-      /me
+      /me/
    :encoding: utf-8
 
 .. _Locations:
@@ -54,5 +54,5 @@ Locations
 ---------
 .. openapi:: consumerapi.yaml
    :paths:
-      /locations
+      /locations/
    :encoding: utf-8
