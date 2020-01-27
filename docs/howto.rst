@@ -1,30 +1,74 @@
-How To Deploy PSWebApp
-======================
+Installation
+=============
+This tutorial assumes you have Git and Python 3 installed.
 
-Build Web Base
----------------
+.. sectnum::
 
-Navigate to the project root directory and run::
+Install Prerequisites
+-----------------------
+One of the dependencies (`Psycopg <https://www.psycopg.org/docs/install.html#install-from-source>`_)
+should be built from source.
 
-    docker build web_base -t mmackay/web_base:latest
+GCC Compiler
+^^^^^^^^^^^^^
+To install GCC on Debian, open a terminal window and type::
 
-This will build the first base image and install a list of Python packages including Flask.
+    $ sudo apt install build-essential
 
+To check gcc is installed, type::
 
-Build URL Decoder
------------------
+    $ gcc --version
 
-Navigate to the project root directory and run::
+Python Header Files
+^^^^^^^^^^^^^^^^^^^^
+To install the Python 3 header files type::
 
-    docker build pscodec -t mmackay/urldec_base:latest
+    $ sudo apt-get install python3-dev
 
-This will install the URL Decoder Python package from the PSCodec directory.
+Libpq-dev
+^^^^^^^^^^
+To install libbq-dev type::
 
+    $ sudo apt-get install libpq-dev
 
-Run web image with Docker Compose
-----------------------------------
+Clone the Repo
+--------------------
+First you will need to download wsbackend by cloning its Git
+repository. Open a terminal window, browse to a folder of your choice and type::
 
-Navigate to the project root directory and run::
+    $ git clone https://github.com/websensor/wsbackend.git
 
-    sh go2.sh
+The GitHub repository will be cloned to a folder named ``wsbackend``.
+Open this by typing::
+
+    $ cd wsbackend
+
+Create a Virtual Environment
+--------------------------------------
+We will use `virtualbox <https://virtualenv.pypa.io/en/latest/>`_ to create a virtual
+environment. This will isolate our wsbackend installation from the rest of the system.
+
+First install virtualenv::
+
+    $ sudo pip3 install virtualenv
+
+Next create a virtual environment named ``wsbackend_env``::
+
+    $ virtualenv wsbackend_env
+
+Activate the Virtual Environment
+---------------------------------
+In order for ``pip`` to install dependencies into the virtual enviornment, you must activate it first with::
+
+    $ source wsbackend_env/bin/activate
+
+Install Dependencies
+----------------------
+wsbackend is dependent on a number of Python packages including `flask <https://palletsprojects.com/p/flask/>`_.
+These are listed in `requirements.txt <https://github.com/websensor/wsbackend/blob/master/requirements.txt>`_.
+
+To install all requirements, type::
+
+    $ pip3 install -r requirements.txt
+
 
