@@ -14,7 +14,7 @@ Box
 ---
 .. openapi:: consumerapi.yaml
    :paths:
-      /box/
+      /captures/
    :encoding: utf-8
 
 .. _Captures:
