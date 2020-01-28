@@ -10,7 +10,7 @@ import os
 import requests
 import json
 from ...core import db
-from eralchemy import render_er
+#from eralchemy import render_er
 
 baseurl = os.environ["BASE_URL"]
 auth0clientid = os.environ["AUTH0_CLIENTID"]
@@ -62,9 +62,9 @@ def callback():
 
 # Create an entity relation diagram from the SQL database.
 # Normally disable this endpoint.
-@bp.route('/erdiagram')
-def erdiagram():
+#@bp.route('/erdiagram')
+#def erdiagram():
     # https://stackoverflow.com/questions/8637153/how-to-return-images-in-flask-response
-    filename = '/erdiagram.png'
-    render_er(db.Model, filename)
-    return send_file(filename, 'image/png')
+    #filename = '/erdiagram.png'
+    #render_er(db.Model, filename)
+    #return send_file(filename, 'image/png')
