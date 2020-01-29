@@ -53,6 +53,7 @@ class TokenAuth():
 
         return {'decoded': decoded, 'token': token}
 
+
 class TokenAuthSymmetric(TokenAuth):
     def __init__(self, issuer, audience, secret):
         super().__init__(issuer, audience)
@@ -62,6 +63,7 @@ class TokenAuthSymmetric(TokenAuth):
     def get_decoded_token(self):
         unverified_token = self.get_token_auth_header()
         return self.verify_token(token=unverified_token, key=self.secret)
+
 
 class TokenAuthAsymmetric(TokenAuth):
     def __init__(self, issuer, audience, jwksurl):

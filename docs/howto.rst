@@ -71,4 +71,21 @@ To install all requirements, type::
 
     $ pip3 install -r requirements.txt
 
+Define Environment Variables
+-----------------------------
 
+Auth0
+^^^^^^
+
+
+Install Gunicorn
+-----------------
+There are `many <https://flask.palletsprojects.com/en/1.1.x/deploying/>`_ options for
+serving this Flask application. In this tutorial we will use Gunicorn. It is the easiest
+to install::
+
+    $ pip3 install gunicorn
+
+Next run the application with::
+
+    $ gunicorn main:app

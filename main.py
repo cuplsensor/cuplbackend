@@ -9,13 +9,9 @@ from werkzeug.serving import run_simple
 from werkzeug.debug import DebuggedApplication
 from werkzeug.wsgi import DispatcherMiddleware
 
-from charityapp import frontend
-from charityapp.api import admin, consumer
+from charityapp.api import consumer
 
-app = DispatcherMiddleware(frontend.create_app(), {
-    '/api/admin/v1': admin.create_app(),
-    '/api/consumer/v1': consumer.create_app()
-})
+app = DispatcherMiddleware(consumer.create_app())
 app = DebuggedApplication(app, evalex=False)
 
 if __name__ == "__main__":
