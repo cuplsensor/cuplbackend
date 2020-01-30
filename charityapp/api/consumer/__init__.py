@@ -15,7 +15,6 @@ from .users import bp as usersbp
 from .boxes import bp as boxesbp
 from .captures import bp as capturesbp
 from .samples import bp as samplesbp
-from .accesstoken import bp as accesstokenbp
 from .boxviews import bp as boxviewsbp
 from .locations import bp as locationsbp
 
@@ -405,7 +404,6 @@ def create_app(settings_override=None):
     app.register_blueprint(boxesbp)
     app.register_blueprint(capturesbp)
     app.register_blueprint(samplesbp)
-    app.register_blueprint(accesstokenbp, url_prefix='/accesstoken')
     app.register_blueprint(boxviewsbp)
     app.register_blueprint(locationsbp)
     swagger = Swagger(app, template=swaggertemplate)
