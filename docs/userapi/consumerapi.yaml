@@ -219,7 +219,8 @@ paths:
       - Open
       summary: Get a list of locations for a box ordered by most recent
       security:
-        - OAuth2: [read]
+        - oAuthSample:
+            - read_pets
       operationId: LocationGetList
       parameters:
       - name: serial
@@ -1021,6 +1022,15 @@ components:
           format: date-time
           example: 2019-01-06T22:43:33.196Z
   securitySchemes:
+    oAuthSample:    # <---- arbitrary name
+      type: oauth2
+      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
+      flows:
+        implicit:   # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
+          authorizationUrl: https://api.example.com/oauth2/authorize
+          scopes:
+            read_pets: read your pets
+            write_pets: modify pets in your account
     Bearer:
       type: apiKey
       name: Authorization

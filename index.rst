@@ -9,6 +9,7 @@ Welcome to PSWebApp's documentation!
    docs/userapi/index
    docs/test
    docs/howto
+   docs/authentication
    :caption: Contents:
 
 Indices and tables
