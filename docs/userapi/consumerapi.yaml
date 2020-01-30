@@ -218,6 +218,8 @@ paths:
       tags:
       - Open
       summary: Get a list of locations for a box ordered by most recent
+      security:
+        - OAuth2: [read]
       operationId: LocationGetList
       parameters:
       - name: serial
