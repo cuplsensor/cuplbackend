@@ -24,25 +24,6 @@ class Capture(SingleResource):
     def get(self, id):
         """
         Get a capture by ID
-        ---
-        summary: Get a capture by ID
-        tags:
-          - Open
-        operationId: CaptureGet
-        produces:
-          - application/json
-        responses:
-            200:
-              description: A capture object
-              schema:
-                $ref: '#/definitions/Capture'
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            404:
-              description: Capture not found.
-              schema: {}
         """
         return super().get(modelid=id)
 
@@ -54,41 +35,6 @@ class Captures(MultipleResource):
     def get(self, userobj=None):
         """
         Get a list of captures for a box
-        ---
-        summary: get a list of captures for a box
-        tags:
-          - Open
-        operationId: CapturesGet
-        parameters:
-          - name: serial
-            in: query
-            required: true
-            type: string
-            description: Box serial
-          - name: offset
-            in: query
-            required: false
-            type: integer
-            description: Return samples starting from this index.
-          - name: limit
-            in: query
-            required: false
-            type: integer
-            description: Limit the number of samples returned.
-        produces:
-          - application/json
-        responses:
-            200:
-              description: A capture object
-              schema:
-                $ref: '#/definitions/Capture'
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            404:
-              description: Box with serial not found.
-              schema: {}
         """
         parsedargs = Captures.parse_body_args(request.args.to_dict(),
                                               requiredlist=['serial'],
@@ -108,38 +54,6 @@ class Captures(MultipleResource):
     def post(self, userobj=None):
         """
         Create a capture
-        ---
-        summary: create a capture
-        tags:
-          - Open
-        operationId: CapturesPost
-        produces:
-          - application/json
-        parameters:
-          - name: body
-            in: body
-            required: true
-            description: 'Capture creation fields'
-            schema:
-              $ref: '#/definitions/EncodedCapture'
-        responses:
-            200:
-              description: A capture object
-              schema:
-                $ref: '#/definitions/Capture'
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            401:
-              description: Not authorised. HMAC does not correspond to input data.
-              schema: {}
-            404:
-              description: Box not found
-              schema: {}
-            409:
-              description: Conflict. A capture with this HMAC already exists. Dead battery or replay attack.
-              schema: {}
         """
         current_app.logger.info("test")
         parsedargs = Captures.parse_body_args(request.get_json(),
@@ -171,39 +85,6 @@ class MeCaptures(Captures):
     def get(self, usertoken):
         """
         Get a list of captures taken by the current user ordered by most recent first.
-        ---
-        summary: Get a list of captures by a user.
-        tags:
-            - Access Token Required
-        security:
-            - Bearer: []
-        operationId: MeCapturesGet
-        parameters:
-          - name: distinctOnBox
-            in: query
-            required: false
-            type: boolean
-            description: Return only the latest capture for each scanned box.
-        produces:
-          - application/json
-        responses:
-            200:
-              description: A list of capture objects ordered from newest to oldest
-              schema:
-                type: array
-                items: {
-                   $ref: '#/definitions/Capture'
-                }
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            401:
-              description: Not authorised. HMAC does not correspond to input data or invalid JWT.
-              schema: {}
-            404:
-              description: Box not found.
-              schema: {}
         """
         decodedtoken = usertoken['decoded']
         oauth_id = decodedtoken['sub']
@@ -223,43 +104,6 @@ class MeCaptures(Captures):
     def post(self, usertoken):
         """
         Create a capture for a user
-        ---
-        summary: create a capture
-        tags:
-            - Access Token Required
-        security:
-            - Bearer: []
-        operationId: MeCapturesPost
-        produces:
-          - application/json
-        parameters:
-          - name: body
-            in: body
-            required: true
-            description: 'Capture creation fields'
-            schema:
-              $ref: '#/definitions/EncodedCapture'
-        responses:
-            200:
-              description: A capture object
-              schema:
-                $ref: '#/definitions/Capture'
-              headers: {}
-            400:
-              description: Invalid input, object invalid
-              schema: {}
-            401:
-              description: Not authorised. HMAC does not correspond to input data.
-              schema: {}
-            403:
-              description: Not authorised. Invalid JWT.
-              schema: {}
-            404:
-              description: Parent box or user not found.
-              schema: {}
-            409:
-              description: Conflict. A capture with this HMAC already exists. Dead battery or replay attack.
-              schema: {}
         """
         decodedtoken = usertoken['decoded']
         oauth_id = decodedtoken['sub']

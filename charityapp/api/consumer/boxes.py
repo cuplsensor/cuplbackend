@@ -26,30 +26,6 @@ class Box(SingleResource):
     def get(self, serial):
         """
         Get a box by its serial.
-        ---
-        summary: get a box
-        tags:
-          - Open
-        operationId: BoxGet
-        produces:
-          - application/json
-        parameters:
-          - name: serial
-            in: query
-            required: false
-            type: string
-            description: Box serial
-        responses:
-            200:
-              description: A box object
-              schema:
-                $ref: '#/definitions/Box'
-              headers: {}
-            400:
-              description: Bad input parameter.
-              schema: {}
-            404:
-              description: Box not found.
         """
         boxobj = boxes.get_by_serial(serial)
 
@@ -67,32 +43,6 @@ class HasScannedBox(SingleUserResource):
     def get(self, usertoken, serial):
         """
         Has a box with a given serial been scanned by the current user?
-        ---
-        summary: get a box
-        tags:
-          - Access Token Required
-        operationId: HasScannedBox
-        produces:
-          - application/json
-        security:
-          - Bearer: []
-        parameters:
-          - name: serial
-            in: query
-            required: true
-            type: string
-            description: Box serial
-        responses:
-            200:
-              description: True if the box has a capture taken by the current user.
-              type: boolean
-              headers: {}
-            400:
-              description: Bad input parameter
-              schema: {}
-            404:
-              description: Box or user not found.
-              schema: {}
         """
         decodedtoken = usertoken['decoded']
         oauth_id = decodedtoken['sub']

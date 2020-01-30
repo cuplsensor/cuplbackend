@@ -18,8 +18,6 @@ import traceback
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
-baseurl = os.environ["BASE_URL"]
-
 bp = Blueprint('users', __name__)
 api = Api(bp)
 
@@ -31,26 +29,6 @@ class Me(SingleUserResource):
     def get(self, usertoken):
         """
         Get current user from the Auth0 access token.
-        ---
-        summary: get a user
-        tags:
-            - Access Token Required
-        security:
-            - Bearer: []
-        operationId: UserGet
-        produces:
-            - application/json
-        type: string
-        description: Auth0 ID of the user.
-        responses:
-            200:
-              description: A user object
-              schema:
-                $ref: '#/definitions/User'
-              headers: {}
-            403:
-              description: invalid JWT
-              schema: {}
         """
 
         # oauth_id is in the sub claim of the decoded token
@@ -74,25 +52,6 @@ class Me(SingleUserResource):
     def delete(self, usertoken):
         """
         Delete current user.
-        ---
-        summary: Delete a user.
-        tags:
-            - Access Token Required
-        security:
-            - Bearer: []
-        operationId: BoxDelete
-        produces:
-          - application/json
-        responses:
-            204:
-              description: User deleted
-              schema: {}
-            400:
-              description: Bad input parameter
-              schema: {}
-            404:
-              description: User not found
-              schema: {}
         """
         decodedtoken = usertoken['decoded']
         oauth_id = decodedtoken['sub']
@@ -115,28 +74,6 @@ class Users(MultipleUserResource):
     def post(self, usertoken):
         """
         Create a new user from the Auth0 access token.
-        ---
-        summary: create a user
-        tags:
-            - Access Token Required
-        security:
-            - Bearer: []
-        operationId: UserPost
-        produces:
-            - application/json
-        responses:
-            201:
-              description: User created
-              headers: {}
-            400:
-              description: Invalid input, object invalid
-              schema: {}
-            403:
-              description: Invalid JWT
-              schema: {}
-            409:
-              description: Conflict. User already exists.
-              schema: {}
         """
 
         userinfo = get_userinfo(access_token=usertoken['token'])

@@ -28,35 +28,6 @@ class BoxView(SingleUserResource):
     def get(self, usertoken, id):
         """
         Get a boxview for the current user
-        ---
-        summary: get a user
-        tags:
-            - Access Token Required
-        security:
-            - Bearer: []
-        operationId: BoxViewGet
-        parameters:
-          - name: id
-            in: query
-            required: false
-            type: integer
-            description: Box view ID
-        produces:
-            - application/json
-        type: string
-        description: Auth0 ID of the user.
-        responses:
-            200:
-              description: A boxview object
-              schema:
-                $ref: '#/definitions/BoxView'
-              headers: {}
-            403:
-              description: Invalid JWT
-              schema: {}
-            404:
-              description: BoxView not found.
-              schema: {}
         """
         # oauth_id is in the sub claim of the decoded token
         decodedtoken = usertoken['decoded']
@@ -73,25 +44,6 @@ class BoxView(SingleUserResource):
     def delete(self, usertoken, id):
         """
         Delete box view from the current user.
-        ---
-        summary: Delete box view
-        tags:
-            - Access Token Required
-        security:
-            - Bearer: []
-        operationId: BoxViewDelete
-        produces:
-          - application/json
-        responses:
-            204:
-              description: BoxView deleted
-              schema: {}
-            400:
-              description: Bad input.
-              schema: {}
-            404:
-              description: BoxView not found
-              schema: {}
         """
         boxviewobj = self.service.first_or_404(id=boxviewid)
         self.service.delete(boxviewobj)
@@ -106,35 +58,6 @@ class BoxViews(MultipleUserResource):
     def get(self, usertoken):
         """
         Get a list of BoxViews for the current user.
-        ---
-        summary: get a user
-        tags:
-            - Access Token Required
-        security:
-            - Bearer: []
-        operationId: BoxViewsGet
-        parameters:
-          - name: distinctOnBox
-            in: query
-            required: false
-            type: boolean
-            description: Return only the latest BoxView for each scanned box.
-        produces:
-            - application/json
-        type: string
-        description: Auth0 ID of the user.
-        responses:
-            200:
-              description: A list of boxview objects ordered from newest to oldest.
-              schema:
-                type: array
-                items: {
-                   $ref: '#/definitions/BoxView'
-                }
-              headers: {}
-            403:
-              description: Invalid JWT
-              schema: {}
         """
         distinctonbox = loads(request.args.get('distinctonbox') or 'false')
 
@@ -155,38 +78,6 @@ class BoxViews(MultipleUserResource):
     def post(self, usertoken):
         """
         Post a box view
-        ---
-        summary: create a user
-        tags:
-            - Access Token Required
-        security:
-            - Bearer: []
-        parameters:
-          - name: body
-            in: body
-            required: true
-            description: 'Box view object'
-            schema:
-                $ref: '#/definitions/BoxView'
-
-        operationId: BoxViewsPost
-        produces:
-            - application/json
-        responses:
-            201:
-              description: BoxView created
-              schema:
-                $ref: '#/definitions/BoxView'
-              headers: {}
-            400:
-              description: Invalid input, object invalid
-              schema: {}
-            403:
-              description: Invalid JWT
-              schema: {}
-            404:
-              description: Parent resource not found.
-              schema: {}
         """
         decodedtoken = usertoken['decoded']
         oauth_id = decodedtoken['sub']

@@ -60,62 +60,12 @@ class Location(SingleResource, ScanRequiredResource):
     def get(self, id):
         """
         Get a list of locations for a box ordered by most recent
-        ---
-        summary: get a list of locations for a box
-        tags:
-          - Open
-        operationId: LocationGet
-        produces:
-          - application/json
-        parameters:
-          - name: id
-            in: query
-            required: false
-            type: integer
-            description: Location ID
-        responses:
-            200:
-              description: A list of locations ordered from newest to oldest.
-              schema:
-                $ref: '#/definitions/Location'
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            404:
-              description: Location not found.
-              schema: {}
         """
         return super().get(modelid=id)
 
     def delete(self, usertoken, id):
         """
         Delete a location
-        ---
-        summary: Delete a user.
-        tags:
-            - Capture by User Required
-        security:
-            - Bearer: []
-        operationId: LocationDelete
-        produces:
-          - application/json
-        responses:
-            204:
-              description: Location deleted
-              schema: {}
-            400:
-              description: Bad input parameter
-              schema: {}
-            401:
-              description: Not authorised. The user has no scanned this box.
-              schema: {}
-            403:
-              description: Not authorised. Invalid JWT.
-              schema: {}
-            404:
-              description: Location not found.
-              schema: {}
         """
         location = self.service.get_or_404(id)
         capturesample = location.parent_capturesample
@@ -128,41 +78,6 @@ class Location(SingleResource, ScanRequiredResource):
     def patch(self, usertoken, id):
         """
         Edit location information for a box
-        ---
-        summary: create a capture
-        tags:
-            - Capture by User Required
-        security:
-            - Bearer: []
-        operationId: LocationPut
-        produces:
-          - application/json
-        parameters:
-          - name: body
-            in: body
-            required: true
-            description: 'Location fields'
-            schema:
-              type: string
-              description: 'description'
-        responses:
-            200:
-              description: A capture object
-              schema:
-                $ref: '#/definitions/Location'
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            401:
-              description: Not authorised. The user has no scanned this box.
-              schema: {}
-            403:
-              description: Not authorised. Invalid JWT.
-              schema: {}
-            404:
-              description: Parent resource not found.
-              schema: {}
         """
         location = self.service.get_or_404(id)
         capturesample = location.parent_capturesample
@@ -192,40 +107,6 @@ class Locations(MultipleResource, ScanRequiredResource):
     def post(self, usertoken):
         """
         Add location information to a box
-        ---
-        summary: create a capture
-        tags:
-            - Capture by User Required
-        security:
-            - Bearer: []
-        operationId: LocationPost
-        produces:
-          - application/json
-        parameters:
-          - name: body
-            in: body
-            required: true
-            description: 'Location fields'
-            schema:
-              $ref: '#/definitions/Location'
-        responses:
-            200:
-              description: A capture object
-              schema:
-                $ref: '#/definitions/Location'
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            401:
-              description: Not authorised. The user has no scanned this box.
-              schema: {}
-            403:
-              description: Not authorised. Invalid JWT.
-              schema: {}
-            404:
-              description: Parent resource not found.
-              schema: {}
         """
 
         # Obtain capture sample id from the body
@@ -257,46 +138,6 @@ class Locations(MultipleResource, ScanRequiredResource):
     def get(self):
         """
         Get a list of locations for a box ordered by most recent
-        ---
-        summary: get a list of locations for a box
-        tags:
-          - Open
-        operationId: LocationGetList
-        produces:
-          - application/json
-        parameters:
-          - name: serial
-            in: query
-            required: true
-            type: string
-            description: Box serial
-          - name: starttime
-            in: query
-            required: false
-            type: string
-            format: datetime
-            description: start timestamp as an ISO-8601 string.
-          - name: endtime
-            in: query
-            required: false
-            type: string
-            format: datetime
-            description: end timestamp as an ISO-8601 string.
-        responses:
-            200:
-              description: A list of locations ordered from newest to oldest.
-              schema:
-                type: array
-                items: {
-                   $ref: '#/definitions/Location'
-                }
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            404:
-              description: Location not found.
-              schema: {}
         """
         boxserial = request.args.get('boxserial')
         starttimestr = request.args.get('starttime')

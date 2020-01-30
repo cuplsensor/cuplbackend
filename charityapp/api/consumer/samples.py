@@ -26,36 +26,6 @@ class CaptureSamples(MultipleResource):
     def get(self, id):
         """
         Get samples for a capture.
-        ---
-        summary: get unique samples
-        tags:
-          - Open
-        operationId: SamplesGet
-        parameters:
-          - name: offset
-            in: query
-            required: false
-            type: integer
-            description: Return samples starting from this index.
-          - name: limit
-            in: query
-            required: false
-            type: integer
-            description: Limit the number of samples returned.
-        produces:
-          - application/json
-        responses:
-            200:
-              description: A list of sample objects
-              schema:
-                type: array
-                items: {
-                   $ref: '#/definitions/CaptureSample'
-                }
-              headers: {}
-            400:
-              description: bad input parameter
-              schema: {}
         """
         capt = captures.get_or_404(id)
         parsedargs = CaptureSamples.parse_body_args(request.args.to_dict(),
@@ -80,53 +50,6 @@ class Samples(BaseResource):
     def get(self):
         """
         Get unique samples for a box in a given time range
-        ---
-        summary: get unique samples
-        tags:
-          - Open
-        operationId: UniqueSamplesGet
-        produces:
-          - application/json
-        parameters:
-          - name: serial
-            in: query
-            required: true
-            type: string
-            description: Box serial
-          - name: starttime
-            in: query
-            required: true
-            type: string
-            format: datetime
-            description: start timestamp as an ISO-8601 string.
-          - name: endtime
-            in: query
-            required: true
-            type: string
-            format: datetime
-            description: end timestamp as an ISO-8601 string.
-          - name: offset
-            in: query
-            required: false
-            type: integer
-            description: Return samples starting from this index.
-          - name: limit
-            in: query
-            required: false
-            type: integer
-            description: Limit the number of samples returned.
-        responses:
-            200:
-              description: A list of samples from newest to oldest
-              schema:
-                type: array
-                items: {
-                   $ref: '#/definitions/CaptureSample'
-                }
-              headers: {}
-            400:
-              description: bad input parameter
-              schema: {}
         """
         parsedargs = Samples.parse_body_args(request.args.to_dict(),
                                              requiredlist=['serial', 'starttimestr', 'endtimestr'],
