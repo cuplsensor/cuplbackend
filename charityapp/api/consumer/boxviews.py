@@ -17,9 +17,6 @@ import traceback
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
-baseurl = os.environ["BASE_URL"]
-auth0url = os.environ["AUTH0_URL"]
-
 bp = Blueprint('boxviews', __name__)
 api = Api(bp)
 
