@@ -1,3 +1,5 @@
+.. sectnum::
+
 Authorization
 =======================
 
@@ -32,9 +34,55 @@ in a secure and GDPR compliant way.
 
 Production
 -------------
-In a production environment, the identity provider is `Auth0.com <https://auth0.com>`_. However, other
-OIDC providers can be used. Auth0 acts as an intermediary. It allows users to authenticate with a large
+In a production environment, the identity provider is `Auth0.com <https://auth0.com>`_. Other
+OIDC providers can be used. Auth0.com acts as an intermediary. It allows users to authenticate with a large
 number of OAuth2 providers such as Google, GitHub and Facebook.
+
+Obtain an API Access Token
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+wsfrontend obtains an access token fom the identify provider using the `Authorization Code Grant Flow <https://auth0.com/docs/api-auth/tutorials/authorization-code-grant>`_.
+
+User Clicks the Sign In Button
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+wsfrontend directs user to the ``/authorize`` endpoint on Auth0.com::
+
+
+    callbackurl = url_for('dashboard.callback', _external=True)
+    authorizeurl = "{AUTH0_URL}/authorize?" \
+                   "response_type=code&" \
+                   "client_id={AUTH0_CLIENTID}&" \
+                   "redirect_uri={callbackurl}&" \
+                   "scope=openid%20profile&" \
+                   "audience={API_AUDIENCE}")
+    return redirect(authorizeurl)
+
+
+
+Audience Claim
+******************
+This is set to the environment variable ``API_AUDIENCE``.
+The value of this string is not important, but it must coincide with that of ``API_AUDIENCE`` in wsbackend.
+It should also be the name of an API registered on Auth0.com.
+
+.. image:: auth0_api_page.png
+   :width: 400
+   :alt: Screenshot of Auth0 API page showing API Audience
+
+
+
+Protected API Resource Called
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+wsfrontend calls protected wsbackend endpoints with the access token. It does this by adding an Authorization header to each HTTP request, with a value of Bearer,
+followed by the access token.
+
+Access Token Validated
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+wsbackend checks the signature of the access token by downloading the JWKs public key set.
+
+#. Protected Resource Content are Served
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If validation succeeeds, wsbackend transmits a 200 response to the wsfrontend. If not,
+the response will normally be 403 forbidden.
 
 Testing
 --------
