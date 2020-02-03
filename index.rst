@@ -11,7 +11,7 @@ websensor Web App Backend
    docs/authentication
    :caption: Contents:
 
-See also :ref:`wscodec <wscodec:genindex>` and :ref:`wsbackend <wsbackend:genindex>`.
+See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`.
 
 Indices and tables
 ==================
