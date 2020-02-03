@@ -1,5 +1,6 @@
 websensor Web App Backend
 ==================================
+See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`.
 
 .. _index:
 .. toctree::
@@ -11,7 +12,7 @@ websensor Web App Backend
    docs/authentication
    :caption: Contents:
 
-See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`.
+
 
 Indices and tables
 ==================
