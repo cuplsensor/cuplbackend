@@ -1,7 +1,6 @@
-websensor Web Application Backend
+websensor Web App Backend
 ==================================
 
-See also
 .. _index:
 .. toctree::
    :maxdepth: 2
@@ -11,6 +10,8 @@ See also
    docs/installation
    docs/authentication
    :caption: Contents:
+
+See also `wscodec <wscodec>`_ and `wsbackend <wsbackend>`_.
 
 Indices and tables
 ==================
