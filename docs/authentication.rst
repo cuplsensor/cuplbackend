@@ -42,7 +42,7 @@ number of OAuth2 providers such as Google, GitHub and Facebook.
 
 Obtain an API Access Token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-wsfrontend :ref:`obtains <wsfrontend:Authorization>` an access token fom the identify provider using the `Authorization Code Grant Flow <https://auth0.com/docs/api-auth/tutorials/authorization-code-grant>`_.
+wsfrontend :ref:`obtains <wsfrontend:Authorization-Grant-Flow>` an access token fom the identify provider using the `Authorization Code Grant Flow <https://auth0.com/docs/api-auth/tutorials/authorization-code-grant>`_.
 
 Protected API Resource Called
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
