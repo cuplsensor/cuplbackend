@@ -1,14 +1,14 @@
-Welcome to PSWebApp's documentation!
-====================================
+websensor Web Application Backend
+==================================
 
+See also
 .. _index:
 .. toctree::
    :maxdepth: 2
 
-   docs/specification/index
    docs/userapi/index
    docs/test
-   docs/howto
+   docs/installation
    docs/authentication
    :caption: Contents:
 

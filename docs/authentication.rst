@@ -127,15 +127,15 @@ The access token signature is generated asymetrically (RS-256).
 A private key (on Auth0.com) generates the signature. A public key
 (hosted by Auth0.com) is used for validation.
 
-wsbackend downloads the public key (JWKs) from Auth0.com::
+wsbackend downloads the ``public_key`` (JWKs) from Auth0.com::
 
     GET {AUTH0_URL}/.well-known/jwks.json
 
-The response is set to ``key``. Signature verification and decoding is performed using the `PyJWT <https://pyjwt.readthedocs.io/en/latest/>`_ libarary::
+Signature verification and decoding are performed using `PyJWT <https://pyjwt.readthedocs.io/en/latest/>`_::
 
     decoded = jwt.decode(
                 token,
-                ``key``,
+                public_key,
                 algorithms=self.algorithms,
                 audience={API_AUDIENCE},
                 issuer={AUTH0_URL}
