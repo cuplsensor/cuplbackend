@@ -127,21 +127,21 @@ The access token signature is generated asymetrically (RS-256).
 A private key (on Auth0.com) generates the signature. A public key
 (hosted by Auth0.com) is used for validation.
 
-wsbackend downloads the public key (JWKs) from Auth0.com:
+wsbackend downloads the public key (JWKs) from Auth0.com::
 
     GET {AUTH0_URL}/.well-known/jwks.json
 
-The response is set to ``key``. It is then possible to decode the JWT using PyJWT:
+The response is set to ``key``. Signature verification and decoding is performed using the `PyJWT <https://pyjwt.readthedocs.io/en/latest/>`_ libarary::
 
     decoded = jwt.decode(
                 token,
                 ``key``,
                 algorithms=self.algorithms,
                 audience={API_AUDIENCE},
-                issuer=self.issuer
+                issuer={AUTH0_URL}
                 )
 
-An exception is raised if signature validation fails. The token is rejected, authorization fails and the API
+An exception is raised if validation fails. The token is rejected, authorization fails and the API
 responds with an error ``403: Forbidden``.
 
 Protected Resource Content are Served
