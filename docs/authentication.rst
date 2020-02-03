@@ -115,20 +115,38 @@ Authorization Code is Exchanged for an Access Token
     }
 
 
-
 Protected API Resource Called
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-wsfrontend calls protected wsbackend endpoints with the access token. It does this by adding an Authorization header to each HTTP request, with a value of Bearer,
-followed by the access token.
+wsfrontend calls wsbackend endpoints with the access token::
+
+    curl -X GET "https://websensor.io/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
 
 Access Token Validated
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-wsbackend checks the signature of the access token by downloading the JWKs public key set.
+The access token signature is generated asymetrically (RS-256).
+A private key (on Auth0.com) generates the signature. A public key
+(hosted by Auth0.com) is used for validation.
+
+wsbackend downloads the public key (JWKs) from Auth0.com:
+
+    GET {AUTH0_URL}/.well-known/jwks.json
+
+The response is set to ``key``. It is then possible to decode the JWT using PyJWT:
+
+    decoded = jwt.decode(
+                token,
+                ``key``,
+                algorithms=self.algorithms,
+                audience={API_AUDIENCE},
+                issuer=self.issuer
+                )
+
+An exception is raised if signature validation fails. The token is rejected, authorization fails and the API
+responds with an error ``403: Forbidden``.
 
 Protected Resource Content are Served
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-If validation succeeeds, wsbackend transmits a 200 response to the wsfrontend. If not,
-the response will normally be 403 forbidden.
+If validation succeeeds, wsbackend transmits a ``200 OK`` response to the wsfrontend, along with the requested resource data.
 
 Testing
 --------
