@@ -46,9 +46,11 @@ wsfrontend :ref:`obtains <wsfrontend:authorization>` an access token fom the ide
 
 Protected API Resource Called
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-wsfrontend calls wsbackend endpoints with the access token::
+wsfrontend calls wsbackend endpoints with the access token:
 
-    curl -X GET "https://websensor.io/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
+.. parsed-literal::
+
+    curl -X GET "{`BASE_URL <base_url_>`}/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
 
 Access Token Validated
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -70,12 +72,12 @@ Signature verification and decoding are performed using `PyJWT <https://pyjwt.re
                 issuer={AUTH0_URL}
                 )
 
-An exception is raised if validation fails. The token is rejected, authorization fails and the API
+If validation fails, an exception is raised. The token is rejected and the API
 responds with an error ``403: Forbidden``.
 
 Protected Resource Content are Served
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-If validation succeeeds, wsbackend transmits a ``200 OK`` response to the wsfrontend, along with the requested resource data.
+If validation succeeds, wsbackend transmits a ``200 OK`` response to the wsfrontend, along with the requested resource data.
 
 Testing
 --------

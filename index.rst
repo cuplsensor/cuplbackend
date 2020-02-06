@@ -10,6 +10,7 @@ See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`
    docs/test
    docs/installation
    docs/authentication
+   docs/environmentvariables
    :caption: Contents:
 
 
