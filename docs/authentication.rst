@@ -46,11 +46,11 @@ wsfrontend :ref:`obtains <wsfrontend:authorization>` an access token fom the ide
 
 Protected API Resource Called
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-wsfrontend calls wsbackend endpoints with the access token `BASE_URL <baseurl>`_:
+wsfrontend calls wsbackend endpoints with the access token:
 
 .. parsed-literal::
 
-    curl -X GET "{`BASE_URL <baseurl>`_}/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
+    curl -X GET "{:ref:`BASE_URL <baseurl>`}/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
 
 Access Token Validated
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
