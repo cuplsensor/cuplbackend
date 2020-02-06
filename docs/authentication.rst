@@ -46,7 +46,7 @@ wsfrontend :ref:`obtains <wsfrontend:authorization>` an access token fom the ide
 
 Protected API Resource Called
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-wsfrontend calls wsbackend endpoints with the access token:
+wsfrontend calls wsbackend endpoints with the access token `BASE_URL <base_url>`_:
 
 .. parsed-literal::
 
