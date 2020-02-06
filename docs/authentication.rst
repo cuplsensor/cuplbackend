@@ -50,7 +50,7 @@ wsfrontend calls wsbackend endpoints with the access token:
 
 .. parsed-literal::
 
-    curl -X GET "{`BASE_URL <base_url_>`}/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
+    curl -X GET "{<base_url_>}/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
 
 Access Token Validated
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -82,5 +82,19 @@ If validation succeeds, wsbackend transmits a ``200 OK`` response to the wsfront
 Testing
 --------
 For test, the OIDC provider is substituted with a mock https://www.npmjs.com/package/oauth2-mock-server
-Access tokens are obtained from this using the client-creditials OAuth2 flow. Userinfo can also be mocked up.
-Access tokens are verified by downloading the JSON Web Key set from the mock OIDC provider.
+
+Obtain an API Access Token
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Access tokens are obtained from this using the client-creditials OAuth2 flow.
+
+Test Scripts Call Protected API Resources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+wsbackend endpoints are called with the access token in the HTTP header.
+
+Access Token Validated
+^^^^^^^^^^^^^^^^^^^^^^^^
+wsbackend downloads the ``public_key`` (JWKs) the mock provider::
+
+    GET {AUTH0_URL}/jwks
+
+Userinfo can also be mocked up.

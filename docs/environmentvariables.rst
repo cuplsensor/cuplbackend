@@ -17,3 +17,8 @@ Default: ``http://127.0.0.1:3000``
 ``API_AUDIENCE``
 -----------------
 Default: ``test_api_audience``
+
+.. _jwks_endpoint:
+``JWKS_ENDPOINT``
+------------------
+Default: ``/jwks``
