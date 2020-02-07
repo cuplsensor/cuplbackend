@@ -1,3 +1,11 @@
+.. raw:: html
+
+    <style> .red {color:red} </style>
+    <style> .orange {color:orange} </style>
+
+.. role:: red
+.. role:: orange
+
 .. sectnum::
 
 Authorization
@@ -44,7 +52,7 @@ Obtain an API Access Token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 wsfrontend :ref:`obtains <wsfrontend:authorization>` an access token fom the identify provider using the `Authorization Code Grant Flow <https://auth0.com/docs/api-auth/tutorials/authorization-code-grant>`_.
 
-Protected API Resource Called
+Protected API Resource is Called
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 wsfrontend calls wsbackend endpoints with the access token:
 
@@ -52,15 +60,23 @@ wsfrontend calls wsbackend endpoints with the access token:
 
     curl -X GET "{:ref:`BASE_URL <baseurl>`}/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
 
-Access Token Validated
+Access Token is Validated
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The access token signature is generated asymetrically (RS-256).
 A private key (on Auth0.com) generates the signature. A public key
 (hosted by Auth0.com) is used for validation.
 
-wsbackend downloads the ``public_key`` (JWKs) from Auth0.com::
+wsbackend downloads the ``public_key`` (JWKs) from Auth0.com:
 
-    GET {AUTH0_URL}/.well-known/jwks.json
+.. parsed-literal::
+
+    GET {:red:`AUTH0_URL`}{:orange:`JWKS_ENDPOINT`}
+
+This becomes:
+
+.. parsed-literal::
+
+    GET :red:`https://plotsensor.eu.auth0.com`:orange:`/.well-known/jwks.json`
 
 Signature verification and decoding are performed using `PyJWT <https://pyjwt.readthedocs.io/en/latest/>`_::
 
@@ -93,8 +109,16 @@ wsbackend endpoints are called with the access token in the HTTP header.
 
 Access Token Validated
 ^^^^^^^^^^^^^^^^^^^^^^^^
-wsbackend downloads the ``public_key`` (JWKs) the mock provider::
+wsbackend downloads the ``public_key`` (JWKs) from the mock provider on port 3000:
 
-    GET {AUTH0_URL}/jwks
+.. parsed-literal::
+
+    GET {:red:`AUTH0_URL`}{:orange:`JWKS_ENDPOINT`}
+
+This becomes:
+
+.. parsed-literal::
+
+    GET :red:`http://127.0.0.1:3000`:orange:`/jwks`
 
 Userinfo can also be mocked up.
