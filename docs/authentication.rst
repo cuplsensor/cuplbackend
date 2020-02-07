@@ -85,7 +85,8 @@ If validation succeeds, wsbackend transmits a ``200 OK`` response to the wsfront
 
 Testing
 --------
-For test, the OIDC provider is substituted with a mock https://www.npmjs.com/package/oauth2-mock-server
+For test, the OIDC provider is substituted with a mock https://www.npmjs.com/package/oauth2-mock-server. The test workflow
+sets this up first on ``http://127.0.0.1:3000``.
 
 Obtain an API Access Token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -97,7 +98,7 @@ wsbackend endpoints are called with the access token in the HTTP header.
 
 Access Token Validated
 ^^^^^^^^^^^^^^^^^^^^^^^^
-wsbackend downloads the ``public_key`` (JWKs) from the mock provider on port 3000:
+wsbackend downloads a ``public_key`` from the mock provider `JWKs endpoint <https://www.npmjs.com/package/oauth2-mock-server#get-jwks>`_. from the mock provider on port 3000:
 
 .. parsed-literal::
 
