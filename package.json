@@ -1,0 +1,10 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "description": "A test project",
+  "main": "app.js",
+  "private": false,
+  "dependencies": {
+    "oauth2-mock-server" : "^1.1.0"
+  },
+}
