@@ -5,6 +5,6 @@
   "main": "app.js",
   "private": false,
   "dependencies": {
-    "oauth2-mock-server" : "^1.1.0"
+    "oauth2-mock-server"
   },
 }
