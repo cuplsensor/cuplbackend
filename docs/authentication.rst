@@ -1,11 +1,3 @@
-.. raw:: html
-
-    <style> .red {color:red} </style>
-    <style> .orange {color:orange} </style>
-
-.. role:: red
-.. role:: orange
-
 .. sectnum::
 
 Authorization
@@ -70,13 +62,9 @@ wsbackend downloads the ``public_key`` (JWKs) from Auth0.com:
 
 .. parsed-literal::
 
-    GET {:red:`AUTH0_URL`}{:orange:`JWKS_ENDPOINT`}
+    GET {:ref:`AUTH0_URL <auth0url>`}{:ref:`JWKS_ENDPOINT <jwksendpoint>`}
 
-This becomes:
-
-.. parsed-literal::
-
-    GET :red:`https://plotsensor.eu.auth0.com`:orange:`/.well-known/jwks.json`
+    GET https://plotsensor.eu.auth0.com/.well-known/jwks.json
 
 Signature verification and decoding are performed using `PyJWT <https://pyjwt.readthedocs.io/en/latest/>`_::
 
@@ -113,12 +101,8 @@ wsbackend downloads the ``public_key`` (JWKs) from the mock provider on port 300
 
 .. parsed-literal::
 
-    GET {:red:`AUTH0_URL`}{:orange:`JWKS_ENDPOINT`}
+    GET {:ref:`AUTH0_URL <auth0url>`}{:ref:`JWKS_ENDPOINT <jwksendpoint>`}
 
-This becomes:
-
-.. parsed-literal::
-
-    GET :red:`http://127.0.0.1:3000`:orange:`/jwks`
+    GET http://127.0.0.1:3000/jwks
 
 Userinfo can also be mocked up.
