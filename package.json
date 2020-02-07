@@ -6,5 +6,5 @@
   "private": false,
   "dependencies": {
     "oauth2-mock-server"
-  },
+  }
 }
