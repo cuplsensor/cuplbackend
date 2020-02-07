@@ -62,9 +62,7 @@ wsbackend downloads the ``public_key`` (JWKs) from Auth0.com:
 
 .. parsed-literal::
 
-    GET {:ref:`AUTH0_URL <auth0url>`}{:ref:`JWKS_ENDPOINT <jwksendpoint>`}
-    e.g.
-    GET https://plotsensor.eu.auth0.com/.well-known/jwks.json
+    GET {:ref:`AUTH0_URL <auth0url>`}{:ref:`JWKS_ENDPOINT <jwksendpoint>`} => GET https://plotsensor.eu.auth0.com/.well-known/jwks.json
 
 Signature verification and decoding are performed using `PyJWT <https://pyjwt.readthedocs.io/en/latest/>`_::
 
@@ -102,8 +100,6 @@ wsbackend downloads a ``public_key`` from the mock provider `JWKs endpoint <http
 
 .. parsed-literal::
 
-    GET {:ref:`AUTH0_URL <auth0url>`}{:ref:`JWKS_ENDPOINT <jwksendpoint>`}
-    e.g.
-    GET http://127.0.0.1:3000/jwks
+    GET {:ref:`AUTH0_URL <auth0url>`}{:ref:`JWKS_ENDPOINT <jwksendpoint>`} => GET http://127.0.0.1:3000/jwks
 
 Userinfo can also be mocked up.
