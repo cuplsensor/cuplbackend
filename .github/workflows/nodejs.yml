@@ -18,7 +18,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install oauth2-mock-server
-    - run: npm run app.js
+    - run: npm run 
     - run: npm test
       env:
         CI: true
