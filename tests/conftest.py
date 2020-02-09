@@ -5,6 +5,7 @@ import sys
 import pytz
 import datetime
 import yaml
+import requests
 
 from .helpers.capturehelper import CaptureListHelper
 from web.charityapp.apiwrapper.admin.box import BoxWrapper
@@ -28,7 +29,12 @@ def token_fixture():
             print(exc)
 
     user_token = includes_yaml['variables']['user_token']
-    return user_token
+
+    payload = {'grant_type': 'authorization_code'}
+    r = requests.post('http://localhost:3000/token', data=payload)
+    unverified_token = r.json().get('access_token')
+
+    return unverified_token
 
 def pytest_runtest_setup(item):
     """ called before ``pytest_runtest_call(item). """
