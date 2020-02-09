@@ -1,6 +1,6 @@
 import os
 import requests
-from web.charityapp.apiwrapper import ApiWrapper
+from .. import ApiWrapper
 
 
 class AdminApiWrapper(ApiWrapper):

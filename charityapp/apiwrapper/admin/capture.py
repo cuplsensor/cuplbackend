@@ -1,5 +1,5 @@
 import requests
-from web.charityapp.apiwrapper.admin import AdminApiWrapper
+from ..admin import AdminApiWrapper
 import json
 
 

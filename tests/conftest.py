@@ -8,13 +8,13 @@ import yaml
 import requests
 
 from .helpers.capturehelper import CaptureListHelper
-from web.charityapp.apiwrapper.admin.box import BoxWrapper
-from web.charityapp.apiwrapper.consumer.user import UserWrapper
-from web.charityapp.apiwrapper.consumer.mecapture import MeCaptureWrapper
-from web.charityapp.apiwrapper.consumer.boxview import BoxViewWrapper
-from web.charityapp.apiwrapper.consumer.boxscanned import BoxScannedWrapper
-from web.charityapp.apiwrapper.consumer.location import LocationWrapper
-from web.charityapp.apiwrapper.consumer.sample import SampleWrapper
+from wsbackend.charityapp.apiwrapper.admin.box import BoxWrapper
+from wsbackend.charityapp.apiwrapper.consumer.user import UserWrapper
+from wsbackend.charityapp.apiwrapper.consumer.mecapture import MeCaptureWrapper
+from wsbackend.charityapp.apiwrapper.consumer.boxview import BoxViewWrapper
+from wsbackend.charityapp.apiwrapper.consumer.boxscanned import BoxScannedWrapper
+from wsbackend.charityapp.apiwrapper.consumer.location import LocationWrapper
+from wsbackend.charityapp.apiwrapper.consumer.sample import SampleWrapper
 
 sys.path.append(".")
 
