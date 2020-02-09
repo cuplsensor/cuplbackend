@@ -1,6 +1,6 @@
 alembic
 cryptography>=1.0.1
-dotenv
+python-dotenv
 Flask>=0.10.1
 Flask-Login>=0.2.11
 Flask-JWT>=0.3.2
