@@ -6,7 +6,7 @@ This tutorial assumes you have Git and Python 3 installed.
 
 Install Prerequisites
 -----------------------
-One of the dependencies (`Psycopg <https://www.psycopg.org/docs/install.html#install-from-source>`_)
+One of the dependencies (Postgres library `Psycopg2 <https://www.psycopg.org/docs/install.html#install-from-source>`_)
 should be built from source.
 
 GCC Compiler
@@ -27,7 +27,7 @@ To install the Python 3 header files type::
 
 Libpq-dev
 ^^^^^^^^^^
-To install libbq-dev type::
+This To install libbq-dev type::
 
     $ sudo apt-get install libpq-dev
 
