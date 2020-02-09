@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -23,6 +23,7 @@ jobs:
     - run: forever start app.js
     - run: cd ../../
     - run: pip3 install -r requirements.txt
+    - run: apt-get install python3-setuptools
     - run: py.test
       env:
         CI: true
