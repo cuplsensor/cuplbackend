@@ -46,6 +46,6 @@ jobs:
     - name: Start tests
       run: |
         pip3 install pytest
-        pytest
+        python3 -m pytest
       env:
         CI: true
