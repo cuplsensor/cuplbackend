@@ -1,8 +1,6 @@
 from datetime import timedelta
 import pytz
-from web.charityapp.apiwrapper.admin.capture import CaptureWrapper
-import json
-import requests
+from wsbackend.charityapp.apiwrapper.admin.capture import CaptureWrapper
 
 tz = pytz.timezone("Europe/London")
 
