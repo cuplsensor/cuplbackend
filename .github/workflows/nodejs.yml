@@ -22,8 +22,8 @@ jobs:
     - run: npm install -g forever
     - run: forever start app.js
     - run: cd ../../
-    - run: pip3 install -r requirements.txt
     - run: apt-get install python3-setuptools
+    - run: pip3 install -r requirements.txt
     - run: py.test
       env:
         CI: true
