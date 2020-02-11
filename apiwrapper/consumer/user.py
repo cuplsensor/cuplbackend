@@ -24,19 +24,19 @@ class UserWrapper(ConsumerApiWrapper):
             ConsumerApiWrapper.process_status(status_code)
 
     def post(self):
-        usersurl = "{consumerapiurl}/users".format(consumerapiurl=self.consumerapiurl)
+        usersurl = "{apiurl}/users".format(apiurl=self.apiurl)
         r = requests.post(usersurl, headers=self.headers)
         response = r.json()
         UserWrapper.process_status(r.status_code)
         return response
 
     def delete(self):
-        meurl = "{consumerapiurl}/me".format(consumerapiurl=self.consumerapiurl)
+        meurl = "{apiurl}/me".format(apiurl=self.apiurl)
         r = requests.delete(meurl, headers=self.headers)
         UserWrapper.process_status(r.status_code)
 
     def get(self):
-        meurl = "{consumerapiurl}/me".format(consumerapiurl=self.consumerapiurl)
+        meurl = "{apiurl}/me".format(apiurl=self.apiurl)
         r = requests.get(meurl, headers=self.headers)
         UserWrapper.process_status(r.status_code)
         response = r.json()

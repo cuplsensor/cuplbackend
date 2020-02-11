@@ -3,11 +3,11 @@ from . import ConsumerApiWrapper
 
 
 class MeCaptureWrapper(ConsumerApiWrapper):
-    def __init__(self, tokenstr):
-        super().__init__(tokenstr)
+    def __init__(self, baseurl, tokenstr):
+        super().__init__(baseurl, tokenstr)
 
     def get(self, distinct=False):
-        capturesurl = "{consumerapiurl}/me/captures".format(consumerapiurl=self.consumerapiurl)
+        capturesurl = "{apiurl}/me/captures".format(apiurl=self.apiurl)
         queryparams = None
 
         if distinct is True:
@@ -19,7 +19,7 @@ class MeCaptureWrapper(ConsumerApiWrapper):
         return captresponse
 
     def post(self, circbufb64, serial, statusb64, timeintb64, versionStr):
-        capturesurl = "{consumerapiurl}/me/captures".format(consumerapiurl=self.consumerapiurl)
+        capturesurl = "{apiurl}/me/captures".format(apiurl=self.apiurl)
         payload = {'circbufb64': circbufb64,
                    'serial': serial,
                    'statusb64': statusb64,

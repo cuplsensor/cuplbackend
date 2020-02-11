@@ -16,9 +16,9 @@ class LocationWrapper(ConsumerApiWrapper):
         else:
             ConsumerApiWrapper.process_status(status_code)
 
-    def __init__(self, tokenstr):
-        super().__init__(tokenstr)
-        self.locationsurl = "{consumerapiurl}/locations".format(consumerapiurl=self.consumerapiurl)
+    def __init__(self, baseurl, tokenstr):
+        super().__init__(baseurl, tokenstr)
+        self.locationsurl = "{apiurl}/locations".format(apiurl=self.apiurl)
 
     def get(self, location_id):
         r = requests.get("{locationsurl}/{id}".format(locationsurl=self.locationsurl, id=location_id),

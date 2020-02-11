@@ -3,9 +3,9 @@ from . import ConsumerApiWrapper
 
 
 class BoxViewWrapper(ConsumerApiWrapper):
-    def __init__(self, tokenstr):
-        super().__init__(tokenstr)
-        self.boxviewsurl = "{consumerapiurl}/me/boxviews".format(consumerapiurl=self.consumerapiurl)
+    def __init__(self, baseurl, tokenstr):
+        super().__init__(baseurl, tokenstr)
+        self.boxviewsurl = "{apiurl}/me/boxviews".format(apiurl=self.apiurl)
 
     def get(self, distinct=False):
         queryparams = None

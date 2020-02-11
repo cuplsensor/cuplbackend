@@ -15,7 +15,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/admin/v1/boxes"
+      url: "{baseurl}/api/admin/v1/boxes"
       method: POST
 
     # and the expected response code and body

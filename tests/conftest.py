@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 import sys
 import pytz
 import datetime
-import yaml
 import requests
+from . import defaults
 
 from .helpers.capturehelper import CaptureListHelper
 from wsbackend.apiwrapper.admin.box import BoxWrapper
@@ -20,17 +20,9 @@ sys.path.append(".")
 
 
 @pytest.fixture(scope="function")
-def token_fixture():
-    basepath = os.path.dirname(__file__)
-    includesfilepath = os.path.abspath(os.path.join(basepath, "includes.yaml"))
-    with open(includesfilepath, "r") as stream:
-        try:
-            includes_yaml = yaml.load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
-
+def token_fixture(baseurl):
     payload = {'grant_type': 'authorization_code'}
-    r = requests.post('http://localhost:3000/token', data=payload)
+    r = requests.post('{baseurl}/token'.format(baseurl=baseurl), data=payload)
     unverified_token = r.json().get('access_token')
 
     return unverified_token
@@ -95,13 +87,13 @@ def two_captures_on_two_boxes_fixture(box_with_captures_fixture, user_fixture):
 @pytest.fixture
 def baseurl():
     """ Return baseurl environment variable. """
-    return os.environ["BASE_URL"]
+    return os.getenv("BASE_URL", defaults.BASE_URL)
 
 
 @pytest.fixture
 def clientid():
     """ Return client id environment variable. """
-    return os.environ["ADMINAPI_CLIENTID"]
+    return os.getenv("ADMINAPI_CLIENTID", defaults.ADMINAPI_CLIENTID)
 
 
 @pytest.fixture

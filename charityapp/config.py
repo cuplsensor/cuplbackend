@@ -1,4 +1,5 @@
 from base64 import b64decode
+from . import defaults
 
 # Statement for enabling the development environment
 DEBUG = True
@@ -42,12 +43,12 @@ CSRF_SESSION_KEY = os.environ['CSRF_SESSION_KEY']
 # Secret key for signing cookies
 SECRET_KEY = os.environ['SECRET_KEY']
 
-BASE_URL = os.environ['BASE_URL']
-AUTH0_URL = os.environ['AUTH0_URL']
-API_AUDIENCE = os.environ['API_AUDIENCE']
-JWKS_ENDPOINT = os.environ['JWKS_ENDPOINT']
-ADMINAPI_AUDIENCE = os.environ['ADMINAPI_AUDIENCE']
-ADMINAPI_CLIENTID = os.environ['ADMINAPI_CLIENTID']
+BASE_URL = os.getenv('BASE_URL', defaults.BASE_URL)
+AUTH0_URL = os.getenv('AUTH0_URL', defaults.AUTH0_URL)
+API_AUDIENCE = os.getenv('API_AUDIENCE', defaults.API_AUDIENCE)
+JWKS_ENDPOINT = os.getenv('JWKS_ENDPOINT', defaults.JWKS_ENDPOINT)
+ADMINAPI_AUDIENCE = os.getenv('ADMINAPI_AUDIENCE', defaults.ADMINAPI_AUDIENCE)
+ADMINAPI_CLIENTID = os.getenv('ADMINAPI_CLIENTID', defaults.ADMINAPI_CLIENTID)
 ADMINAPI_CLIENTSERET = os.environ['ADMINAPI_CLIENTSECRET']
 
 # Auth0 credentials for decoding a JWT. Moved to wsfrontend.

@@ -2,8 +2,9 @@ from .. import ApiWrapper
 
 
 class ConsumerApiWrapper(ApiWrapper):
-    def __init__(self, tokenstr=None):
-        super().__init__()
+    def __init__(self, baseurl, tokenstr=None):
+        super().__init__(baseurl)
+        self.apiurl = "{baseurl}/api/consumer/v1".format(baseurl=self.baseurl)
         if tokenstr is not None:
             self.headers = self.auth_header(tokenstr)
 

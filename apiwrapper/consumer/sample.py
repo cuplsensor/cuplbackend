@@ -3,11 +3,11 @@ import requests
 
 
 class SampleWrapper(ConsumerApiWrapper):
-    def __init__(self, tokenstr):
-        super().__init__(tokenstr)
+    def __init__(self, baseurl, tokenstr):
+        super().__init__(baseurl, tokenstr)
 
     def get_samples(self, serial, starttime, endtime, offset=0, limit=None):
-        samplesurl = "{consumerapiurl}/samples".format(consumerapiurl=self.consumerapiurl)
+        samplesurl = "{apiurl}/samples".format(apiurl=self.apiurl)
 
         payload = {
             'serial': serial,
@@ -18,7 +18,6 @@ class SampleWrapper(ConsumerApiWrapper):
 
         if limit is not None:
             payload['limit'] = limit
-
 
         # Using urlencode is important to remove the '+' and convert it to %2B. Date decode does
         # not work without it.

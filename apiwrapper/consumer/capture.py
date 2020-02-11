@@ -3,11 +3,11 @@ from . import ConsumerApiWrapper
 
 
 class CaptureWrapper(ConsumerApiWrapper):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, baseurl):
+        super().__init__(baseurl)
 
     def get_list(self, serial, offset=0, limit=None):
-        capturesurl = "{consumerapiurl}/captures".format(consumerapiurl=self.consumerapiurl)
+        capturesurl = "{apiurl}/captures".format(apiurl=self.apiurl)
         queryparams = {'serial': serial,
                        'offset': offset,
                        'limit': limit}
@@ -18,8 +18,8 @@ class CaptureWrapper(ConsumerApiWrapper):
         return captresponse
 
     def get(self, capture_id):
-        capturesurl = "{consumerapiurl}/captures/{capture_id}".format(consumerapiurl=self.consumerapiurl,
-                                                                      capture_id=capture_id)
+        capturesurl = "{apiurl}/captures/{capture_id}".format(apiurl=self.apiurl,
+                                                              capture_id=capture_id)
 
         r = requests.get(capturesurl)
         ConsumerApiWrapper.process_status(r.status_code)
@@ -27,8 +27,8 @@ class CaptureWrapper(ConsumerApiWrapper):
         return captresponse
 
     def get_samples(self, capture_id, offset=0, limit=None):
-        capturesamplesurl = "{consumerapiurl}/captures/{capture_id}/samples".format(consumerapiurl=self.consumerapiurl,
-                                                                                    capture_id=capture_id)
+        capturesamplesurl = "{apiurl}/captures/{capture_id}/samples".format(apiurl=self.apiurl,
+                                                                            capture_id=capture_id)
 
         queryparams = {'offset': offset,
                        'limit': limit}
@@ -39,7 +39,7 @@ class CaptureWrapper(ConsumerApiWrapper):
         return response
 
     def post(self, circbufb64, serial, statusb64, timeintb64, versionStr):
-        capturesurl = "{consumerapiurl}/captures".format(consumerapiurl=self.consumerapiurl)
+        capturesurl = "{apiurl}/captures".format(apiurl=self.apiurl)
         payload = {'circbufb64': circbufb64,
                    'serial': serial,
                    'statusb64': statusb64,
