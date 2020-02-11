@@ -8,15 +8,16 @@ import yaml
 import requests
 
 from .helpers.capturehelper import CaptureListHelper
-from wsbackend.charityapp.apiwrapper.admin.box import BoxWrapper
-from wsbackend.charityapp.apiwrapper.consumer.user import UserWrapper
-from wsbackend.charityapp.apiwrapper.consumer.mecapture import MeCaptureWrapper
-from wsbackend.charityapp.apiwrapper.consumer.boxview import BoxViewWrapper
-from wsbackend.charityapp.apiwrapper.consumer.boxscanned import BoxScannedWrapper
-from wsbackend.charityapp.apiwrapper.consumer.location import LocationWrapper
-from wsbackend.charityapp.apiwrapper.consumer.sample import SampleWrapper
+from wsbackend.apiwrapper.admin.box import BoxWrapper
+from wsbackend.apiwrapper.consumer.user import UserWrapper
+from wsbackend.apiwrapper.consumer.mecapture import MeCaptureWrapper
+from wsbackend.apiwrapper.consumer.boxview import BoxViewWrapper
+from wsbackend.apiwrapper.consumer.boxscanned import BoxScannedWrapper
+from wsbackend.apiwrapper.consumer.location import LocationWrapper
+from wsbackend.apiwrapper.consumer.sample import SampleWrapper
 
 sys.path.append(".")
+
 
 @pytest.fixture(scope="function")
 def token_fixture():
@@ -28,13 +29,12 @@ def token_fixture():
         except yaml.YAMLError as exc:
             print(exc)
 
-    user_token = includes_yaml['variables']['user_token']
-
     payload = {'grant_type': 'authorization_code'}
     r = requests.post('http://localhost:3000/token', data=payload)
     unverified_token = r.json().get('access_token')
 
     return unverified_token
+
 
 def pytest_runtest_setup(item):
     """ called before ``pytest_runtest_call(item). """
@@ -43,6 +43,7 @@ def pytest_runtest_setup(item):
     basepath = os.path.dirname(__file__)
     envpath = os.path.abspath(os.path.join(basepath, "..", "..", ".env"))
     load_dotenv(dotenv_path=envpath)
+
 
 def generate_capspec(user_id=None):
     starttime = datetime.datetime.now().replace(tzinfo=pytz.utc)
@@ -67,6 +68,7 @@ def generate_capspec(user_id=None):
 
         yield capturespeclist
 
+
 @pytest.fixture(scope="function")
 def two_captures_on_two_boxes_fixture(box_with_captures_fixture, user_fixture):
     boxcaptures = []
@@ -89,20 +91,24 @@ def two_captures_on_two_boxes_fixture(box_with_captures_fixture, user_fixture):
 
     return boxcaptures
 
+
 @pytest.fixture
 def baseurl():
     """ Return baseurl environment variable. """
     return os.environ["BASE_URL"]
+
 
 @pytest.fixture
 def clientid():
     """ Return client id environment variable. """
     return os.environ["ADMINAPI_CLIENTID"]
 
+
 @pytest.fixture
 def clientsecret():
     """ Return client secret environment variable. """
     return os.environ["ADMINAPI_CLIENTSECRET"]
+
 
 @pytest.fixture(scope="function")
 def box_fixture(request):

@@ -2,10 +2,7 @@
 from unittest.mock import Mock
 from requests.models import Response
 import json
-import sys
-sys.path.append("../../PSCodec")
-
-from encodertb.pyencoder.instrumented import InstrumentedSampleTRH
+from wscodec.encoder.pyencoder.instrumented import InstrumentedSampleTRH
 
 def create_capture_for_box(response):
     boxserial = response.json()["serial"]

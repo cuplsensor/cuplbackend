@@ -42,6 +42,16 @@ CSRF_SESSION_KEY = os.environ['CSRF_SESSION_KEY']
 # Secret key for signing cookies
 SECRET_KEY = os.environ['SECRET_KEY']
 
-# Auth0 credentials for decoding a JWT.
-AUTHO_CLIENTSECRET = b64decode(os.environ['AUTH0_CLIENTSECRET'].replace("_","/").replace("-","+"))
-AUTH0_CLIENTID = os.environ['AUTH0_CLIENTID']
+BASE_URL = os.environ['BASE_URL']
+AUTH0_URL = os.environ['AUTH0_URL']
+API_AUDIENCE = os.environ['API_AUDIENCE']
+JWKS_ENDPOINT = os.environ['JWKS_ENDPOINT']
+ADMINAPI_AUDIENCE = os.environ['ADMINAPI_AUDIENCE']
+ADMINAPI_CLIENTID = os.environ['ADMINAPI_CLIENTID']
+ADMINAPI_CLIENTSERET = os.environ['ADMINAPI_CLIENTSECRET']
+
+# Auth0 credentials for decoding a JWT. Moved to wsfrontend.
+#AUTHO_CLIENTSECRET = b64decode(os.environ['AUTH0_CLIENTSECRET'].replace("_","/").replace("-","+"))
+#AUTH0_CLIENTID = os.environ['AUTH0_CLIENTID']
+
+

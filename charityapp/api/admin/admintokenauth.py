@@ -1,17 +1,11 @@
-import os
 from functools import wraps
 from ..tokenauth import TokenAuthSymmetric
+from ...config import ADMINAPI_CLIENTID, ADMINAPI_CLIENTSERET, API_AUDIENCE
 
 
-admin_clientid = os.environ["ADMINAPI_CLIENTID"]
-admin_clientsecret = os.environ["ADMINAPI_CLIENTSECRET"]
-baseurl = os.environ["BASE_URL"]
-
-audience = '{baseurl}'.format(baseurl=baseurl)
-
-admintokenauth = TokenAuthSymmetric(issuer=admin_clientid,
-                                    audience=audience,
-                                    secret=admin_clientsecret)
+admintokenauth = TokenAuthSymmetric(issuer=ADMINAPI_CLIENTID,
+                                    audience=API_AUDIENCE,
+                                    secret=ADMINAPI_CLIENTSERET)
 
 def requires_admin_token(f):
     """Determines if the access token is valid

@@ -1,6 +1,5 @@
 import requests
 from ..admin import AdminApiWrapper
-import json
 
 
 class BoxWrapper(AdminApiWrapper):

@@ -1,15 +1,13 @@
-import os
 import requests
 from .. import ApiWrapper
+from ..config import adminapi_client_id, adminapi_client_secret
 
 
 class AdminApiWrapper(ApiWrapper):
     def get_admin_token(self):
         tokenurl = "{adminapiurl}/token".format(adminapiurl=self.adminapiurl)
-        client_id = os.environ['ADMINAPI_CLIENTID']
-        client_secret = os.environ['ADMINAPI_CLIENTSECRET']
-        tokenpayload = {'client_id': client_id, 'client_secret': client_secret}
-        jsonheader = {'content-type':'application/json'}
+        tokenpayload = {'client_id': adminapi_client_id, 'client_secret': adminapi_client_secret}
+        jsonheader = {'content-type': 'application/json'}
         r = requests.post(tokenurl, json=tokenpayload, headers=jsonheader)
         tokenresponse = r.json()['token']
         return tokenresponse

@@ -7,12 +7,11 @@
 
 from flask import Flask, Blueprint, request, current_app, jsonify
 from flask_restful import Resource, Api, abort, reqparse
+from ...config import ADMINAPI_AUDIENCE, ADMINAPI_CLIENTID, ADMINAPI_CLIENTSERET
 import os
 import datetime
 import jwt
 
-admin_clientid = os.environ["ADMINAPI_CLIENTID"]
-admin_clientsecret = os.environ["ADMINAPI_CLIENTSECRET"]
 baseurl = os.environ["BASE_URL"]
 
 bp = Blueprint('tokens', __name__)
@@ -29,17 +28,16 @@ class Token(Resource):
     def createtoken(self):
         """ Inspired by https://h.readthedocs.io/en/latest/publishers/authorization-grant-tokens/#python """
         now = datetime.datetime.utcnow()
-        subclaim = 'adminapi.{baseurl}'.format(baseurl=baseurl)
 
         payload = {
-            'aud': '{baseurl}'.format(baseurl=baseurl),
-            'iss': admin_clientid,
-            'sub': subclaim,
+            'aud': ADMINAPI_AUDIENCE,
+            'iss': ADMINAPI_CLIENTID,
+            'sub': 'admin',
             'nbf': now,
             'exp': now + datetime.timedelta(minutes=10),
         }
 
-        return jwt.encode(payload, admin_clientsecret, algorithm='HS256')
+        return jwt.encode(payload, ADMINAPI_CLIENTSERET, algorithm='HS256')
 
     def post(self):
         """
@@ -97,7 +95,7 @@ class Token(Resource):
         parser.add_argument('client_secret', type=str, required=True, help='client_secret string needed')
         args = parser.parse_args()
         # Only clients that send the correct ID and Secret will be given a token.
-        if (args['client_id'] != admin_clientid) and (args['client_secret'] != admin_clientsecret):
+        if (args['client_id'] != ADMINAPI_CLIENTID) and (args['client_secret'] != ADMINAPI_CLIENTSERET):
             abort(401)
         else:
             token = self.createtoken()
