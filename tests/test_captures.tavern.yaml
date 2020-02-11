@@ -15,7 +15,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/v1/captures"
       method: POST
 
     # and the expected response code and body
@@ -37,7 +37,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/v1/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -56,7 +56,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/admin/v1/boxes"
+      url: "{baseurl}/api/admin/v1/boxes"
       method: POST
       headers:
         content-type: application/json
@@ -84,7 +84,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/v1/captures"
       method: POST
       json:
         serial: "{serial}"
@@ -126,7 +126,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/v1/captures"
       method: GET
       params:
         serial: "{serial}"
@@ -162,7 +162,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/captures/{test_capture_id}"
+      url: "{baseurl}/api/consumer/v1/captures/{test_capture_id}"
       method: GET
       headers:
         content-type: application/json
@@ -195,7 +195,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/captures/{test_capture_id}/samples"
+      url: "{baseurl}/api/consumer/v1/captures/{test_capture_id}/samples"
       method: GET
       headers:
         content-type: application/json
@@ -211,7 +211,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/admin/v1/box/{test_box_id}"
+      url: "{baseurl}/api/admin/v1/box/{test_box_id}"
       method: DELETE
       headers:
         content-type: application/json

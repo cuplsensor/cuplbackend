@@ -15,7 +15,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/me"
+      url: "{baseurl}/api/consumer/v1/me"
       method: GET
 
     # and the expected response code and body
@@ -41,7 +41,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/me"
+      url: "{baseurl}/api/consumer/v1/me"
       method: GET
       headers:
         content-type: application/json
@@ -70,7 +70,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/me"
+      url: "{baseurl}/api/consumer/v1/me"
       method: GET
       headers:
         content-type: application/json
@@ -97,7 +97,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/users"
+      url: "{baseurl}/api/consumer/v1/users"
       method: POST
       headers:
         content-type: application/json
@@ -132,7 +132,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/me"
+      url: "{baseurl}/api/consumer/v1/me"
       method: GET
       headers:
         content-type: application/json
@@ -167,7 +167,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/me"
+      url: "{baseurl}/api/consumer/v1/me"
       method: DELETE
       headers:
         content-type: application/json

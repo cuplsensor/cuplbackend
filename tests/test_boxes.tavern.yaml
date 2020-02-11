@@ -37,7 +37,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/v1/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -56,7 +56,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/admin/v1/boxes"
+      url: "{baseurl}/api/admin/v1/boxes"
       method: POST
       headers:
         content-type: application/json
@@ -81,7 +81,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/admin/v1/box/{test_box_id}"
+      url: "{baseurl}/api/admin/v1/box/{test_box_id}"
       method: GET
       headers:
         content-type: application/json
@@ -102,7 +102,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/admin/v1/box/{test_box_id}"
+      url: "{baseurl}/api/admin/v1/box/{test_box_id}"
       method: DELETE
       headers:
         content-type: application/json

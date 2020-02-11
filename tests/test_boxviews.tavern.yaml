@@ -17,7 +17,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/me/boxviews"
+      url: "{baseurl}/api/consumer/v1/me/boxviews"
       method: POST
       json:
         boxserial: "{box_fixture.serial}"
@@ -42,7 +42,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/me/boxviews"
+      url: "{baseurl}/api/consumer/v1/me/boxviews"
       method: GET
       headers:
         content-type: application/json
@@ -60,7 +60,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/me/boxviews/{boxview_id}"
+      url: "{baseurl}/api/consumer/v1/me/boxviews/{boxview_id}"
       method: GET
       headers:
         content-type: application/json
