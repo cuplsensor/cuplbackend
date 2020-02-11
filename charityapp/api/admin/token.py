@@ -8,11 +8,8 @@
 from flask import Flask, Blueprint, request, current_app, jsonify
 from flask_restful import Resource, Api, abort, reqparse
 from ...config import ADMINAPI_AUDIENCE, ADMINAPI_CLIENTID, ADMINAPI_CLIENTSERET
-import os
 import datetime
 import jwt
-
-baseurl = os.environ["BASE_URL"]
 
 bp = Blueprint('tokens', __name__)
 api = Api(bp)
