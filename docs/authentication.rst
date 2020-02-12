@@ -50,7 +50,7 @@ wsfrontend calls wsbackend endpoints with the access token:
 
 .. parsed-literal::
 
-    curl -X GET "{:ref:`BASE_URL <baseurl>`}/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
+    curl -X GET "{:ref:`WSB_HOST <wsbhost>`}:{:ref:`WSB_PORT <wsbport>`}/api/consumer/v1/me" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJS... ZOA4t7Q"
 
 Access Token is Validated
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -13,11 +13,11 @@ BASE_DIR = 'home/debian/'
 # SQLite for this example
 DB_NAME = os.environ['DB_NAME']
 DB_USER = os.environ['DB_USER']
-DB_PASS = os.environ['POSTGRES_PASSWORD']
-DB_SERVICE = os.environ['DB_SERVICE']
+DB_PASS = os.environ['DB_PASS']
+DB_HOST = os.environ['DB_HOST']
 DB_PORT = os.environ['DB_PORT']
 SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(
-        DB_USER, DB_PASS, DB_SERVICE, DB_PORT, DB_NAME
+        DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME
     )
 DATABASE_CONNECT_OPTIONS = {}
 
@@ -43,7 +43,6 @@ CSRF_SESSION_KEY = os.environ['CSRF_SESSION_KEY']
 # Secret key for signing cookies
 SECRET_KEY = os.environ['SECRET_KEY']
 
-BASE_URL = os.getenv('BASE_URL', defaults.BASE_URL)
 AUTH0_URL = os.getenv('AUTH0_URL', defaults.AUTH0_URL)
 API_AUDIENCE = os.getenv('API_AUDIENCE', defaults.API_AUDIENCE)
 JWKS_ENDPOINT = os.getenv('JWKS_ENDPOINT', defaults.JWKS_ENDPOINT)

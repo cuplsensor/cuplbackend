@@ -87,7 +87,9 @@ def two_captures_on_two_boxes_fixture(box_with_captures_fixture, user_fixture):
 @pytest.fixture
 def baseurl():
     """ Return baseurl environment variable. """
-    return os.getenv("BASE_URL", defaults.BASE_URL)
+    wsb_host = os.getenv("WSB_HOST", defaults.WSB_HOST)
+    wsb_port = os.getenv("WSB_PORT", defaults.WSB_PORT)
+    return '{wsb_host}:{wsb_port}'.format(wsb_host=wsb_host, wsb_port=str(wsb_port))
 
 
 @pytest.fixture

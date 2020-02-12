@@ -1,6 +1,5 @@
-BASE_URL = "http://127.0.0.1:5000"
 AUTH0_URL = "http://127.0.0.1:3000"
 API_AUDIENCE = "default_api_audience"
 JWKS_ENDPOINT = "/jwks"
-ADMINAPI_AUDIENCE = "default_admin_api_audience"
-ADMINAPI_CLIENTID = "default_client_id"
+ADMINAPI_AUDIENCE = "default_adminapi_audience"
+ADMINAPI_CLIENTID = "default_adminapi_clientid"

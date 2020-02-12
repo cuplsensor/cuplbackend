@@ -17,7 +17,7 @@ from .admin.boxes import bp as boxesbp
 
 
 def create_app(settings_override=None):
-    """Returns the Web API application instance"""
+    """Returns the Web API application instance. No longer used."""
     app = factory.create_app(__name__, __path__, settings_override)
     app.register_blueprint(tokenbp)
     app.register_blueprint(boxesbp)

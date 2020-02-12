@@ -2,8 +2,6 @@ alembic
 cryptography>=1.0.1
 python-dotenv
 Flask>=0.10.1
-Flask-Login>=0.2.11
-Flask-JWT>=0.3.2
 Flask-SQLAlchemy>=2.0
 Flask-WTF>0.9.5
 flask-restful>=0.2.12
