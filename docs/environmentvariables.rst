@@ -3,13 +3,19 @@
 Environment Variables
 ======================
 
+``WSB_PROTOCOL``
+--------------
+Default: ``http://``
+
+Protocol of wsbackend.
+
 .. _wsbhost:
 
 ``WSB_HOST``
 --------------
-Default: ``http://localhost``
+Default: ``localhost``
 
-Protocol and host of wsbackend.
+Hostname of wsbackend.
 
 .. _wsbport:
 
