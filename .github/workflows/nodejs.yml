@@ -6,6 +6,12 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      ADMINAPI_CLIENTSECRET: "dasgasesdave"
+      DB_PASS: "4tskngvknldkf"
+      DB_HOST: "postgres"
+      DB_USER: "postgres"
+      DB_PORT: 5432
 
     strategy:
       matrix:
@@ -42,9 +48,15 @@ jobs:
     - run: sudo apt-get install libpq-dev
     - run: pip3 install -r requirements.txt
 
+    - name: Install postgres
+      uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '11'  # See https://hub.docker.com/_/postgres for available versions
+          postgresql db: ${{ env.DB_HOST }}
+          postgresql user: ${{ env.DB_USER }}
+          postgresql password: ${{ env.DB_PASS }}
     - name: Start tests
       run:   python3 -m pytest
       env:
         CI: true
-        ADMINAPI_CLIENTSECRET: "dasgasesdave"
-        DB_PASS: "4tskngvknldkf"
+
