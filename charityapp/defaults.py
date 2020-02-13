@@ -1,5 +1,5 @@
-AUTH0_URL = "http://127.0.0.1:3000"
+IDP_ORIGIN = "http://127.0.0.1:3000"
 API_AUDIENCE = "default_api_audience"
-JWKS_ENDPOINT = "/jwks"
+IDP_JWKS = "/jwks"
 ADMINAPI_AUDIENCE = "default_adminapi_audience"
 ADMINAPI_CLIENTID = "default_adminapi_clientid"

@@ -32,7 +32,7 @@ Protocol, host and port of the OpenID Connect Identity Provider.
 
 Defaults to the origin of the mock IdP.
 
-.. _jwksendpoint:
+.. _idp_jwks:
 
 ``IDP_JWKS``
 ^^^^^^^^^^^^^^
