@@ -105,8 +105,8 @@ def clientsecret():
 
 
 @pytest.fixture(scope="function")
-def box_fixture(request):
-    boxhelper = BoxWrapper()
+def box_fixture(request, baseurl):
+    boxhelper = BoxWrapper(baseurl)
 
     def teardown():
         boxid = boxresponse['id']
@@ -119,14 +119,14 @@ def box_fixture(request):
     return boxresponse
 
 @pytest.fixture(scope="function")
-def mecapture_fixture(token_fixture):
-    mecaphelper = MeCaptureWrapper(tokenstr=token_fixture)
+def mecapture_fixture(token_fixture, baseurl):
+    mecaphelper = MeCaptureWrapper(baseurl, tokenstr=token_fixture)
     return mecaphelper
 
 
 @pytest.fixture(scope="function")
-def box_fixture_b(request):
-    boxhelper = BoxWrapper()
+def box_fixture_b(request, baseurl, clientid, clientsecret):
+    boxhelper = BoxWrapper(baseurl, clientid, clientsecret)
 
     class BoxFactory(object):
         boxids = []
@@ -150,24 +150,24 @@ def box_fixture_b(request):
     return bf
 
 @pytest.fixture(scope="function")
-def boxview_fixture(token_fixture):
-    return BoxViewWrapper(token_fixture)
+def boxview_fixture(baseurl, token_fixture):
+    return BoxViewWrapper(baseurl, token_fixture)
 
 @pytest.fixture(scope="function")
-def boxscanned_fixture(token_fixture):
-    return BoxScannedWrapper(token_fixture)
+def boxscanned_fixture(baseurl, token_fixture):
+    return BoxScannedWrapper(baseurl, token_fixture)
 
 @pytest.fixture(scope="function")
-def location_fixture(token_fixture):
-    return LocationWrapper(token_fixture)
+def location_fixture(baseurl, token_fixture):
+    return LocationWrapper(baseurl, token_fixture)
 
 @pytest.fixture(scope="function")
-def sample_fixture(token_fixture):
-    return SampleWrapper(token_fixture)
+def sample_fixture(baseurl, token_fixture):
+    return SampleWrapper(baseurl, token_fixture)
 
 @pytest.fixture(scope="function")
-def user_fixture(request, token_fixture):
-    userhelper = UserWrapper(tokenstr=token_fixture)
+def user_fixture(request, baseurl, token_fixture):
+    userhelper = UserWrapper(baseurl, tokenstr=token_fixture)
 
     def teardown():
         print("teardown test user")
@@ -179,12 +179,12 @@ def user_fixture(request, token_fixture):
 
 
 @pytest.fixture(scope="function")
-def box_with_captures_fixture(box_fixture_b):
+def box_with_captures_fixture(baseurl, clientid, clientsecret, box_fixture_b):
     class BoxWithCapturesFactory(object):
 
         def get(self, capturespeclist):
             box = box_fixture_b.add()
-            clisthelper = CaptureListHelper(capturespeclist, boxid=box['id'])
+            clisthelper = CaptureListHelper(baseurl, clientid, clientsecret, capturespeclist, boxid=box['id'])
             return {'box': box, 'clisthelper': clisthelper}
 
     return BoxWithCapturesFactory()

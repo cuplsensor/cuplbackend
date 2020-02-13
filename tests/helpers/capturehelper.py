@@ -54,12 +54,12 @@ class CaptureHelper:
 
 
 class CaptureListHelper(CaptureHelper):
-    def __init__(self, capturespeclist, boxid, timeintmins=12):
+    def __init__(self, baseurl, adminapi_client_id, adminapi_client_secret, capturespeclist, boxid, timeintmins=12):
         super().__init__()
         self.capturelist = []
         self.writtencaptures = []
         alltimestamps = []
-        capturewrapper = CaptureWrapper()
+        capturewrapper = CaptureWrapper(baseurl, adminapi_client_id, adminapi_client_secret)
 
 
         for capturespec in capturespeclist:
