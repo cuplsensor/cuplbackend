@@ -9,7 +9,7 @@ jobs:
     env:
       ADMINAPI_CLIENTSECRET: dasgasesdave
       DB_PASS: 4tskngvknldkf
-      DB_HOST: postgres
+      DB_HOST: localhost
       DB_USER: postgres
       DB_NAME: postgres
       DB_PORT: 5432
