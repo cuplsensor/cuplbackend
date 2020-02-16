@@ -15,6 +15,7 @@ jobs:
       DB_PORT: 5432
       WSB_HOST: localhost
       WSB_PORT: 5000
+      CSRF_SESSION_KEY: elkafnleknf
 
     strategy:
       matrix:
