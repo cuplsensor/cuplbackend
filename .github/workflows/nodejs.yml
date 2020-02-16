@@ -48,7 +48,10 @@ jobs:
           ${{ runner.os }}-pip-
           ${{ runner.os }}-
 
-      run: pip3 install uwsgi
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install uwsgi
 
     - name: Install postgres
       uses: harmon758/postgresql-action@v1
