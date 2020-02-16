@@ -7,11 +7,13 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      ADMINAPI_CLIENTSECRET: "dasgasesdave"
-      DB_PASS: "4tskngvknldkf"
-      DB_HOST: "postgres"
-      DB_USER: "postgres"
+      ADMINAPI_CLIENTSECRET: dasgasesdave
+      DB_PASS: 4tskngvknldkf
+      DB_HOST: postgres
+      DB_USER: postgres
       DB_PORT: 5432
+      WSB_HOST: localhost
+      WSB_PORT: 5000
 
     strategy:
       matrix:
@@ -30,23 +32,23 @@ jobs:
     - run: forever start app.js
     - run: cd ../../
 
-    - name: Install Python 3 dependencies
-      uses: actions/cache@v1
-      with:
-        path: ~/.cache/pip # This path is specific to Ubuntu
-        # Look to see if there is a cache hit for the corresponding requirements file
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-          ${{ runner.os }}-
-
     - name: Install dependencies
       run: sudo apt-get install python3-setuptools
-
     - run: sudo apt-get install build-essential
     - run: sudo apt-get install python3-dev
     - run: sudo apt-get install libpq-dev
-    - run: pip3 install -r requirements.txt
+
+    - name: Install Python 3 dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip # This path is specific to Ubuntu
+          # Look to see if there is a cache hit for the corresponding requirements file
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+      run: pip3 install uwsgi
 
     - name: Install postgres
       uses: harmon758/postgresql-action@v1
@@ -55,6 +57,9 @@ jobs:
         postgresql db: ${{ env.DB_HOST }}
         postgresql user: ${{ env.DB_USER }}
         postgresql password: ${{ env.DB_PASS }}
+
+      run: uwsgi --socket ${{ env.WSB_HOST }}:${{ env.WSB_PORT }} --protocol=http -w main:app
+
     - name: Start tests
       run:   python3 -m pytest
       env:
