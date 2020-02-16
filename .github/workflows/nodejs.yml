@@ -11,6 +11,7 @@ jobs:
       DB_PASS: 4tskngvknldkf
       DB_HOST: postgres
       DB_USER: postgres
+      DB_NAME: postgres
       DB_PORT: 5432
       WSB_HOST: localhost
       WSB_PORT: 5000
