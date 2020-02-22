@@ -22,9 +22,8 @@ sys.path.append(".")
 @pytest.fixture(scope="function")
 def token_fixture(idporigin):
     payload = {'grant_type': 'authorization_code'}
-    r = requests.post('{baseurl}/token'.format(baseurl=baseurl), data=payload)
+    r = requests.post('{idporigin}/token'.format(idporigin=idporigin), data=payload)
     unverified_token = r.json().get('access_token')
-
     return unverified_token
 
 
