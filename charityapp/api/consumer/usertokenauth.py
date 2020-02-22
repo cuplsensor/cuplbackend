@@ -13,13 +13,10 @@ usertokenauth = TokenAuthAsymmetric(issuer=IDP_ORIGIN,
                                      audience=API_AUDIENCE,
                                      jwksurl=jwksurl)
 
+
 def get_userinfo(access_token):
     json_header = {'Authorization': 'Bearer {access_token}'.format(access_token=access_token)}
     userinfo_url = '{idp_origin}/userinfo'.format(idp_origin=IDP_ORIGIN)
-
-    userinfo_params = {
-        'access_token': access_token
-    }
 
     # Obtain userinfo from Auth0 with the access token
     userinfo_response = get(userinfo_url, headers=json_header).json()

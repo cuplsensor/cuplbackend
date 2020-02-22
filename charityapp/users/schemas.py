@@ -6,6 +6,7 @@ from .models import User
 
 __all__ = ['UserSchema']
 
+
 class UserSchema(ma.ModelSchema):
     class Meta:
         model = User

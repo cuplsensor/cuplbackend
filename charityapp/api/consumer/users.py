@@ -87,7 +87,7 @@ class Users(MultipleUserResource):
             abort(400, description=traceback.format_exc())
 
         schema = self.Schema()
-        result = schema.dump(userobj).data
+        result = schema.dump(userobj)
         result['userinfo'] = userinfo
         response = jsonify(result)
         response.status_code = 201
