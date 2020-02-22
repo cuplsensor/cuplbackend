@@ -4,7 +4,7 @@ from ..tokenauth import TokenAuthAsymmetric
 from ...config import API_AUDIENCE, IDP_ORIGIN, IDP_JWKS
 from flask_restful import abort
 from traceback import format_exc
-from requests import post
+from requests import get
 import json
 
 jwksurl = '{idp_origin}{idp_jwks}'.format(idp_origin=IDP_ORIGIN, idp_jwks=IDP_JWKS)
@@ -14,7 +14,7 @@ usertokenauth = TokenAuthAsymmetric(issuer=IDP_ORIGIN,
                                      jwksurl=jwksurl)
 
 def get_userinfo(access_token):
-    json_header = {'content-type': 'application/json'}
+    json_header = {'Authorization': 'Bearer {access_token}'.format(access_token=access_token)}
     userinfo_url = '{idp_origin}/userinfo'.format(idp_origin=IDP_ORIGIN)
 
     userinfo_params = {
@@ -22,9 +22,7 @@ def get_userinfo(access_token):
     }
 
     # Obtain userinfo from Auth0 with the access token
-    userinfo_response = post(userinfo_url,
-                             data=json.dumps(userinfo_params),
-                             headers=json_header).json()
+    userinfo_response = get(userinfo_url, headers=json_header).json()
 
     return userinfo_response
 
