@@ -40,7 +40,7 @@ class UserWrapper(ConsumerApiWrapper):
         try:
             r = requests.get(meurl, headers=self.headers)
         except requests.exceptions.RequestException as e:
-            UserWrapper.process_status(e.response.status_code, e.data)
+            UserWrapper.process_status(e.response.status_code, str(e))
         response = r.json()
         return response
 
