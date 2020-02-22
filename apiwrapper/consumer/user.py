@@ -25,9 +25,11 @@ class UserWrapper(ConsumerApiWrapper):
 
     def post(self):
         usersurl = "{apiurl}/users".format(apiurl=self.apiurl)
-        r = requests.post(usersurl, headers=self.headers)
+        try:
+            r = requests.post(usersurl, headers=self.headers)
+        except requests.exceptions.RequestException as e:
+            UserWrapper.process_status(e.response.status_code, str(e))
         response = r.json()
-        UserWrapper.process_status(r.status_code)
         return response
 
     def delete(self):
