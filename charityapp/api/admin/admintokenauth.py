@@ -1,10 +1,10 @@
 from functools import wraps
 from ..tokenauth import TokenAuthSymmetric
-from ...config import ADMINAPI_CLIENTID, ADMINAPI_CLIENTSERET, API_AUDIENCE
+from ...config import ADMINAPI_CLIENTID, ADMINAPI_CLIENTSERET, ADMINAPI_AUDIENCE
 
 
 admintokenauth = TokenAuthSymmetric(issuer=ADMINAPI_CLIENTID,
-                                    audience=API_AUDIENCE,
+                                    audience=ADMINAPI_AUDIENCE,
                                     secret=ADMINAPI_CLIENTSERET)
 
 def requires_admin_token(f):
