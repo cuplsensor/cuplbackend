@@ -1,5 +1,5 @@
-IDP_ORIGIN = "http://127.0.0.1:3000"
-API_AUDIENCE = "default_api_audience"
+IDP_ORIGIN = "http://localhost:3000"
+API_AUDIENCE = "mock_api_audience"
 IDP_JWKS = "/jwks"
 ADMINAPI_AUDIENCE = "default_adminapi_audience"
 ADMINAPI_CLIENTID = "default_adminapi_clientid"
