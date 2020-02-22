@@ -32,7 +32,7 @@ jobs:
     - run: cd tests/oauth2-mock
     - run: npm install
     - run: npm install -g forever
-    - run: forever start app.js
+    - run: forever start tests/oauth2-mock/app.js
     - run: cd ../../
 
     - name: Set up Python
