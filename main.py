@@ -18,14 +18,14 @@ def simple(env, resp):
     resp(b'200 OK', [(b'Content-Type', b'text/plain')])
     return [b'Hello WSGI World']
 
-
-if __name__ == "__main__":
-    app = DispatcherMiddleware(simple, {
+app = DispatcherMiddleware(simple, {
         '/api/admin/v1': admin.create_app(),
         '/api/consumer/v1': consumer.create_app()
     })
-    app = DebuggedApplication(app, evalex=False)
-    app.debug = True
+app = DebuggedApplication(app, evalex=False)
+app.debug = True
+
+if __name__ == "__main__":
     app.run()
     #wsb_host = os.getenv("WSB_HOST", test_defaults.WSB_HOST)
     #wsb_port = os.getenv("WSB_PORT", test_defaults.WSB_PORT)
