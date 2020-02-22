@@ -70,7 +70,7 @@ jobs:
         postgresql password: ${{ env.DB_PASS }}
 
     - name: Run uwsgi server and daemonize
-      run: uwsgi --socket ${{ env.WSB_HOST }}:${{ env.WSB_PORT }} --protocol=http -w main:app
+      run: uwsgi --socket ${{ env.WSB_HOST }}:${{ env.WSB_PORT }} --protocol=http -w -d --ini uwsgi.ini
 
     - name: Start tests
       run:   python3 -m pytest
