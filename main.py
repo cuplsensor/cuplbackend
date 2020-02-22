@@ -19,13 +19,12 @@ def simple(env, resp):
     return [b'Hello WSGI World']
 
 
-app = DispatcherMiddleware(simple, {
-    '/api/admin/v1': admin.create_app(),
-    '/api/consumer/v1': consumer.create_app()
-})
-app = DebuggedApplication(app, evalex=False)
-
 if __name__ == "__main__":
+    app = DispatcherMiddleware(simple, {
+        '/api/admin/v1': admin.create_app(),
+        '/api/consumer/v1': consumer.create_app()
+    })
+    app = DebuggedApplication(app, evalex=False)
     app.debug = True
     app.run()
     #wsb_host = os.getenv("WSB_HOST", test_defaults.WSB_HOST)
