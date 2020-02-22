@@ -20,7 +20,7 @@ sys.path.append(".")
 
 
 @pytest.fixture(scope="function")
-def token_fixture(baseurl):
+def token_fixture(idporigin):
     payload = {'grant_type': 'authorization_code'}
     r = requests.post('{baseurl}/token'.format(baseurl=baseurl), data=payload)
     unverified_token = r.json().get('access_token')
@@ -91,6 +91,10 @@ def baseurl():
     wsb_host = os.getenv("WSB_HOST", defaults.WSB_HOST)
     wsb_port = os.getenv("WSB_PORT", defaults.WSB_PORT)
     return '{wsb_protocol}{wsb_host}:{wsb_port}'.format(wsb_protocol=wsb_protocol, wsb_host=wsb_host, wsb_port=str(wsb_port))
+
+@pytest.fixture
+def idporigin():
+    return os.getenv("IDP_ORIGIN", defaults.IDP_ORIGIN)
 
 
 @pytest.fixture
