@@ -42,5 +42,5 @@ class UserWrapper(ConsumerApiWrapper):
         response = r.json()
         return response
 
-    def __init__(self, tokenstr):
-        super().__init__(tokenstr)
+    def __init__(self, baseurl, tokenstr):
+        super().__init__(baseurl, tokenstr)
