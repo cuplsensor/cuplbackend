@@ -59,7 +59,7 @@ class SingleResource(BaseResource):
         schema = self.Schema()
         current_app.logger.info(modelid)
         modelobj = self.service.get_or_404(modelid)
-        result = schema.dump(modelobj).data
+        result = schema.dump(modelobj)
         current_app.logger.info(modelid)
         current_app.logger.info(modelobj)
         current_app.logger.info(result)
@@ -91,7 +91,7 @@ class MultipleResource(BaseResource):
         # Obtain a list of all model instances from the service.
         modelobjs = self.service.all()
         # Populate schema with the list.
-        result = schema.dump(modelobjs).data
+        result = schema.dump(modelobjs)
         current_app.logger.info(modelobjs)
         current_app.logger.info(result)
         # Jsonify the dictionary.
@@ -104,7 +104,7 @@ class MultipleResource(BaseResource):
         # Instantiate a new model and add it to the table.
         modelobj = self.service.create()
         # Populate schema with the new model instance.
-        result = schema.dump(modelobj).data
+        result = schema.dump(modelobj)
         # Jsonify the dictionary.
         return jsonify(result)
 
