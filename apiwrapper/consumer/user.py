@@ -32,8 +32,10 @@ class UserWrapper(ConsumerApiWrapper):
 
     def delete(self):
         meurl = "{apiurl}/me".format(apiurl=self.apiurl)
-        r = requests.delete(meurl, headers=self.headers)
-        UserWrapper.process_status(r.status_code)
+        try:
+            requests.delete(meurl, headers=self.headers)
+        except requests.exceptions.RequestException as e:
+            UserWrapper.process_status(e.response.status_code, str(e))
 
     def get(self):
         meurl = "{apiurl}/me".format(apiurl=self.apiurl)
