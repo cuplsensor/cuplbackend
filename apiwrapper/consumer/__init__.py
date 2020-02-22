@@ -54,4 +54,4 @@ class Exception403(Exception):
 class Exception401(Exception):
     def __init__(self, message="Not authorised to access this resource. "
                                "Invalid JWT or bad HMAC."):
-        super().__init__("Exception 401 " + message)
+        super().__init__("Exception 401 " + str(message))
