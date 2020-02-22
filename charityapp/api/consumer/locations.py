@@ -93,7 +93,7 @@ class Location(SingleResource, ScanRequiredResource):
         if description is not None:
             location = locations.update(location, description=description)
 
-        result = self.Schema().dump(location).data
+        result = self.Schema().dump(location)
         return jsonify(result)
 
 
@@ -128,7 +128,7 @@ class Locations(MultipleResource, ScanRequiredResource):
 
         # Dump location into the JSON schema
         schema = self.Schema()
-        result = schema.dump(location).data
+        result = schema.dump(location)
 
         current_app.logger.info(location)
         current_app.logger.info(result)
@@ -162,7 +162,7 @@ class Locations(MultipleResource, ScanRequiredResource):
 
         # Dump location into the JSON schema
         schema = self.Schema()
-        result = schema.dump(locationslist, many=True).data
+        result = schema.dump(locationslist, many=True)
 
         return jsonify(result)
 

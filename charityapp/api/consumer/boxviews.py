@@ -38,7 +38,7 @@ class BoxView(SingleUserResource):
         current_app.logger.info(boxview)
 
         schema = self.Schema()
-        result = schema.dump(boxview).data
+        result = schema.dump(boxview)
         return jsonify(result)
 
     def delete(self, usertoken, id):
@@ -72,7 +72,7 @@ class BoxViews(MultipleUserResource):
             boxviewlist = self.service.find(parent_user=userobj)
 
         schema = self.Schema()
-        result = schema.dump(boxviewlist, many=True).data
+        result = schema.dump(boxviewlist, many=True)
         return jsonify(result)
 
     def post(self, usertoken):
@@ -100,7 +100,7 @@ class BoxViews(MultipleUserResource):
 
         # Dump box view into the JSON schema
         schema = self.Schema()
-        result = schema.dump(boxviewobj).data
+        result = schema.dump(boxviewobj)
 
         current_app.logger.info(boxviewobj)
         current_app.logger.info(result)

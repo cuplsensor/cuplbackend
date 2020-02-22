@@ -48,7 +48,7 @@ class Captures(MultipleResource):
         capturelist = captures.find(parent_box=boxobj).order_by("timestamp desc").offset(offset).limit(limit)
 
         schema = self.Schema()
-        result = schema.dump(capturelist, many=True).data
+        result = schema.dump(capturelist, many=True)
         return jsonify(result)
 
     def post(self, userobj=None):
@@ -71,7 +71,7 @@ class Captures(MultipleResource):
                                                 ver=parsedargs['ver'])
 
         schema = self.Schema()
-        result = schema.dump(captureobj).data
+        result = schema.dump(captureobj)
 
         return jsonify(result)
 
@@ -98,7 +98,7 @@ class MeCaptures(Captures):
             capturelist = captures.find(scanned_by_user=userobj).order_by("timestamp desc")
 
         schema = self.Schema()
-        result = schema.dump(capturelist, many=True).data
+        result = schema.dump(capturelist, many=True)
         return jsonify(result)
 
     def post(self, usertoken):

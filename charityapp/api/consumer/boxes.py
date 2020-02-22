@@ -30,7 +30,7 @@ class Box(SingleResource):
         boxobj = boxes.get_by_serial(serial)
 
         schema = self.Schema()
-        result = schema.dump(boxobj).data
+        result = schema.dump(boxobj)
 
         return jsonify(result)
 

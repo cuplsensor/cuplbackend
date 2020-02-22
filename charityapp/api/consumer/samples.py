@@ -36,7 +36,7 @@ class CaptureSamples(MultipleResource):
         samples = capturesamples.find(capture_id=capt.id).order_by("timestamp desc").offset(offset).limit(limit)
 
         schema = self.Schema()
-        result = schema.dump(samples, many=True).data
+        result = schema.dump(samples, many=True)
 
         return jsonify(result)
 
@@ -73,7 +73,7 @@ class Samples(BaseResource):
         current_app.logger.info(samples)
 
         schema = self.Schema()
-        result = schema.dump(samples, many=True).data
+        result = schema.dump(samples, many=True)
 
         return jsonify(result)
 

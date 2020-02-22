@@ -120,13 +120,13 @@ class Captures(MultipleAdminResource):
         jsondata = request.get_json()
         schema = self.Schema()
         try:
-            schemaobj = schema.load(jsondata).data
+            schemaobj = schema.load(jsondata)
         except ValidationError as err:
             return err.messages, 422
 
         schemaobj = captures.save(schemaobj)
 
-        return schema.dump(schemaobj).data
+        return schema.dump(schemaobj)
 
 
 api.add_resource(Capture, '/capture/<id>')
