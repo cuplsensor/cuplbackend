@@ -37,8 +37,10 @@ class UserWrapper(ConsumerApiWrapper):
 
     def get(self):
         meurl = "{apiurl}/me".format(apiurl=self.apiurl)
-        r = requests.get(meurl, headers=self.headers)
-        UserWrapper.process_status(r.status_code, r.text)
+        try:
+            r = requests.get(meurl, headers=self.headers)
+        except requests.exceptions.RequestException as e:
+            UserWrapper.process_status(e.response.status_code, e.data)
         response = r.json()
         return response
 
