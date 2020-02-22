@@ -27,9 +27,9 @@ class UserWrapper(ConsumerApiWrapper):
         usersurl = "{apiurl}/users".format(apiurl=self.apiurl)
         try:
             r = requests.post(usersurl, headers=self.headers)
+            response = r.json()
         except requests.exceptions.RequestException as e:
             UserWrapper.process_status(e.response.status_code, str(e))
-        response = r.json()
         return response
 
     def delete(self):
@@ -43,9 +43,9 @@ class UserWrapper(ConsumerApiWrapper):
         meurl = "{apiurl}/me".format(apiurl=self.apiurl)
         try:
             r = requests.get(meurl, headers=self.headers)
+            response = r.json()
         except requests.exceptions.RequestException as e:
             UserWrapper.process_status(e.response.status_code, str(e))
-        response = r.json()
         return response
 
     def __init__(self, baseurl, tokenstr):
