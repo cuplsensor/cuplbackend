@@ -9,12 +9,12 @@ class ConsumerApiWrapper(ApiWrapper):
             self.headers = self.auth_header(tokenstr)
 
     @staticmethod
-    def process_status(status_code):
+    def process_status(status_code, desc=None):
         """ Raise an exception for HTTP error statuses"""
         if status_code == 400:
             raise Exception400
         elif status_code == 401:
-            raise Exception401
+            raise Exception401(message=desc)
         elif status_code == 403:
             raise Exception403
         elif status_code == 404:
@@ -23,7 +23,7 @@ class ConsumerApiWrapper(ApiWrapper):
             raise Exception409
         elif status_code > 400:
             print(status_code)
-            raise ConsumerAPIException(status_code)
+            raise ConsumerAPIException(message=desc)
 
 
 class ConsumerAPIException(Exception):
@@ -54,4 +54,4 @@ class Exception403(Exception):
 class Exception401(Exception):
     def __init__(self, message="Not authorised to access this resource. "
                                "Invalid JWT or bad HMAC."):
-        super().__init__(message)
+        super().__init__("Exception 401 " + message)

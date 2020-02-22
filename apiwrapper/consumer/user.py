@@ -14,14 +14,14 @@ class UserAlreadyExistsException(Exception409):
 
 class UserWrapper(ConsumerApiWrapper):
     @staticmethod
-    def process_status(status_code):
+    def process_status(status_code, desc=None):
         """ Raise an exception for HTTP error statuses"""
         if status_code == 404:
             raise UserNotFoundException
         elif status_code == 409:
             raise UserAlreadyExistsException
         else:
-            ConsumerApiWrapper.process_status(status_code)
+            ConsumerApiWrapper.process_status(status_code, desc)
 
     def post(self):
         usersurl = "{apiurl}/users".format(apiurl=self.apiurl)
@@ -38,7 +38,7 @@ class UserWrapper(ConsumerApiWrapper):
     def get(self):
         meurl = "{apiurl}/me".format(apiurl=self.apiurl)
         r = requests.get(meurl, headers=self.headers)
-        UserWrapper.process_status(r.status_code)
+        UserWrapper.process_status(r.status_code, r.text)
         response = r.json()
         return response
 
