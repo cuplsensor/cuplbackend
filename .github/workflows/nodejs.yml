@@ -73,7 +73,7 @@ jobs:
       run: uwsgi --socket ${{ env.WSB_HOST }}:${{ env.WSB_PORT }} --protocol=http -w -d --ini uwsgi.ini
 
     - name: Start tests
-      run:   python3 -m pytest
+      run:   python3 -m pytest -v -- showlocals
       env:
         CI: true
 
