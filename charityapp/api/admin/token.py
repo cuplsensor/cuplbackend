@@ -9,7 +9,7 @@ from flask import Flask, Blueprint, request, current_app, jsonify
 from flask_restful import Resource, Api, abort, reqparse
 from ...config import ADMINAPI_AUDIENCE, ADMINAPI_CLIENTID, ADMINAPI_CLIENTSERET
 import datetime
-import jwt
+from jose import jwt
 
 bp = Blueprint('tokens', __name__)
 api = Api(bp)
