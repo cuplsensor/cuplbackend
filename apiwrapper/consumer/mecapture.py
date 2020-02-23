@@ -13,9 +13,12 @@ class MeCaptureWrapper(ConsumerApiWrapper):
         if distinct is True:
             queryparams = {'distinctonbox': 'true'}
 
-        r = requests.get(capturesurl, params=queryparams, headers=self.headers)
-        ConsumerApiWrapper.process_status(r.status_code)
-        captresponse = r.json()
+        try:
+            r = requests.get(capturesurl, params=queryparams, headers=self.headers)
+            captresponse = r.json()
+        except requests.exceptions.RequestException as e:
+            ConsumerApiWrapper.process_status(e.response.status_code, str(e))
+
         return captresponse
 
     def post(self, circbufb64, serial, statusb64, timeintb64, versionStr):
@@ -26,7 +29,10 @@ class MeCaptureWrapper(ConsumerApiWrapper):
                    'timeintb64': timeintb64,
                    'versionStr': versionStr}
 
-        r = requests.get(capturesurl, json=payload, headers=self.headers)
-        ConsumerApiWrapper.process_status(r.status_code)
-        captresponse = r.json()
+        try:
+            r = requests.get(capturesurl, json=payload, headers=self.headers)
+            captresponse = r.json()
+        except requests.exceptions.RequestException as e:
+            ConsumerApiWrapper.process_status(e.response.status_code, str(e))
+
         return captresponse
