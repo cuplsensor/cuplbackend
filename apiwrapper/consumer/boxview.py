@@ -13,19 +13,21 @@ class BoxViewWrapper(ConsumerApiWrapper):
         if distinct is True:
             queryparams = {'distinctonbox': 'true'}
 
-        r = requests.get(self.boxviewsurl, params=queryparams, headers=self.headers)
+        try:
+            r = requests.get(self.boxviewsurl, params=queryparams, headers=self.headers)
+            boxviewresponse = r.json()
+        except requests.exceptions.RequestException as e:
+            BoxViewWrapper.process_status(e.response.status_code, str(e))
 
-        ConsumerApiWrapper.process_status(r.status_code)
-
-        boxviewresponse = r.json()
         return boxviewresponse
 
     def post(self, boxserial):
         payload = {'boxserial': boxserial}
-        r = requests.post(self.boxviewsurl, json=payload, headers=self.headers)
+        try:
+            r = requests.post(self.boxviewsurl, json=payload, headers=self.headers)
+            boxviewresponse = r.json()
+        except requests.exceptions.RequestException as e:
+            BoxViewWrapper.process_status(e.response.status_code, str(e))
 
-        ConsumerApiWrapper.process_status(r.status_code)
-
-        boxviewresponse = r.json()
         return boxviewresponse
 
