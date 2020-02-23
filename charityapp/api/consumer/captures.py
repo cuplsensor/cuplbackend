@@ -8,7 +8,6 @@
 from flask import Flask, Blueprint, request, current_app, jsonify
 from flask_restful import Resource, Api, abort, reqparse
 from ...services import captures, boxes, users
-from ..
 from ...captures.schemas import ConsumerCaptureSchema
 from ..baseresource import SingleResource, MultipleResource
 from .usertokenauth import requires_user_token
@@ -46,7 +45,7 @@ class Captures(MultipleResource):
         limit = parsedargs.get('limit', None)
 
         boxobj = boxes.get_by_serial(serial)
-        capturelist = captures.find(parent_box=boxobj).order_by(captures.__model__.timestamp).offset(offset).limit(limit)
+        capturelist = captures.find(parent_box=boxobj).order_by(captures.__model__.timestamp.desc()).offset(offset).limit(limit)
 
         schema = self.Schema()
         result = schema.dump(capturelist, many=True)
@@ -96,7 +95,7 @@ class MeCaptures(Captures):
         if distinctonbox is True:
             capturelist = userobj.latest_capture_by_box()
         else:
-            capturelist = captures.find(scanned_by_user=userobj).order_by(captures.__model__.timestamp)
+            capturelist = captures.find(scanned_by_user=userobj).order_by(captures.__model__.timestamp.desc())
 
         schema = self.Schema()
         result = schema.dump(capturelist, many=True)
