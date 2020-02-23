@@ -46,7 +46,7 @@ class Captures(MultipleResource):
         limit = parsedargs.get('limit', None)
 
         boxobj = boxes.get_by_serial(serial)
-        capturelist = captures.find(parent_box=boxobj).order_by(captures.__model__.timestamp.desc()).offset(offset).limit(limit)
+        capturelist = captures.find(parent_box=boxobj).order_by(captures.__model__.timestamp).offset(offset).limit(limit)
 
         schema = self.Schema()
         result = schema.dump(capturelist, many=True)
@@ -96,7 +96,7 @@ class MeCaptures(Captures):
         if distinctonbox is True:
             capturelist = userobj.latest_capture_by_box()
         else:
-            capturelist = captures.find(scanned_by_user=userobj).order_by(captures.__model__.timestamp.desc())
+            capturelist = captures.find(scanned_by_user=userobj).order_by(captures.__model__.timestamp)
 
         schema = self.Schema()
         result = schema.dump(capturelist, many=True)
