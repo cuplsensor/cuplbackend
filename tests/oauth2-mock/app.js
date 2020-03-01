@@ -3,17 +3,22 @@ const MOCK_IDP_PORT = 3000;
 const MOCK_IDP_HOST = 'localhost';
 const MOCK_API_AUDIENCE = 'mock_api_audience';
 
-let server = new OAuth2Server();
+async function startserver() {
+  	let server = new OAuth2Server();
 
-// Generate a new RSA key and add it to the keystore
-server.issuer.keys.generateRSA();
+	// Generate a new RSA key and add it to the keystore
+	server.issuer.keys.generateRSA();
 
-service = server.service;
+	service = server.service;
 
-service.once('beforeTokenSigning', (token, req) => {
-	token.payload.aud = MOCK_API_AUDIENCE;
-});
+	service.once('beforeTokenSigning', (token, req) => {
+		token.payload.aud = MOCK_API_AUDIENCE;
+	});
 
-// Start the server
-await server.start(MOCK_IDP_PORT, MOCK_IDP_HOST);
-console.log('Issuer URL:', server.issuer.url);
+	// Start the server
+  	await server.start(MOCK_IDP_PORT, MOCK_IDP_HOST);
+  	console.log('Issuer URL:', server.issuer.url);
+  	return "done!";
+}
+
+startserver();
