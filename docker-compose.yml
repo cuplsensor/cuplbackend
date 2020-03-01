@@ -1,40 +1,16 @@
 version: '3.1'
 services:
- web:
+ wsbackend:
   restart: 'no'
   build: .
-  hostname: websensor.io
-  volumes:
-   - certbot-dobs-letsencrypt:/tmp/letsencrypt
-   - certbot-dobs-certs:/etc/letsencrypt
-   - certbot-dobs-confd:/etc/nginx/conf.d
-   - certbot-dobs-alembic:/app/alembic
-  ports:
-    - '80:80'
-    - '443:443'
   links:
    - postgres:postgres
-  env_file: .env
-  environment:
-   VIRTUAL_HOST: websensor.io
+   - oauth-mock:oauth-mock
 
  postgres:
-  restart: always
+  restart: 'no'
   image: postgres:latest
-  env_file: .env
-  volumes:
-   - ./postgres-data:/var/lib/postgresql/data2
-  ports:
-   - "5432:5432"
 
-volumes:
-  certbot-dobs-letsencrypt:
-   driver: rexray/dobs:latest
-  certbot-dobs-certs:
-   driver: rexray/dobs:latest
-  certbot-dobs-confd:
-   driver: rexray/dobs:latest
-  certbot-dobs-alembic:
-   driver: rexray/dobs:latest
-
-
+ oauth-mock:
+  restart: 'no'
+  build: ./tests/oauth2-mock/
