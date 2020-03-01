@@ -20,4 +20,6 @@ RUN pip3 install -r requirements.txt
 # uWSGI will be available on this port
 EXPOSE $WSB_PORT
 
-CMD [ "uwsgi", "--ini",  "uwsgi.ini"]
+CMD [ "uwsgi", "--uid", "uwsgi", \
+               "--plugins", "python3", \
+               "--ini",  "uwsgi.ini"]
