@@ -3,8 +3,8 @@ const MOCK_IDP_PORT = 3000;
 const MOCK_IDP_HOST = 'localhost';
 const MOCK_API_AUDIENCE = 'mock_api_audience';
 
-async function startserver() {
-  	let server = new OAuth2Server();
+async function startserver(server) {
+  	
 
 	// Generate a new RSA key and add it to the keystore
 	server.issuer.keys.generateRSA();
@@ -21,4 +21,6 @@ async function startserver() {
   	return "done!";
 }
 
-startserver();
+let server = new OAuth2Server();
+
+startserver(server);
