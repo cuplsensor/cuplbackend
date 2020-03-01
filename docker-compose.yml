@@ -3,6 +3,17 @@ services:
  wsbackend:
   restart: 'no'
   build: .
+  environment:
+   - DB_PASS: test_db_password
+   - DB_USER: test_db_user
+   - DB_NAME: test_db_name
+   - DB_HOST: postgres
+   - DB_PORT: 5432
+   - ADMINAPI_CLIENTSECRET: rakfnlsakenaslk
+   - CSRF_SESSION_KEY: aslfenalkse
+   - SECRET_KEY: efasfsaeflksena
+   - WSB_PORT: 5001
+
   links:
    - postgres:postgres
    - oauth-mock:oauth-mock
@@ -10,6 +21,11 @@ services:
  postgres:
   restart: 'no'
   image: postgres:latest
+  environment: 
+   - POSTGRES_PASSWORD: test_db_password
+   - POSTGRES_USER: test_db_user
+   - POSTGRES_DB: test_db_name
+
 
  oauth-mock:
   restart: 'no'
