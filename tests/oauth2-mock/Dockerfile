@@ -1,6 +1,6 @@
 FROM node:10
 
-ENV TEST_IDP_PORT=3000
+ENV IDP_PORT=3000
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -17,5 +17,5 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-EXPOSE $TEST_IDP_PORT
+EXPOSE $IDP_PORT
 CMD [ "node", "app.js" ]

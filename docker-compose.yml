@@ -13,6 +13,8 @@ services:
    - CSRF_SESSION_KEY: aslfenalkse
    - SECRET_KEY: efasfsaeflksena
    - WSB_PORT: 5001
+   - IDP_HOST: "oauth-mock"
+   - IDP_PORT: 3000
 
   links:
    - postgres:postgres
@@ -30,3 +32,6 @@ services:
  oauth-mock:
   restart: 'no'
   build: ./tests/oauth2-mock/
+  environment:
+   - IDP_HOST: "oauth-mock"
+   - IDP_PORT: 3000
