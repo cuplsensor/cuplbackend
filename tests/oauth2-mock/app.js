@@ -15,5 +15,5 @@ service.once('beforeTokenSigning', (token, req) => {
 });
 
 // Start the server
-server.start(MOCK_IDP_PORT, MOCK_IDP_HOST);
+await server.start(MOCK_IDP_PORT, MOCK_IDP_HOST);
 console.log('Issuer URL:', server.issuer.url);
