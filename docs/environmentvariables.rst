@@ -30,13 +30,25 @@ Identity Provider
 
 .. _idpurl:
 
-``IDP_ORIGIN``
+``IDP_PROTOCOL``
 ^^^^^^^^^^^^^^^^
-Default: ``http://localhost:3000``
+Default: ``http://``
 
-Protocol, host and port of the OpenID Connect Identity Provider.
+Protocol of the OpenID Connect Identity Provider.
 
-Defaults to the origin of the mock IdP.
+Defaults to the protocol of the mock IdP.
+
+``IDP_HOST``
+^^^^^^^^^^^^^^^^
+Default: ``localhost``
+
+Hostname of the OpenID Connect Identity Provider.
+
+``IDP_PORT``
+^^^^^^^^^^^^^^^^
+Default: ``3000``
+
+Port of the OpenID Connect Identity Provider.
 
 .. _idp_jwks:
 

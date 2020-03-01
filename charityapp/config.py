@@ -43,9 +43,14 @@ CSRF_SESSION_KEY = os.environ['CSRF_SESSION_KEY']
 # Secret key for signing cookies
 SECRET_KEY = os.environ['SECRET_KEY']
 
-IDP_ORIGIN = os.getenv('IDP_ORIGIN', defaults.IDP_ORIGIN)
-API_AUDIENCE = os.getenv('API_AUDIENCE', defaults.API_AUDIENCE)
+IDP_PROTOCOL = os.getenv('IDP_PROTOCOL', defaults.IDP_PROTOCOL)
+IDP_HOST = os.getenv('IDP_HOST', defaults.IDP_HOST)
+IDP_PORT = os.getenv('IDP_PORT', defaults.IDP_PORT)
+IDP_ORIGIN = '{idp_protocol}{idp_host}:{idp_port}'.format(idp_protocol=IDP_PROTOCOL, idp_host=IDP_HOST, idp_port=str(IDP_PORT))
 IDP_JWKS = os.getenv('IDP_JWKS', defaults.IDP_JWKS)
+
+API_AUDIENCE = os.getenv('API_AUDIENCE', defaults.API_AUDIENCE)
+
 ADMINAPI_AUDIENCE = os.getenv('ADMINAPI_AUDIENCE', defaults.ADMINAPI_AUDIENCE)
 ADMINAPI_CLIENTID = os.getenv('ADMINAPI_CLIENTID', defaults.ADMINAPI_CLIENTID)
 ADMINAPI_CLIENTSERET = os.environ['ADMINAPI_CLIENTSECRET']

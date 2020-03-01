@@ -93,7 +93,10 @@ def baseurl():
 
 @pytest.fixture
 def idporigin():
-    return os.getenv("IDP_ORIGIN", defaults.IDP_ORIGIN)
+    idp_protocol = os.getenv("IDP_PROTOCOL", defaults.WSB_PROTOCOL)
+    idp_host = os.getenv("IDP_HOST", defaults.WSB_HOST)
+    idp_port = os.getenv("IDP_PORT", defaults.WSB_PORT)
+    return '{idp_protocol}{idp_host}:{idp_port}'.format(idp_protocol=idp_protocol, idp_host=idp_host, idp_port=str(idp_port))
 
 
 @pytest.fixture

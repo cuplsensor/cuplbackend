@@ -1,11 +1,9 @@
 const { OAuth2Server } = require('oauth2-mock-server');
-const MOCK_IDP_PORT = 3000;
-const MOCK_IDP_HOST = 'localhost';
+const IDP_PORT = process.env.IDP_PORT || 3000;
+const IDP_HOST = process.env.IDP_HOST || 'localhost';
 const MOCK_API_AUDIENCE = 'mock_api_audience';
 
 async function startserver(server) {
-  	
-
 	// Generate a new RSA key and add it to the keystore
 	server.issuer.keys.generateRSA();
 
@@ -16,7 +14,7 @@ async function startserver(server) {
 	});
 
 	// Start the server
-  	await server.start(MOCK_IDP_PORT, MOCK_IDP_HOST);
+  	await server.start(IDP_PORT, IDP_HOST);
   	console.log('Issuer URL:', server.issuer.url);
   	return "done!";
 }
