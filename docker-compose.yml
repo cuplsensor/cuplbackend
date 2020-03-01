@@ -4,17 +4,17 @@ services:
   restart: 'no'
   build: .
   environment:
-   - DB_PASS: test_db_password
-   - DB_USER: test_db_user
-   - DB_NAME: test_db_name
-   - DB_HOST: postgres
-   - DB_PORT: 5432
-   - ADMINAPI_CLIENTSECRET: rakfnlsakenaslk
-   - CSRF_SESSION_KEY: aslfenalkse
-   - SECRET_KEY: efasfsaeflksena
-   - WSB_PORT: 5001
-   - IDP_HOST: "oauth-mock"
-   - IDP_PORT: 3000
+   - DB_PASS=test_db_password
+   - DB_USER=test_db_user
+   - DB_NAME=test_db_name
+   - DB_HOST=postgres
+   - DB_PORT=5432
+   - ADMINAPI_CLIENTSECRET=rakfnlsakenaslk
+   - CSRF_SESSION_KEY=aslfenalkse
+   - SECRET_KEY=efasfsaeflksena
+   - WSB_PORT=5001
+   - IDP_HOST=oauth-mock
+   - IDP_PORT=3000
 
   links:
    - postgres:postgres
@@ -24,14 +24,14 @@ services:
   restart: 'no'
   image: postgres:latest
   environment: 
-   - POSTGRES_PASSWORD: test_db_password
-   - POSTGRES_USER: test_db_user
-   - POSTGRES_DB: test_db_name
+   - POSTGRES_PASSWORD=test_db_password
+   - POSTGRES_USER=test_db_user
+   - POSTGRES_DB=test_db_name
 
 
  oauth-mock:
   restart: 'no'
   build: ./tests/oauth2-mock/
   environment:
-   - IDP_HOST: "oauth-mock"
-   - IDP_PORT: 3000
+   - IDP_HOST=oauth-mock
+   - IDP_PORT=3000
