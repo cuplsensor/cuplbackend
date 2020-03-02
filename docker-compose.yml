@@ -35,3 +35,11 @@ services:
   environment:
    - IDP_HOST=oauth-mock
    - IDP_PORT=3000
+
+ nginx:
+  restart: 'no'
+  build: ./tests/nginx/
+  ports:
+   - 80:80
+  depends_on:
+   - wsbackend
