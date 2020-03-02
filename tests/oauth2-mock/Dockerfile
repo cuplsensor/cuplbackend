@@ -18,4 +18,5 @@ RUN npm install
 COPY . .
 
 EXPOSE $IDP_PORT
+
 CMD [ "node", "app.js" ]

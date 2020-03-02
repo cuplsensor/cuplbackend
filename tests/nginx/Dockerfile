@@ -7,6 +7,6 @@ EXPOSE 80
 # /etc/nginx/nginx.conf includes
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY wsbackend.conf /etc/nginx/conf.d
 
 CMD /bin/bash -c "exec nginx -g 'daemon off;'"

@@ -23,5 +23,4 @@ RUN pip3 install -r requirements.txt
 EXPOSE $WSB_PORT
 
 CMD [ "uwsgi", "--uid", "uwsgi", \
-               "--plugins", "python3", \
                "--ini",  "uwsgi.ini"]

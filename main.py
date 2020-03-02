@@ -15,7 +15,7 @@ from charityapp.api import admin, consumer
 
 
 def simple(env, resp):
-    resp(b'200 OK', [(b'Content-Type', b'text/plain')])
+    resp('200 OK', [('Content-Type', 'text/plain')])
     return [b'Hello WSGI World']
 
 app = DispatcherMiddleware(simple, {
