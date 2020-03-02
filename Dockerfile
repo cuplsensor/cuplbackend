@@ -5,14 +5,16 @@ FROM python:3.8.2-slim-buster
 
 ENV WSB_PORT=3031
 
-RUN apt-get update &&  apt-get install -y build-essential libpq-dev \
+RUN apt-get update &&  apt-get install -y build-essential libpq-dev python3-dev \
     && pip3 install uwsgi psycopg2 \
-    && apt-get remove -y --purge build-essential libpq-dev
+    && apt-get remove -y --purge build-essential libpq-dev python3-dev
 
 # Create a working directory named app
 WORKDIR /app
 # Copy everything into the working directory
 COPY . .
+# Change ownership of the app folder to match the user running uwsgi
+RUN chown -R www-data:www-data /app
 
 # Install all requirements
 RUN pip3 install -r requirements.txt
