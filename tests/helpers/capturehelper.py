@@ -1,6 +1,6 @@
 from datetime import timedelta
 import pytz
-from wsbackend.apiwrapper.admin.capture import CaptureWrapper
+from ...apiwrapper.admin.capture import CaptureWrapper
 
 tz = pytz.timezone("Europe/London")
 
