@@ -135,9 +135,6 @@ def mecapture_fixture(token_fixture, baseurl):
 def box_fixture_b(request, baseurl, clientid, clientsecret):
     boxhelper = BoxWrapper(baseurl, clientid, clientsecret)
 
-    if baseurl is None:
-        raise ValueError
-
     class BoxFactory(object):
         boxids = []
         def add(self):
