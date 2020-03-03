@@ -9,8 +9,9 @@ RUN apt-get update &&  apt-get install -y build-essential libpq-dev python3-dev 
     && pip3 install uwsgi psycopg2 \
     && apt-get remove -y --purge build-essential libpq-dev python3-dev
 
+COPY ./requirements.txt .
 # Install all requirements
-RUN pip3 install -r ./requirements.txt
+RUN pip3 install -r requirements.txt
 
 FROM backendbase
 # Create a working directory named app

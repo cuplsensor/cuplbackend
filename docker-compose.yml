@@ -41,3 +41,20 @@ services:
    - 80:80
   depends_on:
    - wsbackend
+
+ sut:
+  restart: 'no'
+  build: .
+  depends_on:
+   - nginx
+  environment:
+   - DB_PASS=test_db_password
+   - ADMINAPI_CLIENTSECRET=rakfnlsakenaslk
+   - CSRF_SESSION_KEY=aslfenalkse
+   - SECRET_KEY=efasfsaeflksena
+   - WSB_HOST=wsbackend
+   - WSB_PORT=5001
+   - IDP_HOST=oauth-mock
+   - IDP_PORT=3000
+  command: python3 -m pytest -vvvv --showlocals
+  
