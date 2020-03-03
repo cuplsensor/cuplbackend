@@ -8,13 +8,13 @@ import requests
 from . import defaults
 
 from .helpers.capturehelper import CaptureListHelper
-from wsbackend.apiwrapper.admin.box import BoxWrapper
-from wsbackend.apiwrapper.consumer.user import UserWrapper
-from wsbackend.apiwrapper.consumer.mecapture import MeCaptureWrapper
-from wsbackend.apiwrapper.consumer.boxview import BoxViewWrapper
-from wsbackend.apiwrapper.consumer.boxscanned import BoxScannedWrapper
-from wsbackend.apiwrapper.consumer.location import LocationWrapper
-from wsbackend.apiwrapper.consumer.sample import SampleWrapper
+from ..apiwrapper.admin.box import BoxWrapper
+from ..apiwrapper.consumer.user import UserWrapper
+from ..apiwrapper.consumer.mecapture import MeCaptureWrapper
+from ..apiwrapper.consumer.boxview import BoxViewWrapper
+from ..apiwrapper.consumer.boxscanned import BoxScannedWrapper
+from ..apiwrapper.consumer.location import LocationWrapper
+from ..apiwrapper.consumer.sample import SampleWrapper
 
 sys.path.append(".")
 
