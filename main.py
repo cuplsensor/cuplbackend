@@ -9,7 +9,7 @@ from tests import defaults as test_defaults
 from werkzeug.serving import run_simple
 from werkzeug.debug import DebuggedApplication
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from charityapp.api import admin, consumer
+from wsbackend.api import admin, consumer
 
 
 def simple(env, resp):

@@ -8,8 +8,8 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
 import os
-from charityapp.core import db
-from charityapp.models import *
+from wsbackend.core import db
+from wsbackend.models import *
 
 # Define the database - we are working with
 # SQLite for this example
