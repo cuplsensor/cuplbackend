@@ -3,8 +3,11 @@
 Environment Variables
 ======================
 
+wsbackend URL
+-----------------------
+
 ``WSB_PROTOCOL``
---------------
+^^^^^^^^^^^^^^^^^
 Default: ``http://``
 
 Protocol of wsbackend.
@@ -12,7 +15,7 @@ Protocol of wsbackend.
 .. _wsbhost:
 
 ``WSB_HOST``
---------------
+^^^^^^^^^^^^^
 Default: ``localhost``
 
 Hostname of wsbackend.
@@ -20,13 +23,13 @@ Hostname of wsbackend.
 .. _wsbport:
 
 ``WSB_PORT``
--------------
+^^^^^^^^^^^^^
 Default: ``5000``
 
 Port of wsbackend.
 
-Identity Provider
-------------------
+Identity Provider URL
+-----------------------
 
 .. _idpurl:
 
@@ -60,8 +63,8 @@ Endpoint on the IdP from which the public JSON Web Key set can be downloaded.
 
 Defaults to the `mock IdP JWKs endpoint <https://www.npmjs.com/package/oauth2-mock-server#get-jwks>`_.
 
-Database Connection
---------------------
+Database URI
+---------------
 
 .. _dbhost:
 
@@ -95,9 +98,8 @@ Database password.
 
 No default for security reasons. This variable must be set before runtime.
 
-Consumer API Authorization
-----------------------------
-
+Consumer API
+-------------
 .. _apiaudience:
 
 ``API_AUDIENCE``
@@ -109,8 +111,8 @@ will reject the token and deny access to an endpoint that requires authorization
 
 Defaults to a value used by the mock IdP.
 
-Admin API Authorization
-----------------------------
+Admin API
+----------
 
 .. _adminapiaudience:
 
