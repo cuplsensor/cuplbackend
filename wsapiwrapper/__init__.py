@@ -1,7 +1,7 @@
 class ApiWrapper:
-    """Wraps calls to wsbackend web APIs.
+    """Wraps calls to wsbackend APIs.
 
-    Provides a consistent and tested way to use wsbackend web APIs.
+    Provides a consistent way to call wsbackend web APIs.
     Uses the Requests HTTP library.
     """
 
@@ -12,7 +12,7 @@ class ApiWrapper:
             tokenstr (str): API access token
 
         Returns:
-            headers: a dictionary containing two HTTP headers.
+            dict: a dictionary containing two HTTP headers.
         """
         headers = {
         'content-type': 'application/json',
@@ -21,4 +21,9 @@ class ApiWrapper:
         return headers
 
     def __init__(self, baseurl):
+        """Constructor for ApiWrapper.
+
+        Args:
+            baseurl (str): Websensor backend base URL e.g. https://marmalade.api.websensor.io/
+        """
         self.baseurl = baseurl
