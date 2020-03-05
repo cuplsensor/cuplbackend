@@ -9,14 +9,13 @@ from tests import defaults as test_defaults
 from werkzeug.serving import run_simple
 from werkzeug.debug import DebuggedApplication
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-
-
 from charityapp.api import admin, consumer
 
 
 def simple(env, resp):
     resp('200 OK', [('Content-Type', 'text/plain')])
     return [b'Hello WSGI World']
+
 
 app = DispatcherMiddleware(simple, {
         '/api/admin/v1': admin.create_app(),
