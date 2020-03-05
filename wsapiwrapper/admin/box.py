@@ -3,6 +3,8 @@ from ..admin import AdminApiWrapper
 
 
 class BoxWrapper(AdminApiWrapper):
+    """ Test docstring
+    """
     def __init__(self, baseurl, adminapi_client_id, adminapi_client_secret):
         super().__init__(baseurl, adminapi_client_id, adminapi_client_secret)
 
