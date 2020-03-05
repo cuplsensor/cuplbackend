@@ -11,6 +11,7 @@ See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`
    docs/installation
    docs/authentication
    docs/environmentvariables
+   docs/wsapiwrapper
    :caption: Contents:
 
 

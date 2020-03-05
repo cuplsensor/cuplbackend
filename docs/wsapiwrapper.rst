@@ -1,4 +1,4 @@
 wsapiwrapper Reference
 ========================
 
-..autoclass:: ApiWrapper
+.. autoclass:: ApiWrapper
