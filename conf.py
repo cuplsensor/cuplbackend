@@ -138,6 +138,8 @@ latex_documents = [
      'Malcolm Mackay', 'manual'),
 ]
 
+autoclass_content = "both"
+
 
 # -- Options for manual page output ------------------------------------------
 
