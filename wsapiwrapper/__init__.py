@@ -6,7 +6,8 @@ class ApiWrapper:
     """
 
     def auth_header(self, tokenstr):
-        """Return an HTTP headers dictionary to be passed on API requests.
+        """Get a dictionary of headers. One contains an API access token.
+        This is needed for some API requests to be authorized.
 
         Args:
             tokenstr (str): API access token

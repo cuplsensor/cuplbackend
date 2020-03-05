@@ -29,6 +29,13 @@ class AdminApiWrapper(ApiWrapper):
         return tokenresponse
 
     def __init__(self, baseurl, adminapi_client_id, adminapi_client_secret):
+        """Constructor for AdminApiWrapper
+
+        Args:
+            baseurl (str): Websensor backend base URL.
+            adminapi_client_id (str): Client ID API access credential. A long base64 string SVpP...kO8
+            adminapi_client_secret (str): Client Secret API access credential. A long base64 string CM300...1aVB
+        """
         super().__init__(baseurl)
         self.adminapi_client_id = adminapi_client_id
         self.adminapi_client_secret = adminapi_client_secret
