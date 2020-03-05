@@ -1,5 +1,5 @@
 """
-    charityapp.api.admin.token
+    flaskapp.api.admin.token
     ~~~~~~~~~~~~~~
 
     Token endpoints

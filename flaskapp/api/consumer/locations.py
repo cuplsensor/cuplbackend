@@ -1,6 +1,6 @@
 # Inspired by overholt
 """
-    charityapp.api.locations
+    flaskapp.api.locations
     ~~~~~~~~~~~~~~
 
     Location endpoints

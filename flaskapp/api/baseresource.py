@@ -1,6 +1,6 @@
 # Inspired by overholt
 """
-    charityapp.api.baseresource
+    flaskapp.api.baseresource
     ~~~~~~~~~~~~~~
 
     Base resource from https://marshmallow.readthedocs.io/en/3.0/examples.html

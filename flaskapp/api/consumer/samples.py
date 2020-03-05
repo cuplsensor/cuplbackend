@@ -1,6 +1,6 @@
 # Inspired by overholt
 """
-    charityapp.api.consumer.samples
+    flaskapp.api.consumer.samples
     ~~~~~~~~~~~~~~
 
     Samples endpoints

@@ -1,6 +1,6 @@
 # Inspired by overholt
 """
-    charityapp.api.admin.boxes
+    flaskapp.api.admin.boxes
     ~~~~~~~~~~~~~~
 
     Box endpoints

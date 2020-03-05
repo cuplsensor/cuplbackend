@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    charityapp.api
+    flaskapp.api
     ~~~~~~~
 
     web api application package

@@ -36,7 +36,7 @@ def create_app(package_name, package_path, settings_override=None):
     app = Flask(package_name, instance_relative_config=True)
 
     #app.config.from_pyfile('settings.cfg', silent=True)
-    app.config.from_object('charityapp.config')
+    app.config.from_object('flaskapp.config')
     app.config.from_object(settings_override)
 
     # Drop all uses a tip from http://piotr.banaszkiewicz.org/blog/2012/06/29/flask-sqlalchemy-init_app/
