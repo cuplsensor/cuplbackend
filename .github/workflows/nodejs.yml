@@ -77,3 +77,6 @@ jobs:
       env:
         CI: true
 
+    - name: Output uWSGI log file
+      run: cat /tmp/uwsgi_daemonize.log
+
