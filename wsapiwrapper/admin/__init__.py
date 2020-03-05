@@ -11,8 +11,12 @@ class AdminApiWrapper(ApiWrapper):
     def get_admin_token(self):
         """Request a token from the token endpoint.
 
-        A client_id and client_secret (similar to username and password) are exchanged
-        for a token. To do this a POST request is made to wsbackend.
+        A client_id and client_secret are exchanged for a token. This uses
+        the OAuth Client Credentials flow:
+
+        1. A POST request is made to the token endpoint of wsbackend.
+        2. Client ID and Client Secret are validated.
+        3. Access token is returned.
 
         Returns:
             str: token received from wsbackend.

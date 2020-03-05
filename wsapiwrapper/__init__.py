@@ -6,7 +6,7 @@ class ApiWrapper:
     """
 
     def auth_header(self, tokenstr):
-        """Return an HTTP header that includes the API access token.
+        """Return an HTTP headers dictionary to be passed on API requests.
 
         Args:
             tokenstr (str): API access token
@@ -24,6 +24,6 @@ class ApiWrapper:
         """Constructor for ApiWrapper.
 
         Args:
-            baseurl (str): Websensor backend base URL e.g. https://marmalade.api.websensor.io/
+            baseurl (str): Websensor backend base URL.
         """
         self.baseurl = baseurl
