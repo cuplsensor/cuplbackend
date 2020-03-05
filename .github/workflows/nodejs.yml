@@ -78,5 +78,6 @@ jobs:
         CI: true
 
     - name: Output uWSGI log file
+      if: failure()
       run: cat /tmp/uwsgi_daemonize.log
 
