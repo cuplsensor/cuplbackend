@@ -6,6 +6,14 @@ class ApiWrapper:
     """
 
     def auth_header(self, tokenstr):
+        """Return an HTTP header that includes the API access token.
+
+        Args:
+            tokenstr (str): API access token
+
+        Returns:
+            headers: a dictionary containing two HTTP headers.
+        """
         headers = {
         'content-type': 'application/json',
         'Authorization': 'bearer {tokenstr}'.format(tokenstr=tokenstr)
