@@ -1,5 +1,4 @@
 wsapiwrapper Reference
 ========================
 
-.. py:module:: wsapiwrapper.__init__
-.. autoclass:: ApiWrapper
+.. autoclass:: wsapiwrapper.__init__.ApiWrapper
