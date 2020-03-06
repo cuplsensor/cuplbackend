@@ -2,8 +2,6 @@ Installation
 =============
 This tutorial assumes you have Git and Python 3 installed.
 
-.. sectnum::
-
 Install Prerequisites
 -----------------------
 One of the dependencies (Postgres library `Psycopg2 <https://www.psycopg.org/docs/install.html#install-from-source>`_)
