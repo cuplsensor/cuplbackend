@@ -11,12 +11,12 @@ wsapiwrapper Reference
    :undoc-members:
    :show-inheritance:
 
-.. automodule::wsapiwrapper.admin.box
+.. autoclass::wsapiwrapper.admin.BoxWrapper
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule::wsapiwrapper.admin.capture
+.. autoclass::wsapiwrapper.admin.CaptureWrapper
    :members:
    :undoc-members:
    :show-inheritance:
