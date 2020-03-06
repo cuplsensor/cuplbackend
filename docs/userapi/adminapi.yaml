@@ -103,8 +103,10 @@ paths:
       responses:
         '201':
           description: Capture created
-          schema: null
-          $ref: '#/components/schemas/Capture'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Capture'
           headers: {}
         '400':
           description: 'invalid input, object invalid'
@@ -188,8 +190,10 @@ paths:
       responses:
         '201':
           description: Box created
-          schema: null
-          $ref: '#/components/schemas/Box'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Box'
           headers: {}
         '400':
           description: 'invalid input, object invalid'
