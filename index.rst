@@ -4,11 +4,10 @@ See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`
 
 .. _index:
 .. toctree::
-   :maxdepth: 2
+   :numbered:
+   :maxdepth: 3
 
    docs/userapi/index
-   docs/userapi/adminapi
-   docs/userapi/consumerapi
    docs/test
    docs/installation
    docs/authentication

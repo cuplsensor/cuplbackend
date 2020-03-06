@@ -1,7 +1,7 @@
 .. _AdminAPI:
 
 wsbackend Admin API Reference
--------------------------------
+===============================
 
 * Resources
     * BoxAdminAPI_

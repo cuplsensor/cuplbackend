@@ -1,10 +1,10 @@
 .. _ConsumerAPI:
 
 wsbackend Consumer API Reference
----------------------------------
+=================================
 
 * Resources
-    * Box_
+    * BoxConsumerAPI_
     * Captures_
     * Samples_
     * Users_

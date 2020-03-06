@@ -4,5 +4,13 @@ wsbackend API Reference
 =========================
 
 wsbackend has two APIs:
- * The :ref:`consumer API <ConsumerAPI>` for user-facing applications.
- * The :ref:`admin API <AdminAPI>` for administrators.
+
+:ref:`consumer API <ConsumerAPI>`
+------------------------------------
+For user-facing applications.
+
+
+:ref:`admin API <AdminAPI>`
+-----------------------------
+For administrators.
+
