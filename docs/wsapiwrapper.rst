@@ -16,7 +16,7 @@ wsapiwrapper Reference
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: wsapiwrapper.admin.capture
+.. automodule:: wsapiwrapper.admin.capture
    :members:
    :undoc-members:
    :show-inheritance:
