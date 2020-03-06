@@ -8,15 +8,12 @@ info:
 paths:
   /token:
     post:
-      description: |
-        Obtain a JWT for interacting with this API.
+      description: Obtain a JWT for interacting with this API.
       summary: Obtain a bearer token.
       operationId: TokenPost
       responses:
         '200':
-          description: >-
-            A bearer token that can be used to make calls to other endpoints in
-            this API.
+          description: A bearer token that can be used to make calls to other endpoints in this API.
           headers: {}
           content:
             application/json:
@@ -42,8 +39,7 @@ paths:
         required: true
   /capture:
     get:
-      description: |
-        Get a capture by its ID.
+      description: Get a capture by its ID.
       summary: get a capture.
       operationId: AdminCaptureGet
       security:
@@ -69,6 +65,7 @@ paths:
             application/json:
               schema: {}
     delete:
+      description: delete a capture
       summary: delete a capture
       operationId: AdminCaptureDelete
       security:
@@ -98,8 +95,7 @@ paths:
               schema: {}
   /captures:
     post:
-      description: |
-        Create a capture
+      description: Create a capture
       summary: create a capture
       operationId: AdminCapturePost
       security:
@@ -128,8 +124,7 @@ paths:
         description: Capture object
   /box:
     get:
-      description: |
-        Get a box from an id.
+      description: Get a box from an id.
       summary: get a box
       operationId: BoxGet
       security:
@@ -155,6 +150,7 @@ paths:
             application/json:
               schema: {}
     delete:
+      description: delete a box
       summary: delete a box
       operationId: BoxDelete
       security:
@@ -184,8 +180,7 @@ paths:
               schema: {}
   /boxes:
     post:
-      description: |
-        Create a box
+      description: Create a box
       summary: create a box
       operationId: BoxPost
       security:
