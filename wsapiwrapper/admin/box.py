@@ -3,12 +3,15 @@ from ..admin import AdminApiWrapper
 
 
 class BoxWrapper(AdminApiWrapper):
-    """ Test docstring
+    """Wraps calls to box endpoints on the Admin API.
     """
-    def __init__(self, baseurl, adminapi_client_id, adminapi_client_secret):
-        super().__init__(baseurl, adminapi_client_id, adminapi_client_secret)
 
     def post(self):
+        """Makes a call to get--box-serial
+
+        Returns:
+
+        """
         boxesurl = "{apiurl}/boxes".format(apiurl=self.apiurl)
         r = requests.post(boxesurl, headers=self.headers)
         boxresponse = r.json()

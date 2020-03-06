@@ -1,8 +1,7 @@
 class ApiWrapper:
     """Wraps calls to wsbackend APIs.
 
-    Provides a consistent way to call wsbackend web APIs.
-    Uses the Requests HTTP library.
+    Uses the Requests HTTP library to call wsbackend web APIs.
     """
 
     def auth_header(self, tokenstr):
