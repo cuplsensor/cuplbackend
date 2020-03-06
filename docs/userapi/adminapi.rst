@@ -18,12 +18,6 @@ Box
    :encoding: utf-8
    :examples:
 
-.. openapi:: adminapi.yaml
-   :include:
-      /boxes/*
-   :encoding: utf-8
-   :examples:
-
 .. _CaptureAdminAPI:
 
 Capture
@@ -31,12 +25,6 @@ Capture
 .. openapi:: adminapi.yaml
    :include:
       /capture/*
-   :encoding: utf-8
-   :examples:
-
-.. openapi:: adminapi.yaml
-   :include:
-      /captures/*
    :encoding: utf-8
    :examples:
 
