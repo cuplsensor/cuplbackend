@@ -25,74 +25,12 @@ class Box(SingleAdminResource):
     def get(self, id):
         """
         Get a box by its serial.
-        ---
-        summary: get a box
-        operationId: BoxGet
-        produces:
-          - application/json
-        security:
-          - Bearer: []
-        parameters:
-          - name: id
-            in: query
-            required: false
-            type: integer
-            description: Box id
-        responses:
-            200:
-              description: A box object
-              schema:
-                $ref: '#/definitions/Box'
-              headers: {}
-            400:
-              description: bad input parameter
-              schema: {}
-        definitions:
-          Box:
-            title: Box
-            type: object
-            properties:
-              id:
-                type: integer
-                format: int32
-              serial:
-                example: YWJjZGVM
-                type: string
-              secretKey:
-                example: AAAAcCcC
-                type: string
-              timeregistered:
-                type: string
-                format: date-time
         """
         return super().get(id)
 
     def delete(self, id):
         """
         Delete a box by its serial.
-        ---
-        summary: delete a box
-        operationId: BoxDelete
-        produces:
-          - application/json
-        security:
-          - Bearer: []
-        parameters:
-          - name: id
-            in: query
-            required: false
-            type: integer
-            description: Box id
-        responses:
-            204:
-              description: Box has been deleted
-              schema: {}
-            400:
-              description: bad input parameter
-              schema: {}
-            404:
-              description: No box found
-              schema: {}
         """
         return super().delete(id)
 
@@ -104,33 +42,6 @@ class Boxes(MultipleAdminResource):
     def post(self):
         """
         Create a new box.
-        ---
-        summary: create a box
-        operationId: BoxPost
-        produces:
-          - application/json
-        security:
-          - Bearer: []
-        parameters:
-          - name: body
-            in: body
-            required: false
-            description: User details
-            schema:
-              $ref: '#/definitions/Box'
-        responses:
-            201:
-              description: Box created
-              schema:
-              $ref: '#/definitions/Box'
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            409:
-              description: a user with the same oauth_id already exists
-              schema: {}
-
         """
         return super().post()
 

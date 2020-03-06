@@ -14,13 +14,6 @@ import jwt
 bp = Blueprint('tokens', __name__)
 api = Api(bp)
 
-"""
-        
-        
-        
-
-        """
-
 class Token(Resource):
     def createtoken(self):
         """ Inspired by https://h.readthedocs.io/en/latest/publishers/authorization-grant-tokens/#python """
@@ -39,53 +32,6 @@ class Token(Resource):
     def post(self):
         """
         Obtain a JWT for interacting with this API.
-        ---
-        summary: Obtain a bearer token.
-        operationId: TokenPost
-        produces:
-            - application/json
-        parameters:
-            - name: body
-              in: body
-              required: true
-              description: 'Token Request Credentials'
-              schema:
-                $ref: '#/definitions/TokenRequest'
-        responses:
-            200:
-                description: A bearer token that can be used to make calls to other endpoints in this API.
-                schema:
-                    $ref: '#/definitions/Token'
-                headers: {}
-            400:
-                description: No credentials supplied
-                schema: {}
-            401:
-                description: Bad credentials
-                schema: {}
-        security: []
-
-        definitions:
-            Token:
-                title: Token
-                type: object
-                properties:
-                  token:
-                    example: eyJz93a...k4laUWw
-                    type: string
-                  token_type:
-                    example: Bearer
-                    type: string
-            TokenRequest:
-                title: TokenRequest
-                type: object
-                properties:
-                  client_id:
-                    example: ABE39cASE940
-                    type: string
-                  client_secret:
-                    example: nsfsaeASEFGSAE
-                    type: string
         """
         parser = reqparse.RequestParser()
         parser.add_argument('client_id', type=str, required=True, help='client_id string needed')

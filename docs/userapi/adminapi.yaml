@@ -1,0 +1,290 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0-oas3"
+  title: Administrator API
+  description: Administrator-only API for provisioning boxes.
+  contact:
+    email: you@your-company.com
+paths:
+  /token:
+    post:
+      description: |
+        Obtain a JWT for interacting with this API.
+      summary: Obtain a bearer token.
+      operationId: TokenPost
+      responses:
+        '200':
+          description: >-
+            A bearer token that can be used to make calls to other endpoints in
+            this API.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: No credentials supplied
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Bad credentials
+          content:
+            application/json:
+              schema: {}
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+        description: Token Request Credentials
+        required: true
+  /capture:
+    get:
+      description: |
+        Get a capture by its ID.
+      summary: get a capture.
+      operationId: AdminCaptureGet
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: query
+          required: false
+          description: Capture id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A capture object
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Capture'
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema: {}
+    delete:
+      summary: delete a capture
+      operationId: AdminCaptureDelete
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: query
+          required: false
+          description: Capture id
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Capture has been deleted
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: No capture found
+          content:
+            application/json:
+              schema: {}
+  /captures:
+    post:
+      description: |
+        Create a capture
+      summary: create a capture
+      operationId: AdminCapturePost
+      security:
+        - Bearer: []
+      responses:
+        '201':
+          description: Capture created
+          schema: null
+          $ref: '#/components/schemas/Capture'
+          headers: {}
+        '400':
+          description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema: {}
+        '409':
+          description: a capture with the same id already exists
+          content:
+            application/json:
+              schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Capture'
+        description: Capture object
+  /box:
+    get:
+      description: |
+        Get a box from an id.
+      summary: get a box
+      operationId: BoxGet
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: query
+          required: false
+          description: Box id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A box object
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Box'
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema: {}
+    delete:
+      summary: delete a box
+      operationId: BoxDelete
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: query
+          required: false
+          description: Box id
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Box has been deleted
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: No box found
+          content:
+            application/json:
+              schema: {}
+  /boxes:
+    post:
+      description: |
+        Create a box
+      summary: create a box
+      operationId: BoxPost
+      security:
+        - Bearer: []
+      responses:
+        '201':
+          description: Box created
+          schema: null
+          $ref: '#/components/schemas/Box'
+          headers: {}
+        '400':
+          description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema: {}
+        '409':
+          description: a user with the same oauth_id already exists
+          content:
+            application/json:
+              schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Box'
+        description: User details
+tags: []
+servers:
+  - url: 'https://virtserver.swaggerhub.com/plots/UserAPI/1.0.0'
+components:
+  schemas:
+    Box:
+      title: Box
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        serial:
+          example: YWJjZGVM
+          type: string
+        secretKey:
+          example: AAAAcCcC
+          type: string
+        timeregistered:
+          type: string
+          format: date-time
+    Capture:
+      title: Capture
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        serial:
+          description: Serial of the box that made the capture
+          example: YWJjZGVM
+          type: string
+        statusb64:
+          description: 12 character status string
+          example: AAAAAAAA
+          type: string
+        timeintb64:
+          description: Time interval in minutes in base64
+          example: Awg=
+          type: string
+        circbufb64:
+          description: Circular buffer including samples encoded as base64.
+          example: Add example here
+          type: string
+        hmac:
+          description: >-
+            valid HMAC. Possession of this proves that to the server that the
+            client has scanned a box.
+          example: afnslh94hfala
+          type: string
+        start-timestamp:
+          type: string
+          format: date-time
+        end-timestamp:
+          type: string
+          format: date-time
+    Token:
+      title: Token
+      type: object
+      properties:
+        token:
+          example: eyJz93a...k4laUWw
+          type: string
+        token_type:
+          example: Bearer
+          type: string
+    TokenRequest:
+      title: TokenRequest
+      type: object
+      properties:
+        client_id:
+          example: ABE39cASE940
+          type: string
+        client_secret:
+          example: nsfsaeASEFGSAE
+          type: string

@@ -27,57 +27,12 @@ class Capture(SingleAdminResource):
     def get(self, id):
         """
         Get a capture by ID.
-        ---
-        summary: get a capture.
-        operationId: AdminCaptureGet
-        produces:
-          - application/json
-        security:
-            - Bearer: []
-        parameters:
-          - name: id
-            in: query
-            required: false
-            type: integer
-            description: Capture id
-        responses:
-            200:
-              description: A capture object
-              schema:
-                $ref: '#/definitions/Capture'
-              headers: {}
-            400:
-              description: bad input parameter
-              schema: {}
         """
         return super().get(id)
 
     def delete(self, id):
         """
         Delete a capture.
-        ---
-        summary: delete a capture
-        operationId: AdminCaptureDelete
-        produces:
-          - application/json
-        security:
-            - Bearer: []
-        parameters:
-          - name: id
-            in: query
-            required: false
-            type: integer
-            description: Capture id
-        responses:
-            204:
-              description: Capture has been deleted
-              schema: {}
-            400:
-              description: bad input parameter
-              schema: {}
-            404:
-              description: No capture found
-              schema: {}
         """
         return super().delete(id)
 
@@ -89,33 +44,6 @@ class Captures(MultipleAdminResource):
     def post(self):
         """
         Create a capture
-        ---
-        summary: create a capture
-        operationId: AdminCapturePost
-        produces:
-          - application/json
-        security:
-            - Bearer: []
-        parameters:
-          - name: body
-            in: body
-            required: false
-            description: Capture object
-            schema:
-              $ref: '#/definitions/Capture'
-        responses:
-            201:
-              description: Capture created
-              schema:
-              $ref: '#/definitions/Capture'
-              headers: {}
-            400:
-              description: invalid input, object invalid
-              schema: {}
-            409:
-              description: a capture with the same id already exists
-              schema: {}
-
         """
         jsondata = request.get_json()
         schema = self.Schema()
