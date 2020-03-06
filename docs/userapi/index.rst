@@ -9,7 +9,7 @@ wsbackend API Reference
     * Me_
     * Locations_
 
-.. _Box:
+.. _BoxConsumerAPI:
 Box
 ---
 .. openapi:: consumerapi.yaml

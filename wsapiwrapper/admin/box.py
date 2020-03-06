@@ -7,7 +7,7 @@ class BoxWrapper(AdminApiWrapper):
     """
 
     def post(self):
-        """Makes a call to :ref:`get--box-serial`
+        """Makes a call to :ref:`BoxConsumerAPI`
 
         Returns:
 
