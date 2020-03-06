@@ -1,12 +1,12 @@
 .. _AdminAPI:
 
 wsbackend Admin API Reference
-==============================
+-------------------------------
 
 * Resources
-    * Box_
-    * Captures_
-    * Token_
+    * BoxAdminAPI_
+    * CaptureAdminAPI_
+    * TokenAdminAPI_
 
 .. _BoxAdminAPI:
 

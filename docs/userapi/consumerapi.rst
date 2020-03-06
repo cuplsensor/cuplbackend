@@ -1,7 +1,7 @@
 .. _ConsumerAPI:
 
 wsbackend Consumer API Reference
-==================================
+---------------------------------
 
 * Resources
     * Box_

@@ -7,6 +7,8 @@ See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`
    :maxdepth: 2
 
    docs/userapi/index
+   docs/userapi/adminapi
+   docs/userapi/consumerapi
    docs/test
    docs/installation
    docs/authentication
