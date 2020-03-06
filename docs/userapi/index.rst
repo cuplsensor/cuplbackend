@@ -10,6 +10,7 @@ wsbackend API Reference
     * Locations_
 
 .. _BoxConsumerAPI:
+
 Box
 ---
 .. openapi:: consumerapi.yaml
@@ -19,6 +20,7 @@ Box
    :examples:
 
 .. _Captures:
+
 Captures
 --------
 .. openapi:: consumerapi.yaml
