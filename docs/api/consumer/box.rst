@@ -10,6 +10,8 @@ Box
    :encoding: utf-8
    :examples:
 
+.. _BoxScannedConsumerAPI:
+
 Box Scanned
 ^^^^^^^^^^^^^
 Determines if a box has been scanned by the current user.
