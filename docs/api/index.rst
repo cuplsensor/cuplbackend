@@ -7,6 +7,6 @@ API Specifications
    :numbered:
    :maxdepth: 2
 
-    adminapi
-    consumerapi
+    adminapi.rst
+    consumerapi.rst
     :caption: Contents:
