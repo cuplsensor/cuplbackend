@@ -49,6 +49,11 @@ extensions = [
     'sphinxcontrib.openapi',
 ]
 
+autodoc_default_options = {
+    'special-members': '__init__',
+}
+
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_doc_templates']
 
