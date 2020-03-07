@@ -1,8 +1,8 @@
 Environment Variables
 ======================
 
-wsbackend URL
------------------------
+Host address
+---------------
 
 ``WSB_PROTOCOL``
 ^^^^^^^^^^^^^^^^^
@@ -26,7 +26,7 @@ Default: ``5000``
 
 Port of wsbackend.
 
-Identity Provider URL
+Identity Provider
 -----------------------
 
 .. _idpurl:
@@ -61,7 +61,7 @@ Endpoint on the IdP from which the public JSON Web Key set can be downloaded.
 
 Defaults to the `mock IdP JWKs endpoint <https://www.npmjs.com/package/oauth2-mock-server#get-jwks>`_.
 
-Database URI
+Database
 ---------------
 
 .. _dbhost:
