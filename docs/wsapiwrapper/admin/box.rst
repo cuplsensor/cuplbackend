@@ -1,5 +1,5 @@
-Box Admin Wrapper
-^^^^^^^^^^^^^^^^^^^
+Box
+^^^^^^^
 
 .. automodule:: wsapiwrapper.admin.box
    :members:

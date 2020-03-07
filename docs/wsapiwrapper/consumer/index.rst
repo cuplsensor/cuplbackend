@@ -1,5 +1,5 @@
-Admin API Wrapper
-------------------
+Consumer API Wrapper
+----------------------
 
 .. toctree::
    :maxdepth: 2

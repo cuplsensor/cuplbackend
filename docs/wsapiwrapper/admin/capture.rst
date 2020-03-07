@@ -1,5 +1,5 @@
-Capture Admin Wrapper
-^^^^^^^^^^^^^^^^^^^^^^^
+Capture
+^^^^^^^^^
 
 .. automodule:: wsapiwrapper.admin.capture
    :members:
