@@ -8,7 +8,7 @@ class AdminApiWrapper(ApiWrapper):
     The Admin API is intended for administrators.
     """
 
-    def get_admin_token(self):
+    def get_admin_token(self) -> str:
         """Request a token from the token endpoint.
 
         A client_id and client_secret are exchanged for a token. This uses
@@ -28,7 +28,7 @@ class AdminApiWrapper(ApiWrapper):
         tokenresponse = r.json()['token']
         return tokenresponse
 
-    def __init__(self, baseurl, adminapi_client_id, adminapi_client_secret):
+    def __init__(self, baseurl: str, adminapi_client_id: str, adminapi_client_secret: str):
         """Constructor for AdminApiWrapper
 
         Args:

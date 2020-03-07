@@ -2,7 +2,7 @@ from .. import ApiWrapper
 
 
 class ConsumerApiWrapper(ApiWrapper):
-    def __init__(self, baseurl, tokenstr=None):
+    def __init__(self, baseurl: str, tokenstr: str = None):
         super().__init__(baseurl)
         self.apiurl = "{baseurl}/api/consumer/v1".format(baseurl=self.baseurl)
         if tokenstr is not None:
