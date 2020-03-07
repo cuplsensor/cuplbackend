@@ -5,7 +5,7 @@ import json
 
 class CaptureWrapper(AdminApiWrapper):
     """Wraps calls to capture endpoints on the Admin API. """
-    
+
     def post(self, capturepayload):
         """Create a capture in the database directly.
 
