@@ -5,13 +5,13 @@ from . import ConsumerApiWrapper
 class BoxWrapper(ConsumerApiWrapper):
     """Wraps calls to box endpoints on the Consumer API"""
 
-    def get(self, boxserial):
+    def get(self, boxserial: str) -> dict:
         """
 
         Args:
-            boxserial (str): 8 character alphanumeric serial string.
+            boxserial (str): Base64 serial that uniquely identifies a box (hardware module).
 
-        Returns: Box object. Converted from a JSON dictionary described :ref:`here <BoxConsumerAPI>`.
+        Returns: Box dictionary. Converted from a JSON dictionary described :ref:`here <BoxConsumerAPI>`.
 
         """
         boxurl = "{apiurl}/box/{boxserial}".format(apiurl=self.apiurl,

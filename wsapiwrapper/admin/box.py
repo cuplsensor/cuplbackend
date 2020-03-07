@@ -17,11 +17,11 @@ class BoxWrapper(AdminApiWrapper):
         boxresponse = r.json()
         return boxresponse
 
-    def delete(self, boxid):
+    def delete(self, boxid: int):
         """Make a DELETE request to the :ref:`BoxAdminAPI` endpoint.
 
         Args:
-            boxid: ID of the box to delete
+            boxid (int): ID of the box to delete
 
         """
         boxesurl = "{apiurl}/box/{boxid}".format(apiurl=self.apiurl, boxid=boxid)

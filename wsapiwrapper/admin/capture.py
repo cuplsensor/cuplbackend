@@ -6,7 +6,7 @@ import json
 class CaptureWrapper(AdminApiWrapper):
     """Wraps calls to capture endpoints on the Admin API. """
 
-    def post(self, capturepayload):
+    def post(self, capturepayload: dict):
         """Create a capture in the database directly.
 
         The is made from a dictionary including a list of samples, a box_id and a user_id. The
@@ -18,7 +18,7 @@ class CaptureWrapper(AdminApiWrapper):
         time it is expected that duplicate samples are removed.
 
         Args:
-            capturepayload: JSON dictionary following the :ref:`capture schema <CapturesConsumerAPI>`.
+            capturepayload (dict): JSON dictionary following the :ref:`capture schema <CapturesConsumerAPI>`.
 
         Returns: HTTP response from wsbackend.
 
