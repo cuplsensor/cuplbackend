@@ -5,13 +5,15 @@ import json
 
 class CaptureWrapper(AdminApiWrapper):
     """Wraps calls to capture endpoints on the Admin API. """
+    
     def post(self, capturepayload):
         """Create a capture in the database directly.
 
-        The capture is made from a dictionary. This includes a list of samples, a box_id and a user_id. This
-        endpoint, used for testing, removes the need to pass capture data encoded by wscodec.
+        The is made from a dictionary including a list of samples, a box_id and a user_id. The
+        endpoint is used for testing. It removes the need to encode test vectors with wscodec (introduces
+        a second point of failure in an external library).
 
-        Specifically captures can be created with a known list of samples. Then samples are collected from the box
+        Captures can be created with a known list of samples. Then samples are collected from the box
         using the consumer API. These are compared with a vector of expected samples. If captures overlap slightly in
         time it is expected that duplicate samples are removed.
 
