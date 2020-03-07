@@ -8,11 +8,12 @@ See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`
    :maxdepth: 2
 
    docs/api/index
+   docs/wsapiwrapper/index
    docs/test
    docs/installation
    docs/authentication
    docs/environmentvariables
-   docs/wsapiwrapper
+
    :caption: Contents:
 
 

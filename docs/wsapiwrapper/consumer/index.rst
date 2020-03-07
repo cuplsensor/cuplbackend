@@ -4,7 +4,7 @@ Admin API Wrapper
 .. toctree::
    :maxdepth: 2
 
-   
+
 
    :caption: Contents
 
