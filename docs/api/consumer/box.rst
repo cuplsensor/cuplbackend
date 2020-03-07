@@ -2,7 +2,7 @@
 
 Box
 ---
-.. openapi:: consumerapi.yaml
+.. openapi:: api.yaml
    :include:
       /box/*
    :encoding: utf-8
