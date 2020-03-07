@@ -6,6 +6,6 @@ API Specifications
 .. toctree::
    :maxdepth: 2
 
-    adminapi
-    consumerapi
-    :caption: Contents
+   adminapi
+   consumerapi
+   :caption: Contents
