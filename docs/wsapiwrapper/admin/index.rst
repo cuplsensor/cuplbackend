@@ -12,4 +12,4 @@ Admin API Wrapper
 .. automodule:: wsapiwrapper.admin
    :members:
    :undoc-members:
-   :show-inheritance:
+   :special-members:

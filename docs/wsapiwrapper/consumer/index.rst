@@ -12,4 +12,4 @@ Consumer API Wrapper
 .. automodule:: wsapiwrapper.consumer
    :members:
    :undoc-members:
-   :show-inheritance:
+   :special-members:

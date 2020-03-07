@@ -140,9 +140,6 @@ latex_documents = [
      'Malcolm Mackay', 'manual'),
 ]
 
-autoclass_content = "both"
-
-
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples

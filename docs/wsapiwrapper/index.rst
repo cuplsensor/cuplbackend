@@ -11,5 +11,5 @@ wsapiwrapper Reference
 .. automodule:: wsapiwrapper
    :members:
    :undoc-members:
-   :show-inheritance:
+   :special-members:
 
