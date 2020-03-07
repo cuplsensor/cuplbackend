@@ -6,10 +6,11 @@ class BoxWrapper(AdminApiWrapper):
     """Wraps calls to box endpoints on the Admin API.
     """
 
-    def post(self):
+    def post(self) -> dict:
         """Make a POST request to the :ref:`BoxAdminAPI` endpoint.
 
-        Returns: A new box object.
+        Returns:
+            dict: A dictionary representing the new box object.
 
         """
         boxesurl = "{apiurl}/boxes".format(apiurl=self.apiurl)

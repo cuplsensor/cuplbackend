@@ -6,7 +6,7 @@ class BoxScannedWrapper(ConsumerApiWrapper):
     """Wraps a Consumer API endpoint for determining if a box has been scanned by a user."""
 
     def get(self, boxserial: str) -> bool:
-        """
+        """Makes a call to the
 
         Args:
             boxserial (str):  Base64 serial that uniquely identifies a box (hardware module).
