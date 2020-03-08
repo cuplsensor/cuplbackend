@@ -7,6 +7,7 @@ Consumer API Wrapper
    box
    boxscanned
    boxview
+   capture
 
    :caption: Contents
 
