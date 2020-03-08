@@ -10,6 +10,8 @@ Captures
    :encoding: utf-8
    :examples:
 
+.. _CaptureSamplesConsumerAPI:
+
 Capture Samples
 ^^^^^^^^^^^^^^^^^
 Returns samples for a given capture.
