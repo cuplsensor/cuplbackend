@@ -316,7 +316,7 @@ paths:
       operationId: LocationGet
       parameters:
       - name: id
-        in: query
+        in: path
         description: Location ID
         schema:
           type: integer
@@ -551,7 +551,7 @@ paths:
       operationId: BoxViewGet
       parameters:
       - name: id
-        in: query
+        in: path
         description: Box view ID
         schema:
           type: integer

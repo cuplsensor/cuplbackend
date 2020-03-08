@@ -151,6 +151,35 @@ paths:
           content:
             application/json:
               schema: {}
+
+    /box/{id}/simulate:
+      get:
+        description: Obtain a simulated URL from the box. This will contain mock sensor data.
+        summary: Simulate URL.
+        operationId: BoxSimGet
+        security:
+          - Bearer: []
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: Box id
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: URL containing sensor data.
+            headers: {}
+            content:
+              application/json:
+                schema:
+                  type: string
+          '400':
+            description: bad input parameter
+            content:
+              application/json:
+                schema: {}
+
     delete:
       description: delete a box
       summary: delete a box
