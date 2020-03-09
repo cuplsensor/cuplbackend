@@ -3,10 +3,8 @@
 Me
 --
 .. openapi:: api.yaml
-   :include:
+   :paths:
       /me
-   :exclude:
-      /me/b*
    :encoding: utf-8
    :examples:
 
