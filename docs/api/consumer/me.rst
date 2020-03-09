@@ -6,7 +6,7 @@ Me
    :include:
       /me
    :exclude:
-      /me/*e*
+      /me/b*
    :encoding: utf-8
    :examples:
 
