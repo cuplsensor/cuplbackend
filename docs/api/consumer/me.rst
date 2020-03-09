@@ -6,8 +6,8 @@ Me
    :include:
       /me
    :exclude:
-      - /me/boxviews
-      - /me/captures
+      - /me/boxviews*
+      - /me/captures*
    :encoding: utf-8
    :examples:
 
