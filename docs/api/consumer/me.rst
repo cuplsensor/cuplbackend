@@ -4,9 +4,9 @@ Me
 --
 .. openapi:: api.yaml
    :include:
-      /me
+      /me/
    :exclude:
-      /me/*
+      /me/captures
    :encoding: utf-8
    :examples:
 
