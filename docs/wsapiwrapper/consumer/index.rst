@@ -6,7 +6,6 @@ Consumer API Wrapper
 
    box
    boxscanned
-   boxview
    capture
    location
    me
