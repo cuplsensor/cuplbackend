@@ -12,7 +12,7 @@ Me
 
 .. _BoxViewConsumerAPI:
 
-BoxView
+BoxViews
 ^^^^^^^^^
 .. openapi:: api.yaml
    :include:

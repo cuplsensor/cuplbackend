@@ -12,8 +12,8 @@ Box
 
 .. _BoxSimulateAdminAPI:
 
-Box Simulate
-^^^^^^^^^^^^^^
+Simulate
+^^^^^^^^^^^
 .. openapi:: api.yaml
    :include:
       /box/{id}/simulate

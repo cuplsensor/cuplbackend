@@ -12,8 +12,8 @@ Box
 
 .. _BoxScannedConsumerAPI:
 
-Box Scanned
-^^^^^^^^^^^^^
+Scanned
+^^^^^^^^^^^^
 Determines if a box has been scanned by the current user.
 
 .. openapi:: api.yaml

@@ -20,6 +20,7 @@ from flask import current_app
 from random import getrandbits
 import base64
 
+
 class BoxDecodeFailedError(Exception):
     """ Box Decode Failed Error
 
@@ -29,6 +30,7 @@ class BoxDecodeFailedError(Exception):
         self.description = "Box serial number {} for box id {} decodes to {}".format(serial, boxid, decoded)
     def __str__(self):
         return self.description
+
 
 class BoxService(Service):
     __model__ = Box

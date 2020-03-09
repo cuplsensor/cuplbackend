@@ -88,11 +88,12 @@ class CaptureWrapper(ConsumerApiWrapper):
              statusb64: str,
              timeintb64: str,
              versionStr: str) -> dict:
-        """Create a new capture from encoded data.
+        """Create a new capture from parameters encoded by wscodec.
 
         These data are included in URL parameters passed to wsfrontend when a box is scanned.
 
-        Makes a POST request to the :ref:`Capture <CaptureConsumerAPI>` endpoint.
+        Makes a POST request to the :ref:`Capture <CaptureConsumerAPI>` endpoint, which unwraps the circular
+        buffer and decodes samples.
 
         Args:
             circbufb64 (str): Circular buffer containing base64 encoded samples. Ouptut by wscodec.

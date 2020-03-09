@@ -53,5 +53,6 @@ class HasScannedBox(SingleUserResource):
 
         return jsonify(result)
 
+
 api.add_resource(Box, '/box/<serial>')
 api.add_resource(HasScannedBox, '/box/<serial>/scanned')

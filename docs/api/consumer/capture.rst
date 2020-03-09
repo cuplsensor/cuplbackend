@@ -12,8 +12,8 @@ Captures
 
 .. _CaptureSamplesConsumerAPI:
 
-Capture Samples
-^^^^^^^^^^^^^^^^^
+Samples
+^^^^^^^^^^^
 Returns samples for a given capture.
 
 .. openapi:: api.yaml

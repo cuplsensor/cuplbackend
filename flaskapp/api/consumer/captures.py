@@ -55,13 +55,10 @@ class Captures(MultipleResource):
         """
         Create a capture
         """
-        current_app.logger.info("test")
         parsedargs = Captures.parse_body_args(request.get_json(),
                                               requiredlist=['serial', 'statusb64', 'timeintb64', 'circbufb64', 'ver'])
 
         boxobj = boxes.get_by_serial(parsedargs['serial'])
-
-        current_app.logger.info("test")
 
         captureobj = captures.decode_and_create(boxobj=boxobj,
                                                 userobj=userobj,
