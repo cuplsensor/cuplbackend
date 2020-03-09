@@ -6,7 +6,7 @@ Me
    :include:
       /me
    :exclude:
-      /me/*
+      /boxviews*
    :encoding: utf-8
    :examples:
 
