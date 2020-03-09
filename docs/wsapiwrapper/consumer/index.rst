@@ -8,6 +8,7 @@ Consumer API Wrapper
    boxscanned
    boxview
    capture
+   location
 
    :caption: Contents
 
