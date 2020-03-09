@@ -9,6 +9,7 @@ Consumer API Wrapper
    boxview
    capture
    location
+   me
 
    :caption: Contents
 

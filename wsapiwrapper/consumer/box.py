@@ -11,7 +11,7 @@ class BoxWrapper(ConsumerApiWrapper):
         Args:
             boxserial (str): Base64 serial that uniquely identifies a box (hardware module).
 
-        Returns: Box dictionary. Converted from a JSON dictionary described :ref:`here <BoxConsumerAPI>`.
+        Returns: Box dictionary as described :ref:`here <BoxConsumerAPI>`.
 
         """
         boxurl = "{apiurl}/box/{boxserial}".format(apiurl=self.apiurl,

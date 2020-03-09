@@ -7,6 +7,17 @@ Me
       /me/*
    :exclude:
       /me/boxviews
+      /me/captures
+   :encoding: utf-8
+   :examples:
+
+.. _MeCapturesConsumerAPI:
+
+Captures
+^^^^^^^^^
+.. openapi:: api.yaml
+   :include:
+      /me/captures
    :encoding: utf-8
    :examples:
 

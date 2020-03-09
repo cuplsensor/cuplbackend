@@ -38,7 +38,7 @@ class LocationWrapper(ConsumerApiWrapper):
             location_id (int): Location ID to retrieve.
 
         Returns:
-            dict: Location dictionary returned by the API and converted from JSON.
+            dict: Location dictionary returned by the API.
 
         """
         r = requests.get("{locationsurl}/{id}".format(locationsurl=self.locationsurl, id=location_id),

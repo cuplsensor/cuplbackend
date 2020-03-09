@@ -19,7 +19,7 @@ class CaptureWrapper(ConsumerApiWrapper):
             limit (int): Limit the list length for pagination.
 
         Returns:
-            list: A list of capture elements.
+            list: A list of capture dictionaries.
 
         """
         capturesurl = "{apiurl}/captures".format(apiurl=self.apiurl)
