@@ -5,6 +5,8 @@ Me
 .. openapi:: api.yaml
    :include:
       /me
+   :exclude:
+      /me/*e*
    :encoding: utf-8
    :examples:
 
