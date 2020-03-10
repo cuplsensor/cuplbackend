@@ -4,11 +4,11 @@ Consumer API Wrapper
 .. toctree::
    :maxdepth: 2
 
-   box
-   boxscanned
-   capture
-   location
    me
+   box
+   capture
+   sample
+   location
 
    :caption: Contents
 

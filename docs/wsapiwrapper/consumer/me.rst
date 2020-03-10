@@ -1,5 +1,9 @@
 Me
 ^^^^
+.. automodule:: wsapiwrapper.consumer.user
+   :members:
+   :undoc-members:
+   :special-members:
 
 BoxView
 ~~~~~~~~

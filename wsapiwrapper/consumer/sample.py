@@ -3,10 +3,31 @@ import requests
 
 
 class SampleWrapper(ConsumerApiWrapper):
-    def __init__(self, baseurl, tokenstr):
-        super().__init__(baseurl, tokenstr)
+    """Wraps samples endpoint of the Consumer API."""
 
-    def get_samples(self, serial, starttime, endtime, offset=0, limit=None):
+    def get_samples(self,
+                    serial: str,
+                    starttime: str,
+                    endtime: str,
+                    offset: int = 0,
+                    limit: int = None) -> list:
+        """Get a list of temperature/humidity samples collected by a box.
+
+        A time window can be specified so that only samples that fall between starttime and endtime are returned.
+
+        Makes a GET request to the :ref:`Samples <SamplesConsumerAPI>` endpoint.
+
+        Args:
+            serial (str): Base64 string. Identifies a box to return samples from.
+            starttime (str): Start datetime as an ISO-8601 string.
+            endtime (str): End datetime as an ISO-8601 string.
+            offset (int): Start list at the nth sample for pagination.
+            limit (int): Limit the list length for pagination.
+
+        Returns:
+            list: A list of samples. Each is a dictionary.
+
+        """
         samplesurl = "{apiurl}/samples".format(apiurl=self.apiurl)
 
         payload = {

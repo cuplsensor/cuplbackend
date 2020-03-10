@@ -1,6 +1,6 @@
-Box Scanned
+Sample
 ^^^^^^^^^^^^^
-.. automodule:: wsapiwrapper.consumer.boxscanned
+.. automodule:: wsapiwrapper.consumer.sample
    :members:
    :undoc-members:
    :special-members:

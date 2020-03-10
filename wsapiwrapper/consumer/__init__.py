@@ -15,8 +15,17 @@ class ConsumerApiWrapper(ApiWrapper):
             self.headers = self.auth_header(tokenstr)
 
     @staticmethod
-    def process_status(status_code, desc=None):
-        """ Raise an exception for HTTP error statuses"""
+    def process_status(status_code: int, desc: str = None):
+        """Raise exception if an HTTP error occurs.
+
+        Args:
+            status_code (int): `HTTP status code <https://en.wikipedia.org/wiki/List_of_HTTP_status_codes>`_.
+            desc (str): Description of error.
+
+        Returns:
+            None
+
+        """
         if status_code == 400:
             raise Exception400
         elif status_code == 401:
