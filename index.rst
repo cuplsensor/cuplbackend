@@ -1,5 +1,3 @@
-:tocdepth: 2
-
 websensor Web App Backend
 ==================================
 See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`.
@@ -7,7 +5,7 @@ See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`
 .. _index:
 .. toctree::
    :numbered:
-   :maxdepth: 4
+   :maxdepth: 2
 
    docs/api/index
    docs/wsapiwrapper/index
