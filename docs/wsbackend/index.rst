@@ -2,7 +2,6 @@ wsbackend
 ==============
 
 .. toctree::
-   :hidden:
    :maxdepth: 2
 
    installation

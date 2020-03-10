@@ -2,15 +2,8 @@ wsapiwrapper
 ==============
 
 .. toctree::
-   :hidden:
    :maxdepth: 2
 
    installation
    reference/index
    :caption: Contents
-
-.. automodule:: wsapiwrapper
-   :members:
-   :undoc-members:
-   :special-members:
-
