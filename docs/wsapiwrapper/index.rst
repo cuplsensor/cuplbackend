@@ -2,7 +2,6 @@ wsapiwrapper Reference
 ========================
 
 .. toctree::
-   :hidden:
    :maxdepth: 2
 
    admin/index
