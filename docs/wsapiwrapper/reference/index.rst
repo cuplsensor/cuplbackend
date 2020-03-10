@@ -1,12 +1,12 @@
-wsapiwrapper
-==============
+Reference
+============
 
 .. toctree::
    :hidden:
    :maxdepth: 2
 
-   installation
-   reference/index
+   admin/index
+   consumer/index
    :caption: Contents
 
 .. automodule:: wsapiwrapper

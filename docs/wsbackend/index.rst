@@ -1,4 +1,4 @@
-wsapiwrapper
+wsbackend
 ==============
 
 .. toctree::
@@ -6,6 +6,7 @@ wsapiwrapper
    :maxdepth: 2
 
    installation
+   environmentvariables
    reference/index
    :caption: Contents
 

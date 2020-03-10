@@ -1,5 +1,5 @@
-Authorization
-=======================
+Consumer API Authorization
+===========================
 
 Some API endpoints require authorization. Only users with a third party account
 (e.g. Google or Facebook) are granted access. Such accounts
