@@ -1,3 +1,5 @@
+:tocdepth: 2
+
 websensor Web App Backend
 ==================================
 See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`.
