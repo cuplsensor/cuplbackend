@@ -8,7 +8,7 @@ class BoxScannedWrapper(ConsumerApiWrapper):
     def get(self, boxserial: str) -> bool:
         """Makes a GET request to the :ref:`BoxScanned <BoxScannedConsumerAPI>` Consumer API endpoint.
 
-        Current user is identified by an access token passed to the :py:func:`constructor <__init__>`.
+        Current user is identified by an access token passed to the :py:func:`constructor <ConsumerApiWrapper.__init__>`.
 
         Args:
             boxserial (str):  Base64 serial that uniquely identifies a box (hardware module).

@@ -10,7 +10,7 @@ class MeCaptureWrapper(ConsumerApiWrapper):
 
         Makes a GET request to the :ref:`MeCaptures <MeCapturesConsumerAPI>` endpoint.
 
-        Current user is identified by an access token passed to the :py:func:`constructor <__init__>`.
+        Current user is identified by an access token passed to the :py:func:`constructor <ConsumerApiWrapper.__init__>`.
 
         Args:
             distinct (bool): When true, only the most recent capture is returned for each box.
@@ -43,7 +43,7 @@ class MeCaptureWrapper(ConsumerApiWrapper):
 
         See :py:meth:`wsapiwrapper.consumer.capture.CaptureWrapper.post`.
 
-        Current user is identified by an access token passed to the :py:func:`constructor <__init__>`.
+        Current user is identified by an access token passed to the :py:func:`constructor <ConsumerApiWrapper.__init__>`.
 
         """
         capturesurl = "{apiurl}/me/captures".format(apiurl=self.apiurl)
