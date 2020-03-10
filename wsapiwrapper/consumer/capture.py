@@ -92,7 +92,7 @@ class CaptureWrapper(ConsumerApiWrapper):
 
         These data are included in URL parameters passed to wsfrontend when a box is scanned.
 
-        Makes a POST request to the :ref:`Capture <CaptureConsumerAPI>` endpoint, which unwraps the circular
+        Makes a POST request to the :ref:`Capture <CapturesConsumerAPI>` endpoint, which unwraps the circular
         buffer and decodes samples.
 
         Args:
