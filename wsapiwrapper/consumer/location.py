@@ -130,7 +130,7 @@ class LocationWrapper(ConsumerApiWrapper):
             description: New box location (e.g. above the fireplace).
 
         Returns:
-            dict: Location dictionary returned by the API and converted from JSON.
+            dict: Location dictionary returned by the API.
 
         """
         payload = {'description': description}

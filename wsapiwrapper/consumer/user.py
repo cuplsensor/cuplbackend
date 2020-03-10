@@ -52,7 +52,8 @@ class UserWrapper(ConsumerApiWrapper):
 
         Makes a DELETE request to the :ref:`Me <MeConsumerAPI>` endpoint.
 
-        Current user is identified by an access token passed to the :py:func:`constructor <ConsumerApiWrapper.__init__>`.
+        Current user is identified by an access token passed to the
+        :py:func:`constructor <wsapiwrapper.consumer.ConsumerApiWrapper.__init__>`.
 
         Returns:
             None
@@ -71,7 +72,8 @@ class UserWrapper(ConsumerApiWrapper):
 
         Makes a GET request to the :ref:`Me <MeConsumerAPI>` endpoint.
 
-        Current user is identified by an access token passed to the :py:func:`constructor <ConsumerApiWrapper.__init__>`.
+        Current user is identified by an access token passed to the
+        :py:func:`constructor <wsapiwrapper.consumer.ConsumerApiWrapper.__init__>`.
 
         Returns:
             dict: API representation of the current user.

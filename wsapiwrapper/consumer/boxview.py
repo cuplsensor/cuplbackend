@@ -37,7 +37,8 @@ class BoxViewWrapper(ConsumerApiWrapper):
 
         Makes a POST request to the :ref:`BoxView <BoxViewConsumerAPI>` Consumer API endpoint.
 
-        Current user is identified by the API access token passed to the :py:func:`constructor <__init__>`.
+        Current user is identified by the API access token passed to the
+        :py:func:`constructor <wsapiwrapper.consumer.ConsumerApiWrapper.__init__>`.
 
         Args:
             boxserial (str): Base64 serial that uniquely identifies a box (hardware module).
