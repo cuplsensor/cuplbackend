@@ -2,7 +2,7 @@ Me
 ^^^^
 
 BoxView
-^^^^^^^^^^^
+~~~~~~~~
 .. automodule:: wsapiwrapper.consumer.boxview
    :members:
    :undoc-members:
