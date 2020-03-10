@@ -4,6 +4,7 @@ Consumer API Specification
 ============================
 
 .. toctree::
+   :hidden:
    :maxdepth: 2
 
    box

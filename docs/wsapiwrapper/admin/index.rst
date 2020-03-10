@@ -2,6 +2,7 @@ Admin API Wrapper
 ------------------
 
 .. toctree::
+   :hidden:
    :maxdepth: 2
 
    box
