@@ -8,7 +8,9 @@ class BoxViewWrapper(ConsumerApiWrapper):
         self.boxviewsurl = "{apiurl}/me/boxviews".format(apiurl=self.apiurl)
 
     def get(self, distinct: bool = False):
-        """Get a list of boxes the user has viewed.
+        """Get a list of box views by the current user.
+
+        Current user is identified by an API access token. This must be passed to the :py:func:`constructor <__init__>`.
 
         Args:
             distinct (bool): When true only the most recent BoxView for each box will be returned.
@@ -30,9 +32,11 @@ class BoxViewWrapper(ConsumerApiWrapper):
         return boxviewresponse
 
     def post(self, boxserial: str):
-        """Add a boxview to a given box
+        """Record that the current user has viewed a box.
 
         Makes a POST request to the :ref:`BoxView <BoxViewConsumerAPI>` Consumer API endpoint.
+
+        Current user is identified by the API access token (required).
 
         Args:
             boxserial (str): Base64 serial that uniquely identifies a box (hardware module).
