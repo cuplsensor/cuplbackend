@@ -82,7 +82,6 @@ jobs:
       run: cat /tmp/uwsgi_daemonize.log
 
 
-
     - name: Install and upgrade wheel
       run: python3 -m pip install --user --upgrade setuptools wheel
 
@@ -94,8 +93,8 @@ jobs:
 
     - name: If tagged publish wsapiwrapper to PyPI
       uses: pypa/gh-action-pypi-publish@master
-        with:
-          user: __token__
-          password: ${{ secrets.test_pypi_token }}
-          repository_url: https://test.pypi.org/legacy/
+      with:
+        user: __token__
+        password: ${{ secrets.test_pypi_token }}
+        repository_url: https://test.pypi.org/legacy/
 
