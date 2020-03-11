@@ -8,7 +8,7 @@ See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`
    :maxdepth: 3
 
    docs/api/index
-   docs/test
+   docs/development
    docs/authentication
    docs/wsapiwrapper/index
    docs/wsbackend/index

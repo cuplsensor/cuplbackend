@@ -4,6 +4,9 @@ Environment Variables
 Host address
 ---------------
 
+.. _wsbprotocol:
+
+
 ``WSB_PROTOCOL``
 ^^^^^^^^^^^^^^^^^
 Default: ``http://``
