@@ -85,11 +85,8 @@ jobs:
     - name: Install and upgrade wheel
       run: python3 -m pip install --user --upgrade setuptools wheel
 
-    - name: Change to wsapiwrapper directory
-      run: cd wsapiwrapper
-
     - name: Create source distribution and wheel.
-      run: python3 setup.py sdist bdist_wheel
+      run: python3 wsapiwrapper/setup.py sdist bdist_wheel
 
     - name: If tagged publish wsapiwrapper to PyPI
       uses: pypa/gh-action-pypi-publish@master
