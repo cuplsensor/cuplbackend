@@ -72,10 +72,7 @@ class TokenAuthAsymmetric(TokenAuth):
         self.algorithms = ["RS256"]
 
     def get_rsa_key(self, token):
-        try:
-            jwksurlresponse = urlopen(self.jwksurl)
-        except:
-            print("jwksurl=" + self.jwksurl)
+        jwksurlresponse = urlopen(self.jwksurl)
         jwks = json.loads(jwksurlresponse.read())
         unverified_header = jwt.get_unverified_header(token)
         for key in jwks["keys"]:

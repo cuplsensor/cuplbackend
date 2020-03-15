@@ -101,6 +101,13 @@ No default for security reasons. This variable must be set before runtime.
 
 Consumer API
 -------------
+
+``API_ISSUER``
+^^^^^^^^^^^^^^^
+Default: ``http://localhost:3000``
+
+API issuer claim. Must correspond to the issuer of the API access token.
+
 .. _apiaudience:
 
 ``API_AUDIENCE``

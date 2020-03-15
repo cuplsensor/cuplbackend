@@ -49,6 +49,7 @@ IDP_PORT = os.getenv('IDP_PORT', defaults.IDP_PORT)
 IDP_ORIGIN = '{idp_protocol}{idp_host}:{idp_port}'.format(idp_protocol=IDP_PROTOCOL, idp_host=IDP_HOST, idp_port=str(IDP_PORT))
 IDP_JWKS = os.getenv('IDP_JWKS', defaults.IDP_JWKS)
 
+API_ISSUER = os.getenv('API_ISSUER', defaults.API_ISSUER)
 API_AUDIENCE = os.getenv('API_AUDIENCE', defaults.API_AUDIENCE)
 
 ADMINAPI_AUDIENCE = os.getenv('ADMINAPI_AUDIENCE', defaults.ADMINAPI_AUDIENCE)
