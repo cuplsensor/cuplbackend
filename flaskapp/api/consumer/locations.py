@@ -12,7 +12,6 @@ from ...services import locations
 from ...services import capturesamples
 from ...services import boxes
 from ...services import users
-from ...forms import AddLocationForm, EditLocationForm
 from ...schemas import LocationSchema
 from ..baseresource import SingleResource, MultipleResource
 from .usertokenauth import requires_user_token
