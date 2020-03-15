@@ -28,6 +28,7 @@ class CaptureWrapper(ConsumerApiWrapper):
                        'limit': limit}
 
         r = requests.get(capturesurl, params=queryparams)
+        r.raise_for_status()
         ConsumerApiWrapper.process_status(r.status_code)
         captresponse = r.json()
         return captresponse
@@ -48,6 +49,7 @@ class CaptureWrapper(ConsumerApiWrapper):
                                                               capture_id=capture_id)
 
         r = requests.get(capturesurl)
+        r.raise_for_status()
         ConsumerApiWrapper.process_status(r.status_code)
         captresponse = r.json()
         return captresponse
@@ -78,6 +80,7 @@ class CaptureWrapper(ConsumerApiWrapper):
                        'limit': limit}
 
         r = requests.get(capturesamplesurl, params=queryparams)
+        r.raise_for_status()
         ConsumerApiWrapper.process_status(r.status_code)
         response = r.json()
         return response
@@ -114,6 +117,7 @@ class CaptureWrapper(ConsumerApiWrapper):
                    'ver': versionStr}
 
         r = requests.post(capturesurl, json=payload)
+        r.raise_for_status()
         ConsumerApiWrapper.process_status(r.status_code)
         captresponse = r.json()
         return captresponse

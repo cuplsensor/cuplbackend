@@ -43,7 +43,7 @@ class LocationWrapper(ConsumerApiWrapper):
         """
         r = requests.get("{locationsurl}/{id}".format(locationsurl=self.locationsurl, id=location_id),
                          headers=self.headers)
-
+        r.raise_for_status()
         LocationWrapper.process_status(r.status_code)
         response = r.json()
         return response
@@ -95,6 +95,7 @@ class LocationWrapper(ConsumerApiWrapper):
             queryparams['endtime'] = endtime
 
         r = requests.get(self.locationsurl, params=queryparams, headers=self.headers)
+        r.raise_for_status()
         LocationWrapper.process_status(r.status_code)
         response = r.json()
         return response
@@ -116,6 +117,7 @@ class LocationWrapper(ConsumerApiWrapper):
         payload = {'capturesample_id': capturesample_id,
                    'description': description}
         r = requests.post(self.locationsurl, json=payload, headers=self.headers)
+        r.raise_for_status()
         LocationWrapper.process_status(r.status_code)
         response = r.json()
         return response
@@ -137,6 +139,7 @@ class LocationWrapper(ConsumerApiWrapper):
         r = requests.patch("{locationsurl}/{id}".format(locationsurl=self.locationsurl, id=location_id),
                            json=payload,
                            headers=self.headers)
+        r.raise_for_status()
         # Raise an exception in the event of a non-zero return code.
         LocationWrapper.process_status(r.status_code)
         response = r.json()

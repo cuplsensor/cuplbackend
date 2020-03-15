@@ -40,6 +40,7 @@ class UserWrapper(ConsumerApiWrapper):
         usersurl = "{apiurl}/users".format(apiurl=self.apiurl)
         try:
             r = requests.post(usersurl, headers=self.headers)
+            r.raise_for_status()
             response = r.json()
         except requests.exceptions.RequestException as e:
             UserWrapper.process_status(e.response.status_code, str(e))
@@ -82,6 +83,7 @@ class UserWrapper(ConsumerApiWrapper):
         meurl = "{apiurl}/me".format(apiurl=self.apiurl)
         try:
             r = requests.get(meurl, headers=self.headers)
+            r.raise_for_status()
             response = r.json()
         except requests.exceptions.RequestException as e:
             UserWrapper.process_status(e.response.status_code, str(e))

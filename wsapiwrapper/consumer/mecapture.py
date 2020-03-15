@@ -28,6 +28,7 @@ class MeCaptureWrapper(ConsumerApiWrapper):
 
         try:
             r = requests.get(capturesurl, params=queryparams, headers=self.headers)
+            r.raise_for_status()
             captresponse = r.json()
         except requests.exceptions.RequestException as e:
             ConsumerApiWrapper.process_status(e.response.status_code, str(e))
@@ -57,6 +58,7 @@ class MeCaptureWrapper(ConsumerApiWrapper):
 
         try:
             r = requests.get(capturesurl, json=payload, headers=self.headers)
+            r.raise_for_status()
             captresponse = r.json()
         except requests.exceptions.RequestException as e:
             ConsumerApiWrapper.process_status(e.response.status_code, str(e))

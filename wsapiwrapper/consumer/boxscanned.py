@@ -21,6 +21,7 @@ class BoxScannedWrapper(ConsumerApiWrapper):
         boxscannedurl = "{apiurl}/box/{boxserial}/scanned".format(apiurl=self.apiurl,
                                                                   boxserial=boxserial)
         r = requests.get(boxscannedurl, headers=self.headers)
+        r.raise_for_status()
 
         ConsumerApiWrapper.process_status(r.status_code)
 

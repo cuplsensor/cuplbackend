@@ -17,6 +17,7 @@ class BoxWrapper(ConsumerApiWrapper):
         boxurl = "{apiurl}/box/{boxserial}".format(apiurl=self.apiurl,
                                                    boxserial=boxserial)
         r = requests.get(boxurl)
+        r.raise_for_status()
 
         ConsumerApiWrapper.process_status(r.status_code)
 

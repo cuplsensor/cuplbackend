@@ -26,6 +26,7 @@ class BoxViewWrapper(ConsumerApiWrapper):
 
         try:
             r = requests.get(self.boxviewsurl, params=queryparams, headers=self.headers)
+            r.raise_for_status()
             boxviewresponse = r.json()
         except requests.exceptions.RequestException as e:
             BoxViewWrapper.process_status(e.response.status_code, str(e))
@@ -50,6 +51,7 @@ class BoxViewWrapper(ConsumerApiWrapper):
         payload = {'boxserial': boxserial}
         try:
             r = requests.post(self.boxviewsurl, json=payload, headers=self.headers)
+            r.raise_for_status()
             boxviewresponse = r.json()
         except requests.exceptions.RequestException as e:
             BoxViewWrapper.process_status(e.response.status_code, str(e))

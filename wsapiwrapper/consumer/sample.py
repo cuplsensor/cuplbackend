@@ -43,6 +43,7 @@ class SampleWrapper(ConsumerApiWrapper):
         # Using urlencode is important to remove the '+' and convert it to %2B. Date decode does
         # not work without it.
         r = requests.get(samplesurl, params=payload)
+        r.raise_for_status()
         ConsumerApiWrapper.process_status(r.status_code)
         sample_response = r.json()
         return sample_response
