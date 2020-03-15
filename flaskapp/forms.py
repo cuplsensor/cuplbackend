@@ -9,4 +9,3 @@
 from .captures.forms import *
 from .boxes.forms import *
 from .users.forms import *
-from .locations.forms import *
