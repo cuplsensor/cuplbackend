@@ -23,6 +23,7 @@ def get_userinfo(access_token):
 
     return userinfo_response
 
+
 def requires_user_token(f):
     """Determines if the access token is valid
     """
