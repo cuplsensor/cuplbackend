@@ -239,13 +239,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Box'
-        description: User details
+              $ref: '#/components/schemas/BoxesPost'
+        description: Box id
 tags: []
 servers:
   - url: 'https://virtserver.swaggerhub.com/plots/UserAPI/1.0.0'
 components:
   schemas:
+    BoxesPost:
+      title: BoxPost
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
     Box:
       title: Box
       type: object

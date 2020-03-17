@@ -79,6 +79,7 @@ class SingleResource(BaseResource):
         # 204 Response
         return '', 204
 
+
 class MultipleResource(BaseResource):
     """Get all model instances or post a new one. """
     def __init__(self, Schema, service):
