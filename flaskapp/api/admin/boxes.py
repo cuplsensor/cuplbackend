@@ -72,7 +72,11 @@ class Boxes(MultipleAdminResource):
         parsedargs = super().parse_body_args(request.args.to_dict(),
                                              optlist=['id'])
 
-        boxobj = self.service.create(id=parsedargs['id'])
+        kwargs = dict()
+        if 'id' in parsedargs.keys():
+            kwargs['id'] = parsedargs['id']
+
+        boxobj = self.service.create(kwargs)
 
         schema = self.Schema()
         return schema.dump(boxobj)
