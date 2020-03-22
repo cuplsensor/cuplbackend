@@ -13,7 +13,7 @@ class LocationWrapper(ConsumerApiWrapper):
     """Wraps location endpoints of the Consumer API. """
 
     @staticmethod
-    def process_status(status_code: int) -> None:
+    def process_status(status_code: int, desc="") -> None:
         """Raise an exception in response to an HTTP error code.
 
         Args:

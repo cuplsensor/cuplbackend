@@ -24,7 +24,7 @@ class UserWrapper(ConsumerApiWrapper):
         elif status_code == 409:
             raise UserAlreadyExistsException
         else:
-            super().process_status(status_code, desc)
+            super(UserWrapper, UserWrapper).process_status(status_code, desc)
 
     def post(self) -> dict:
         """Create new user from an access token.
