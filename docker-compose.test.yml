@@ -16,6 +16,7 @@ services:
    - CSRF_SESSION_KEY=aslfenalkse
    - SECRET_KEY=efasfsaeflksena
    - WSB_PORT=5001
+   - API_ISSUER=http://oauth-mock:3000
    - IDP_HOST=oauth-mock
    - IDP_PORT=3000
 

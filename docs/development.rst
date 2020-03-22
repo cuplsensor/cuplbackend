@@ -38,14 +38,14 @@ Docker Compose file ``docker-compose.test.yml`` for quickly running tests locall
 
 First build all images with::
 
-    docker-compose build -f docker-compose.test.yml
+    docker-compose -f docker-compose.test.yml build
 
 This will take a few minutes the first time, but afterwards the docker layers will be cached so it
 should copy your new files in within seconds.
 
 Next run tests with::
 
-    docker-compose up -f docker-compose.test.yml
+    docker-compose -f docker-compose.test.yml up
 
 
 Implement feature. Test until success
