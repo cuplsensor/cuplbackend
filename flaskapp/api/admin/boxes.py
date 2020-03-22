@@ -76,7 +76,7 @@ class Boxes(MultipleAdminResource):
         if 'id' in parsedargs.keys():
             kwargs['id'] = parsedargs['id']
 
-        boxobj = self.service.create(kwargs)
+        boxobj = self.service.create(**kwargs)
 
         schema = self.Schema()
         return schema.dump(boxobj)
