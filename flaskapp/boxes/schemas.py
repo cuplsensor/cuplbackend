@@ -7,6 +7,7 @@ __all__ = ['BoxSchema', 'ConsumerBoxSchema']
 class BoxSchema(ma.ModelSchema):
     class Meta:
         model = Box
+        exclude = ('captures', 'boxviews')
 
 
 class ConsumerBoxSchema(ma.ModelSchema):

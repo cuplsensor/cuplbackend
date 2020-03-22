@@ -94,9 +94,26 @@ stages:
         id: !int '{test_box_id}'
         secretkey: !anystr
         serial: !anystr
-        captures: !anything
-        boxviews: !anything
         timeregistered: !anything
+
+  - name: Verify that the box can be retrieved in a list by running a GET request
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/boxes"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        - id: !anyint
+          secretkey: !anystr
+          serial: !anystr
+          timeregistered: !anything
 
   - name: Delete the box by ID.
 

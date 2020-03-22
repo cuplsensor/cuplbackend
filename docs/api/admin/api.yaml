@@ -211,6 +211,37 @@ paths:
               schema: {}
 
   /boxes:
+    get:
+      description: Get a list of boxes
+      summary: Get a list of boxes ordered by ID.
+      operationId: BoxesGet
+      parameters:
+        - name: offset
+          in: query
+          description: Return samples starting from this index.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Limit the number of samples returned.
+          schema:
+            type: integer
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of boxes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Box'
+        400:
+          description: bad input parameter
+          content:
+            application/json:
+              schema: {}
     post:
       description: Create a box
       summary: create a box
@@ -218,19 +249,19 @@ paths:
       security:
         - Bearer: []
       responses:
-        '201':
+        201:
           description: Box created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Box'
           headers: {}
-        '400':
+        400:
           description: 'invalid input, object invalid'
           content:
             application/json:
               schema: {}
-        '409':
+        409:
           description: a user with the same oauth_id already exists
           content:
             application/json:
