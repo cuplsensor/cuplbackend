@@ -93,7 +93,7 @@ class Boxes(MultipleAdminResource):
         offset = parsedargs.get('offset', 0)
         limit = parsedargs.get('limit', None)
 
-        boxlist = self.service.all().order_by(self.service.__model__.id.desc()).offset(offset).limit(limit)
+        boxlist = self.service.find().order_by(self.service.__model__.id.desc()).offset(offset).limit(limit)
 
         schema = self.Schema()
         result = schema.dump(boxlist, many=True)
