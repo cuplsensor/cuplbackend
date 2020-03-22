@@ -50,7 +50,15 @@ class BoxSimulate(SingleAdminResource):
         Returns:
             A URL.
         """
-        boxobj = self.service.get_or_404(id)
+        parsedargs = super().parse_body_args(request.args.to_dict(),
+                                             requiredlist=['frontendurl'],
+                                             optlist=['nsamples'])
+
+        frontendurl = parsedargs['frontendurl']
+        nsamples = parsedargs.get('nsamples', 100)
+
+        urlstr = boxes.simulate(id, frontendurl, nsamples)
+        return urlstr
 
 
 class Boxes(MultipleAdminResource):

@@ -193,7 +193,19 @@ paths:
         - name: id
           in: path
           required: true
-          description: Box id
+          description: Box id to simulate
+          schema:
+            type: integer
+        - name: frontendurl
+          in: query
+          required: true
+          description: URL of the consumer frontend application that will decode wscodec URLs.
+          schema:
+            type: string
+        - name: nsamples
+          in: query
+          required: false
+          description: Number of temperature and humidity samples to include in the wscodec URL.
           schema:
             type: integer
       responses:

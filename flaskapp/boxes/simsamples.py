@@ -43,18 +43,22 @@ def simsamples(tm=datetime.utcnow(), smplintervalmins: int=10, nsamples: int=144
     Returns:
         A list of samples. If the product of smplintervalmins and nsamples is 24 hours, these will range between
         valmax and valmin.
+        modintervalmins is offset in minutes to the most recent time interval.
 
     """
     # First get the time rounded down to the closest time interval minutes
     # e.g. if time interval is 10 minutes and the time is 1652,
-    # tm_modinterval = 2 minutes
-    tm_modinterval = timedelta(minutes=tm.minute % smplintervalmins,
+    # timeoffset_mins = 2 minutes
+    timeoffset_mins = tm.minute % smplintervalmins
+    tm_modinterval = timedelta(minutes=timeoffset_mins,
                                seconds=tm.second,
                                microseconds=tm.microsecond)
 
     tm_firstinterval = tm - tm_modinterval
 
     td_smplinterval = timedelta(minutes=smplintervalmins)
+
+    smpl_list = list()
 
     # Make an array of times previous to it.
     for i in range(0, nsamples):
@@ -64,10 +68,23 @@ def simsamples(tm=datetime.utcnow(), smplintervalmins: int=10, nsamples: int=144
         valrange = valmax - valmin
         zsin_smpl = 0.5*sin(rad_smpl) + 0.5 # Scale sine function so it is between 0 and 1.
         val_smpl = valrange*zsin_smpl + valmin # Scale again
-        print("time = {}, radians = {}, value = {}".format(time_smpl, rad_smpl, val_smpl))
+        smpl_list.append({"time": time_smpl, "rad": rad_smpl, "val": val_smpl})
+
+    return smpl_list, timeoffset_mins
+
+
+def trhsamples(tm=datetime.utcnow(), smplintervalmins=10, nsamples=144, tempmax=110, tempmin=-10, rhmax=100, rhmin=0):
+    tempsim, _ = simsamples(tm=tm, smplintervalmins=smplintervalmins, nsamples=nsamples, valmax=tempmax, valmin=tempmin)
+    rhsim, timeoffset_mins = simsamples(tm=tm, smplintervalmins=smplintervalmins, nsamples=nsamples, valmax=rhmax, valmin=rhmin)
+    templist = [temp['val'] for temp in tempsim]
+    rhlist = [rh['val'] for rh in rhsim]
+    trhlist = [{'temp': temp, 'rh': rh} for temp, rh in zip(templist, rhlist)]
+    return trhlist, timeoffset_mins
 
 
 if __name__ == "__main__":
     now = datetime.utcnow()
     midnight = datetime(year=now.year, month=now.month, day=now.day, hour=0, minute=0, second=0)
-    simsamples(tm=midnight)
+    trhlist, timeoffsetmins = trhsamples()
+    print(trhlist)
+    print(timeoffsetmins)
