@@ -18,7 +18,7 @@ class CaptureWrapper(AdminApiWrapper):
         time it is expected that duplicate samples are removed.
 
         Args:
-            capturepayload (dict): JSON dictionary following the :ref:`capture schema <CapturesConsumerAPI>`.
+            capturepayload (dict): Dictionary following the :ref:`capture schema <CapturesConsumerAPI>`.
 
         Returns: HTTP response from wsbackend.
 
