@@ -55,7 +55,7 @@ class BoxSimulate(SingleAdminResource):
                                              optlist=['nsamples'])
 
         frontendurl = parsedargs['frontendurl']
-        nsamples = parsedargs.get('nsamples', 100)
+        nsamples = int(parsedargs.get('nsamples', 100))
 
         urlstr = boxes.simulate(id, frontendurl, nsamples)
         return urlstr

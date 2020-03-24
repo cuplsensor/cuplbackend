@@ -64,7 +64,7 @@ class BoxWrapper(AdminApiWrapper):
         """
         boxesurl = "{apiurl}/boxes".format(apiurl=self.apiurl)
         if boxid is not None:
-            payload = json.dumps({'id': boxid})
+            payload = {'id': boxid}
         else:
             payload = None
         r = requests.post(boxesurl, data=payload, headers=self.headers)
