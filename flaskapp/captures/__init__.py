@@ -24,7 +24,7 @@ class CaptureService(Service):
 
         samples = [CaptureSample(smpl['ts'], smpl['temp'], smpl['rh']) for smpl in decodedurl.params.buffer.smpls]
 
-        status = CaptureStatus(resetsalltime=stat['resetsalltime'],
+        status = CaptureStatus(resetsalltime=decodedurl.params.status.resetsalltime,
                                brownout=stat['brownout'],
                                supervisor=stat['supervisor'],
                                watchdog=stat['watchdog'],
@@ -43,7 +43,7 @@ class CaptureService(Service):
                                  timestamp=decodedurl.scandatetime,
                                  loopcount=decodedurl.params.status.loopcount,
                                  status=status,
-                                 batvoltagemv=decodedurl.params.status.batvoltagemv,
+                                 batvoltagemv=decodedurl.params.status.get_batvoltagemv(),
                                  cursorpos=decodedurl.params.buffer.endmarkerpos,
                                  version=decodedurl.majorversion,
                                  timeintmins=decodedurl.params.timeintervalmins,
