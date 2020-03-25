@@ -73,7 +73,7 @@ jobs:
       run: uwsgi --protocol http --daemonize /tmp/uwsgi_daemonize.log -w -d --ini uwsgi.ini
 
     - name: Start tests
-      run:   python3 -m pytest -vvvv --showlocals
+      run:   python3 -m pytest -v --showlocals
       env:
         CI: true
 
