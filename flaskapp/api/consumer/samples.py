@@ -8,6 +8,8 @@
 
 from flask import Blueprint, request, jsonify, current_app
 from flask_restful import Api, abort
+from ...models import CaptureSample
+from sqlalchemy import desc
 from ...services import boxes, captures, capturesamples
 from ...captures.schemas import CaptureSampleSchema
 from ..baseresource import BaseResource, MultipleResource
@@ -33,7 +35,7 @@ class CaptureSamples(MultipleResource):
 
         offset = parsedargs.get('offset', 0)
         limit = parsedargs.get('limit', None)
-        samples = capturesamples.find(capture_id=capt.id).order_by("timestamp desc").offset(offset).limit(limit)
+        samples = capturesamples.find(capture_id=capt.id).order_by(desc(CaptureSample.timestamp)).offset(offset).limit(limit)
 
         schema = self.Schema()
         result = schema.dump(samples, many=True)
