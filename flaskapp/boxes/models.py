@@ -102,6 +102,7 @@ class Box(db.Model):
     def __init__(self, id=None, serial=None, secretkey=None):
     	# Initialise the box object
         self.id = id
+        current_app.logger.info(id)
         self.serial = serial
         self.secretkey = secretkey
         self.timeregistered = datetime.datetime.utcnow()
