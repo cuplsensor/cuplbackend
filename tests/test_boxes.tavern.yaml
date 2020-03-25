@@ -66,8 +66,6 @@ stages:
     response:
       status_code: 200
       body:
-        captures: !anything
-        boxviews: !anything
         timeregistered: !anything
         id: !anyint
         secretkey: !anystr
