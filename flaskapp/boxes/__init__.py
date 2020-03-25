@@ -94,11 +94,22 @@ class BoxService(Service):
         box = self.get(id=id)
         smplintervalmins = 10
 
+        # Disable https if necessary
+        spliturl = frontendurl.split('://')
+        httpsdisable = False  # Assume https by default
+
+        if spliturl[0] == "http":
+            httpsdisable = True
+            frontendurl = spliturl[1]  # Remove protocol from the URL
+        elif spliturl[0] == "https":
+            frontendurl = spliturl[1]   # Remove protocol from the URL
+
         # Initialise encoder
         virtualsensor = InstrumentedSampleTRH(baseurl=frontendurl,
                                               serial=box.serial,
                                               secretkey=box.secretkey,
-                                              smplintervalmins=smplintervalmins)
+                                              smplintervalmins=smplintervalmins,
+                                              httpsdisable=httpsdisable)
 
         # Produce a list of simulated samples. Each is a dictionary with temp and rh keys.
         # Also store the time offset from UTC now to the most recent sample.

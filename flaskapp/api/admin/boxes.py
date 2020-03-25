@@ -74,7 +74,7 @@ class Boxes(MultipleAdminResource):
 
         kwargs = dict()
         if 'id' in parsedargs.keys():
-            kwargs['id'] = parsedargs['id']
+            kwargs['id'] = int(parsedargs['id'])
 
         boxobj = self.service.create(**kwargs)
 
