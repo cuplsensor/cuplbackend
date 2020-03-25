@@ -15,7 +15,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "https://{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/v1/captures"
       method: POST
 
     # and the expected response code and body
