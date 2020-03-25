@@ -7,6 +7,7 @@ marks:
       - clientsecret
       - user_fixture
       - box_fixture
+      - token_fixture
 
 # Include variables
 includes:
@@ -23,7 +24,7 @@ stages:
         boxserial: "{box_fixture.serial}"
       headers:
         content-type: application/json
-        Authorization: "bearer {user_token:s}"
+        Authorization: "bearer {token_fixture:s}"
 
     # and the expected response body
     response:
@@ -46,7 +47,7 @@ stages:
       method: GET
       headers:
         content-type: application/json
-        Authorization: "bearer {user_token:s}"
+        Authorization: "bearer {token_fixture:s}"
 
     # and the expected response body
     response:
@@ -64,7 +65,7 @@ stages:
       method: GET
       headers:
         content-type: application/json
-        Authorization: "bearer {user_token:s}"
+        Authorization: "bearer {token_fixture:s}"
 
     # and the expected response body
     response:

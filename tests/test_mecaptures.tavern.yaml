@@ -6,6 +6,7 @@ marks:
       - clientid
       - clientsecret
       - user_fixture
+      - token_fixture
 
 # Include variables
 includes:
@@ -73,7 +74,7 @@ stages:
         ver: "{ver}"
       headers:
         content-type: application/json
-        Authorization: "bearer {user_token:s}"
+        Authorization: "bearer {token_fixture:s}"
 
     # and the expected response body
     response:
@@ -110,7 +111,7 @@ stages:
       method: GET
       headers:
         content-type: application/json
-        Authorization: "bearer {user_token:s}"
+        Authorization: "bearer {token_fixture:s}"
 
     # and the expected response body
     response:

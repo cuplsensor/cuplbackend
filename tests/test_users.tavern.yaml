@@ -4,6 +4,7 @@ test_name: No user is retrieved without a user token
 marks:
   - usefixtures:
       - baseurl
+      - token_fixture
 
 # Include variables
 includes:
@@ -74,7 +75,7 @@ stages:
       method: GET
       headers:
         content-type: application/json
-        Authorization: "bearer {user_token:s}"
+        Authorization: "bearer {token_fixture:s}"
 
     # and the expected response code and body
     response:
@@ -101,7 +102,7 @@ stages:
       method: POST
       headers:
         content-type: application/json
-        Authorization: "bearer {user_token:s}"
+        Authorization: "bearer {token_fixture:s}"
 
     # and the expected response code and body
     response:
@@ -136,7 +137,7 @@ stages:
       method: GET
       headers:
         content-type: application/json
-        Authorization: "bearer {user_token:s}"
+        Authorization: "bearer {token_fixture:s}"
 
     # and the expected response code and body
     response:
@@ -171,7 +172,7 @@ stages:
       method: DELETE
       headers:
         content-type: application/json
-        Authorization: "bearer {user_token:s}"
+        Authorization: "bearer {token_fixture:s}"
 
     # and the expected response code and body
     response:
