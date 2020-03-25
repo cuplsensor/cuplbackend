@@ -99,11 +99,8 @@ class Box(db.Model):
     def __repr__(self):
         return '<Box id=%s with serial=%s and secret key=%s>' % (self.id, self.serial, self.secretkey)
 
-    def __init__(self, id=None, serial=None, secretkey=None):
+    def __init__(self, **kwargs):
     	# Initialise the box object
-        self.id = id
-        current_app.logger.info(id)
-        self.serial = serial
-        self.secretkey = secretkey
+        super(Box, self).__init__(**kwargs)
         self.timeregistered = datetime.datetime.utcnow()
         self.user_id = None
