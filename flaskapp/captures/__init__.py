@@ -20,9 +20,9 @@ class CaptureService(Service):
         :param **kwargs: instance parameters
         """
         decodedurl = Decoder(boxobj.secretkey, statb64, timeintb64, circb64, ver)
-        stat = decodedurl.status.status
+        stat = decodedurl.params.status.status
 
-        samples = [CaptureSample(smpl['ts'], smpl['temp'], smpl['rh']) for smpl in decodedurl.decoded.smpls]
+        samples = [CaptureSample(smpl['ts'], smpl['temp'], smpl['rh']) for smpl in decodedurl.params.buffer.smpls]
 
         status = CaptureStatus(resetsalltime=stat['resetsalltime'],
                                brownout=stat['brownout'],
@@ -40,14 +40,14 @@ class CaptureService(Service):
 
         capture = super().create(box_id=boxobj.id,
                                  user_id=user_id,
-                                 timestamp=decodedurl.decoded.timestamp,
-                                 loopcount=decodedurl.status.loopcount,
+                                 timestamp=decodedurl.scandatetime,
+                                 loopcount=decodedurl.params.status.loopcount,
                                  status=status,
-                                 batvoltagemv=decodedurl.status.batvoltagemv,
-                                 cursorpos=decodedurl.decoded.cursorpos,
-                                 version=decodedurl.version,
-                                 timeintmins=decodedurl.timeint,
-                                 md5=decodedurl.decoded.md5,
+                                 batvoltagemv=decodedurl.params.status.batvoltagemv,
+                                 cursorpos=decodedurl.params.buffer.endmarkerpos,
+                                 version=decodedurl.majorversion,
+                                 timeintmins=decodedurl.params.timeintervalmins,
+                                 md5=decodedurl.params.buffer.md5,
                                  samples=samples)
 
         # Assign serial to the box and commit to the db.
