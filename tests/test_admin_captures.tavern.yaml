@@ -40,7 +40,7 @@ includes:
 stages:
   - name: Obtain a token
 
-    # Define the request to be made
+    # Define the request to \be made
     request:
       url: "{baseurl}/api/admin/v1/token"
       method: POST

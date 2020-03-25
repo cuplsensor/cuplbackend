@@ -112,8 +112,8 @@ def clientsecret():
 
 
 @pytest.fixture(scope="function")
-def box_fixture(request, baseurl):
-    boxhelper = BoxWrapper(baseurl)
+def box_fixture(request, baseurl, clientid, clientsecret):
+    boxhelper = BoxWrapper(baseurl, clientid, clientsecret)
 
     def teardown():
         boxid = boxresponse['id']
