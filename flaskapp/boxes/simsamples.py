@@ -41,7 +41,7 @@ def simsamples(tm=None, smplintervalmins: int=10, nsamples: int=144, valmax: flo
         valmin: minimum value of the sine wave
 
     Returns:
-        A list of samples. If the product of smplintervalmins and nsamples is 24 hours, these will range between
+        A list of samples, oldest first. If the product of smplintervalmins and nsamples is 24 hours, these will range between
         valmax and valmin.
         modintervalmins is offset in minutes to the most recent time interval.
 
@@ -69,7 +69,7 @@ def simsamples(tm=None, smplintervalmins: int=10, nsamples: int=144, valmax: flo
         valrange = valmax - valmin
         zsin_smpl = 0.5*sin(rad_smpl) + 0.5 # Scale sine function so it is between 0 and 1.
         val_smpl = valrange*zsin_smpl + valmin # Scale again
-        smpl_list.append({"time": time_smpl, "rad": rad_smpl, "val": val_smpl})
+        smpl_list.insert(0, {"time": time_smpl, "rad": rad_smpl, "val": val_smpl})
 
     return smpl_list, timeoffset_mins
 
@@ -85,8 +85,11 @@ def trhsamples(tm=None, smplintervalmins=10, nsamples=144, tempmax=110, tempmin=
 
 
 if __name__ == "__main__":
-    now = datetime.utcnow()
-    midnight = datetime(year=now.year, month=now.month, day=now.day, hour=0, minute=0, second=0)
-    trhlist, timeoffsetmins = trhsamples()
+    now = datetime.now()
+    time1610 = datetime(year=now.year, month=now.month, day=now.day, hour=16, minute=10, second=0)
+    time1501 = datetime(year=now.year, month=now.month, day=now.day, hour=15, minute=1, second=0)
+    trhlist, timeoffsetmins = trhsamples(tm=time1501)
     print(trhlist)
     print(timeoffsetmins)
+    trhlist, timeoffsetmins = trhsamples(tm=time1610)
+    print(trhlist)
