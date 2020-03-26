@@ -26,7 +26,7 @@ def time_to_radians(timeofday: time) -> float:
     return secondsofday * radianspersecond
 
 
-def simsamples(tm=datetime.utcnow(), smplintervalmins: int=10, nsamples: int=144, valmax: float=110, valmin: float=-10):
+def simsamples(tm=None, smplintervalmins: int=10, nsamples: int=144, valmax: float=110, valmin: float=-10):
     """Produces a list of simulated samples prior to a given time (now by default).
     These vary in a sine wave scaled between valmax and valmin, according to the time of day.
 
@@ -46,6 +46,7 @@ def simsamples(tm=datetime.utcnow(), smplintervalmins: int=10, nsamples: int=144
         modintervalmins is offset in minutes to the most recent time interval.
 
     """
+    tm = tm or datetime.utcnow()
     # First get the time rounded down to the closest time interval minutes
     # e.g. if time interval is 10 minutes and the time is 1652,
     # timeoffset_mins = 2 minutes
@@ -73,7 +74,8 @@ def simsamples(tm=datetime.utcnow(), smplintervalmins: int=10, nsamples: int=144
     return smpl_list, timeoffset_mins
 
 
-def trhsamples(tm=datetime.utcnow(), smplintervalmins=10, nsamples=144, tempmax=110, tempmin=-10, rhmax=100, rhmin=0):
+def trhsamples(tm=None, smplintervalmins=10, nsamples=144, tempmax=110, tempmin=-10, rhmax=100, rhmin=0):
+    tm = tm or datetime.utcnow()
     tempsim, _ = simsamples(tm=tm, smplintervalmins=smplintervalmins, nsamples=nsamples, valmax=tempmax, valmin=tempmin)
     rhsim, timeoffset_mins = simsamples(tm=tm, smplintervalmins=smplintervalmins, nsamples=nsamples, valmax=rhmax, valmin=rhmin)
     templist = [temp['val'] for temp in tempsim]
