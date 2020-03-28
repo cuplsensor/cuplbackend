@@ -7,3 +7,9 @@ Capture
       /capture/*
    :encoding: utf-8
    :examples:
+
+.. openapi:: api.yaml
+   :include:
+      /captures*
+   :encoding: utf-8
+   :examples:

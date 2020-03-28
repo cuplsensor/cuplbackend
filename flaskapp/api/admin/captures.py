@@ -41,6 +41,24 @@ class Captures(MultipleAdminResource):
     def __init__(self):
         super().__init__(CaptureSchema, captures)
 
+    def get(self):
+        """
+        Get a list of captures.
+        Returns:
+
+        """
+        parsedargs = super().parse_body_args(request.args.to_dict(),
+                                             optlist=['offset', 'limit'])
+
+        offset = parsedargs.get('offset', 0)
+        limit = parsedargs.get('limit', None)
+
+        capturelist = self.service.find().order_by(self.service.__model__.id.desc()).offset(offset).limit(limit)
+
+        schema = self.Schema()
+        result = schema.dump(capturelist, many=True)
+        return jsonify(result)
+
     def post(self):
         """
         Create a capture

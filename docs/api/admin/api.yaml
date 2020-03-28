@@ -94,6 +94,37 @@ paths:
             application/json:
               schema: {}
   /captures:
+    get:
+      description: Get a list of captures
+      summary: Get a list of captures ordered by ID.
+      operationId: CapturesGet
+      parameters:
+        - name: offset
+          in: query
+          description: Return captures starting from this index.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Limit the number of captures returned.
+          schema:
+            type: integer
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of captures
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Capture'
+        400:
+          description: bad input parameter
+          content:
+            application/json:
+              schema: {}
     post:
       description: Create a capture
       summary: create a capture
