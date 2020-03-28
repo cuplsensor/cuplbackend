@@ -111,7 +111,6 @@ stages:
         id: !anyint
         oauth_id: !anystr
         timeregistered: !anystr
-        sub: !anystr
         boxviews: !anylist
         roles: !anylist
         captures: !anylist
@@ -147,7 +146,6 @@ stages:
         id: !anyint
         oauth_id: !anystr
         timeregistered: !anystr
-        sub: !anystr
         boxviews: !anylist
         roles: !anylist
         captures: !anylist
