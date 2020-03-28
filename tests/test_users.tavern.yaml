@@ -112,6 +112,10 @@ stages:
         oauth_id: !anystr
         timeregistered: !anystr
         sub: !anystr
+        boxviews: !anylist
+        roles: !anylist
+        captures: !anylist
+        userinfo: !anydict
 
 ---
 
@@ -144,6 +148,11 @@ stages:
         oauth_id: !anystr
         timeregistered: !anystr
         sub: !anystr
+        boxviews: !anylist
+        roles: !anylist
+        captures: !anylist
+        userinfo: !anydict
+
 
 ---
 
