@@ -35,7 +35,7 @@ class CaptureSchema(ModelSchema):
     box_id = fields.Integer()
     user_id = fields.Integer(missing=None)
     status = fields.Nested(CaptureStatusSchema)
-    samples = fields.Nested(CaptureSampleSchema, many=True)
+    samples = fields.Nested(CaptureSampleSchema, many=True, load_only=True)
 
 
 class ConsumerCaptureSchema(CaptureSchema):
