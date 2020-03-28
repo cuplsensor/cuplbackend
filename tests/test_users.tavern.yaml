@@ -111,10 +111,7 @@ stages:
         id: !anyint
         oauth_id: !anystr
         timeregistered: !anystr
-        userinfo:
-          family_name: !anystr
-          given_name: !anystr
-          nickname: !anystr
+        sub: !anystr
 
 ---
 
@@ -146,10 +143,7 @@ stages:
         id: !anyint
         oauth_id: !anystr
         timeregistered: !anystr
-        userinfo:
-          family_name: !anystr
-          given_name: !anystr
-          nickname: !anystr
+        sub: !anystr
 
 ---
 
