@@ -20,6 +20,24 @@ class CaptureWrapper(AdminApiWrapper):
         endpoint_many = "/captures"
         super().__init__(baseurl, adminapi_client_id, adminapi_client_secret, endpoint_one, endpoint_many)
 
+    def get_many(self, offset: int = 0, limit: int = None, box_id: int = None) -> list:
+        """Makes a GET request to endpoint_many.
+
+        Args:
+            offset (int):  Return captures with an ID greater than this number.
+            limit (int): Number of captures to return.
+            box_id (int): Filter by box_id (optional)
+
+        Returns:
+            list: A list of capture dictionaries
+        """
+        kwargs = {'offset': offset, 'limit': limit}
+
+        if box_id is not None:
+            kwargs.update({'box_id': box_id})
+
+        return super().get_many(**kwargs)
+
     def post(self, capturepayload: dict):
         """Create a capture in the database directly.
 

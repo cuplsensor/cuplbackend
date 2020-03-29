@@ -109,6 +109,11 @@ paths:
           description: Limit the number of captures returned.
           schema:
             type: integer
+        - name: box_id
+          in: query
+          description: Only returns captures from box_id.
+          schema:
+            type: integer
       security:
         - Bearer: []
       responses:
@@ -315,6 +320,78 @@ paths:
             schema:
               $ref: '#/components/schemas/BoxesPost'
         description: Box id
+
+  /boxviews:
+    get:
+      summary: Get a list of BoxViews.
+      description: Get a list of BoxViews.
+      operationId: BoxViewsGet
+      parameters:
+        - name: distinctOnBox
+          in: query
+          description: Return only the latest BoxView for each scanned box.
+          schema:
+            type: boolean
+        - name: box_id
+          in: query
+          description: Filter BoxViews by box_id.
+          schema:
+            type: integer
+      responses:
+        200:
+          description: A list of boxview objects ordered from newest to oldest.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BoxView'
+    /boxviews/{id}:
+      get:
+        summary: Get a boxview
+        description: Get a boxview
+        operationId: BoxViewGet
+        parameters:
+          - name: id
+            in: path
+            description: Box view ID
+            schema:
+              type: integer
+        responses:
+          200:
+            description: A boxview object
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BoxView'
+          404:
+            description: BoxView not found.
+            content:
+              application/json:
+                schema:
+                  type: object
+      delete:
+        summary: Delete a box view
+        operationId: BoxViewDelete
+        responses:
+          204:
+            description: BoxView deleted
+            content:
+              application/json:
+                schema:
+                  type: object
+          400:
+            description: Bad input.
+            content:
+              application/json:
+                schema:
+                  type: object
+          404:
+            description: BoxView not found
+            content:
+              application/json:
+                schema:
+                  type: object
 tags: []
 servers:
   - url: 'https://virtserver.swaggerhub.com/plots/UserAPI/1.0.0'
@@ -343,6 +420,23 @@ components:
         timeregistered:
           type: string
           format: date-time
+    BoxView:
+      title: Box View
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the Boxview item
+          example: 20
+        boxserial:
+          type: string
+          description: Serial of box that was viewed
+          example: YWJjZGVM
+        timestamp:
+          type: string
+          description: Timestamp the box was viewed in seconds since January 1st 1970
+          format: date-time
+          example: 2019-01-15T13:09:52.456Z
     Capture:
       title: Capture
       type: object

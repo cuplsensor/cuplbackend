@@ -9,5 +9,6 @@ Admin API Specification
 
    box
    capture
+   boxview
    token
    :caption: Contents

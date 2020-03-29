@@ -19,7 +19,7 @@ class AdminApiWrapper(ApiWrapper):
         response = r.json()
         return response
 
-    def get_many(self, offset: int = 0, limit: int = None) -> list:
+    def get_many(self, offset: int = 0, limit: int = None, **kwargs) -> list:
         """Makes a GET request to endpoint_many.
 
         Args:
@@ -31,6 +31,7 @@ class AdminApiWrapper(ApiWrapper):
         """
         url_many = "{apiurl}{endpoint_many}".format(apiurl=self.apiurl, endpoint_many=self.endpoint_many)
         params = {'offset': offset, 'limit': limit}
+        params.update(kwargs) # Add extra key/value pairs to the params dictionary
         r = requests.get(url_many, params=params, headers=self.headers)
         response = r.json()
         return response

@@ -22,18 +22,6 @@ class Box(SingleAdminResource):
     def __init__(self):
         super().__init__(BoxSchema, boxes)
 
-    def get(self, id):
-        """
-        Get a box by its serial.
-        """
-        return super().get(id)
-
-    def delete(self, id):
-        """
-        Delete a box by its serial.
-        """
-        return super().delete(id)
-
 
 class BoxSimulate(SingleAdminResource):
     """Get a URL created by the encoder in wscodec. Similar to what the box will produce. """
