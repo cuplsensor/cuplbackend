@@ -73,6 +73,8 @@ stages:
       save:
         $ext:
           function: utils:create_capture_for_box
+          extra_kwargs:
+            baseurl: baseurl
         body:
           test_box_id: id
 
