@@ -50,31 +50,31 @@ class SingleResource(BaseResource):
     def __init__(self, Schema, service):
         super().__init__(Schema, service)
 
-    def get(self, modelid):
+    def get(self, id):
         """
         Return a resource schema for the model instance
 
-        :param modelid: model instance ID.
+        :param id: model instance ID.
 
         """
         schema = self.Schema()
-        current_app.logger.info(modelid)
-        modelobj = self.service.get_or_404(modelid)
+        current_app.logger.info(id)
+        modelobj = self.service.get_or_404(id)
         result = schema.dump(modelobj)
-        current_app.logger.info(modelid)
+        current_app.logger.info(id)
         current_app.logger.info(modelobj)
         current_app.logger.info(result)
         return jsonify(result)
 
-    def delete(self, modelid):
+    def delete(self, id):
         """
         Delete a model instance.
 
-        :param modelid: model instance ID to delete.
+        :param id: model instance ID to delete.
 
         """
-        # Obtain a model instance with identity modelid from the service.
-        modelobj = self.service.get_or_404(modelid)
+        # Obtain a model instance with identity id from the service.
+        modelobj = self.service.get_or_404(id)
         # Use the service to delete the model instance.
         self.service.delete(modelobj)
         # 204 Response
