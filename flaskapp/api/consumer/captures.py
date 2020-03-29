@@ -21,12 +21,6 @@ class Capture(SingleResource):
     def __init__(self):
         super().__init__(ConsumerCaptureSchema, captures)
 
-    def get(self, id):
-        """
-        Get a capture by ID
-        """
-        return super().get(modelid=id)
-
 
 class Captures(MultipleResource):
     def __init__(self):

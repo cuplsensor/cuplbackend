@@ -56,12 +56,6 @@ class Location(SingleResource, ScanRequiredResource):
     def __init__(self):
         super().__init__(LocationSchema, locations)
 
-    def get(self, id):
-        """
-        Get a list of locations for a box ordered by most recent
-        """
-        return super().get(modelid=id)
-
     def delete(self, usertoken, id):
         """
         Delete a location
@@ -72,7 +66,7 @@ class Location(SingleResource, ScanRequiredResource):
 
         # Check that we can edit this location
         self.get_capturesample(usertoken, capturesample_id)
-        return super().delete(modelid=id)
+        return super().delete(id=id)
 
     def patch(self, usertoken, id):
         """
