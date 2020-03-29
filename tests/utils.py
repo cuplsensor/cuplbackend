@@ -8,7 +8,10 @@ from wscodec.encoder.pyencoder.instrumented import InstrumentedSampleTRH
 def create_capture_for_box(response, baseurl):
     boxserial = response.json()["serial"]
     boxsecretkey = response.json()["secretkey"]
-    capturetrh = InstrumentedSampleTRH(baseurl=baseurl, serial=boxserial, secretkey=boxsecretkey, smplintervalmins=10)
+    capturetrh = InstrumentedSampleTRH(baseurl=baseurl,
+                                       serial=boxserial,
+                                       secretkey=boxsecretkey,
+                                       smplintervalmins=10)
     samplesin = capturetrh.pushsamples(10)
     queries = capturetrh.geturlqs()
     serial = queries['s'][0]
