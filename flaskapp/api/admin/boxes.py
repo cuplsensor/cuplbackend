@@ -53,39 +53,13 @@ class Boxes(MultipleAdminResource):
     def __init__(self):
         super().__init__(BoxSchema, boxes)
 
-    def post(self):
-        """
-        Create a new box. Optionally an ID can be specified.
-        """
-        parsedargs = super().parse_body_args(request.args.to_dict(),
-                                             optlist=['id'])
-
-        kwargs = dict()
-        if 'id' in parsedargs.keys():
-            kwargs['id'] = int(parsedargs['id'])
-
-        boxobj = self.service.create(**kwargs)
-
-        schema = self.Schema()
-        return schema.dump(boxobj)
-
     def get(self):
         """
         Get a list of boxes.
         Returns:
 
         """
-        parsedargs = super().parse_body_args(request.args.to_dict(),
-                                             optlist=['offset', 'limit'])
-
-        offset = parsedargs.get('offset', 0)
-        limit = parsedargs.get('limit', None)
-
-        boxlist = self.service.find().order_by(self.service.__model__.id.desc()).offset(offset).limit(limit)
-
-        schema = self.Schema()
-        result = schema.dump(boxlist, many=True)
-        return jsonify(result)
+        return super().get_filtered()
 
 
 api.add_resource(Box, '/box/<id>')

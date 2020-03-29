@@ -11,7 +11,6 @@ from flask_restful import Api, abort, reqparse
 from ...services import captures
 from ...captures.schemas import CaptureSchema
 from ...core import ma
-from marshmallow import fields, ValidationError
 from .adminresource import SingleAdminResource, MultipleAdminResource
 
 
@@ -36,21 +35,6 @@ class Captures(MultipleAdminResource):
 
         """
         return super().get_filtered(optfilterlist=['box_id'])
-
-    def post(self):
-        """
-        Create a capture
-        """
-        jsondata = request.get_json()
-        schema = self.Schema()
-        try:
-            schemaobj = schema.load(jsondata)
-        except ValidationError as err:
-            return err.messages, 422
-
-        schemaobj = captures.save(schemaobj)
-
-        return schema.dump(schemaobj)
 
 
 api.add_resource(Capture, '/capture/<id>')

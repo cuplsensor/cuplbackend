@@ -29,20 +29,14 @@ class Users(MultipleAdminResource):
     def __init__(self):
         super().__init__(UserSchema, users)
 
-    def post(self):
+    def get(self):
         """
-        Create a user
+        Get a list of users.
+        Returns:
+
         """
-        jsondata = request.get_json()
-        schema = self.Schema()
-        try:
-            schemaobj = schema.load(jsondata)
-        except ValidationError as err:
-            return err.messages, 422
+        return super().get_filtered()
 
-        schemaobj = self.service.save(schemaobj)
-
-        return schema.dump(schemaobj)
 
 
 api.add_resource(User, '/user/<id>')

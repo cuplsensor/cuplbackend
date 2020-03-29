@@ -35,37 +35,7 @@ class BoxViews(MultipleAdminResource):
         Returns:
 
         """
-        parsedargs = super().parse_body_args(request.args.to_dict(),
-                                             optlist=['offset', 'limit', 'box_id'])
-
-        offset = parsedargs.get('offset', 0)
-        limit = parsedargs.get('limit', None)
-        box_id = parsedargs.get('box_id', None)
-
-        filters = dict()
-        if box_id is not None:
-            filters.update({'box_id': box_id})
-
-        boxviewlist = self.service.find(**filters).order_by(self.service.__model__.id.desc()).offset(offset).limit(limit)
-
-        schema = self.Schema()
-        result = schema.dump(boxviewlist, many=True)
-        return jsonify(result)
-
-    def post(self):
-        """
-        Create a boxview
-        """
-        jsondata = request.get_json()
-        schema = self.Schema()
-        try:
-            schemaobj = schema.load(jsondata)
-        except ValidationError as err:
-            return err.messages, 422
-
-        schemaobj = boxviews.save(schemaobj)
-
-        return schema.dump(schemaobj)
+        return super().get_filtered(optfilterlist=['box_id'])
 
 
 api.add_resource(BoxView, '/boxview/<id>')
