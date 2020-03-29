@@ -55,7 +55,7 @@ class Captures(MultipleResource):
         """
         Create a capture
         """
-        parsedargs = Captures.parse_body_args(request.get_json(),
+        parsedargs = super().parse_body_args(request.args.to_dict(),
                                               requiredlist=['serial', 'statusb64', 'timeintb64', 'circbufb64', 'ver'])
 
         boxobj = boxes.get_by_serial(parsedargs['serial'])
