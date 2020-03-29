@@ -120,7 +120,7 @@ stages:
         - batvoltagemv: !anyfloat
           boxserial: !anystr
           cursorpos: !anyint
-          id: !int "{test_capture_id:d}"
+          id: !int "11111"
           loopcount: !anyint
           md5: !anystr
           status:
