@@ -13,6 +13,8 @@ from ... import factory
 from .token import bp as tokenbp
 from .boxes import bp as boxesbp
 from .captures import bp as capturesbp
+from .users import bp as usersbp
+from .boxviews import bp as boxviewsbp
 
 swaggertemplate = {
   "swagger": "2.0",
@@ -244,6 +246,8 @@ def create_app(settings_override=None):
     app.register_blueprint(tokenbp)
     app.register_blueprint(boxesbp)
     app.register_blueprint(capturesbp)
+    app.register_blueprint(boxviewsbp)
+    app.register_blueprint(usersbp)
     swagger = Swagger(app, template=swaggertemplate)
 
     return app
