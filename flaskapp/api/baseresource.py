@@ -33,7 +33,7 @@ class BaseResource(Resource):
         for argname in requiredlist:
             try:
                 parsed[argname] = requestjson[argname]
-            except KeyError:
+            except (KeyError, TypeError):
                 abort(400, message="{} is required".format(argname))
 
         for argname in optlist:
