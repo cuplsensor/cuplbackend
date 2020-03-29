@@ -120,7 +120,7 @@ stages:
         - batvoltagemv: !anyfloat
           boxserial: !anystr
           cursorpos: !anyint
-          id: !int "11111"
+          id: !int "{test_capture_id:d}"
           loopcount: !anyint
           md5: !anystr
           status:
@@ -142,7 +142,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/capture/{test_capture_id}"
+      url: "{baseurl}/api/consumer/v1/captures/{test_capture_id}"
       method: GET
       headers:
         content-type: application/json
