@@ -61,6 +61,24 @@ class Boxes(MultipleAdminResource):
         """
         return super().get_filtered()
 
+    def post(self):
+        """
+        Create a new box. Optionally an ID can be specified.
+        """
+        parsedargs = super().parse_body_args(request.args.to_dict(),
+                                             optlist=['id'])
+
+        kwargs = dict()
+        if 'id' in parsedargs.keys():
+            kwargs['id'] = int(parsedargs['id'])
+
+        boxobj = self.service.create(**kwargs)
+
+        schema = self.Schema()
+        return schema.dump(boxobj)
+
+
+
 
 api.add_resource(Box, '/box/<id>')
 api.add_resource(Boxes, '/boxes')
