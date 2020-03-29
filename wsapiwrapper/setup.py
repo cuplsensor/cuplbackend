@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="wsapiwrapper",
-    version="0.0.3",
+    version="0.0.4",
     author="Malcolm Mackay",
     author_email="malcolm@plotsensor.com",
     description="A Python interface to wsbackend web APIs.",
