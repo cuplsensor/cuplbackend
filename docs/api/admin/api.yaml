@@ -346,52 +346,61 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BoxView'
-    /boxviews/{id}:
-      get:
-        summary: Get a boxview
-        description: Get a boxview
-        operationId: BoxViewGet
-        parameters:
-          - name: id
-            in: path
-            description: Box view ID
-            schema:
-              type: integer
-        responses:
-          200:
-            description: A boxview object
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/BoxView'
-          404:
-            description: BoxView not found.
-            content:
-              application/json:
-                schema:
-                  type: object
-      delete:
-        summary: Delete a box view
-        operationId: BoxViewDelete
-        responses:
-          204:
-            description: BoxView deleted
-            content:
-              application/json:
-                schema:
-                  type: object
-          400:
-            description: Bad input.
-            content:
-              application/json:
-                schema:
-                  type: object
-          404:
-            description: BoxView not found
-            content:
-              application/json:
-                schema:
-                  type: object
+
+  /boxviews/{id}:
+    get:
+      summary: Get a boxview
+      description: Get a boxview
+      operationId: BoxViewGet
+      parameters:
+        - name: id
+          in: path
+          required: True
+          description: Box view ID
+          schema:
+            type: integer
+      responses:
+        200:
+          description: A boxview object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoxView'
+        404:
+          description: BoxView not found.
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      summary: Delete a box view
+      operationId: BoxViewDelete
+      parameters:
+        - name: id
+          in: path
+          required: True
+          description: Box view ID
+          schema:
+            type: integer
+      responses:
+        204:
+          description: BoxView deleted
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Bad input.
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: BoxView not found
+          content:
+            application/json:
+              schema:
+                type: object
 tags: []
 servers:
   - url: 'https://virtserver.swaggerhub.com/plots/UserAPI/1.0.0'
