@@ -72,9 +72,9 @@ jobs:
     - name: Run uwsgi server and daemonize
       run: uwsgi --protocol http --daemonize /tmp/uwsgi_daemonize.log -w -d --ini uwsgi.ini
 
-    - name: Add tests to pythonpath
+    - name: Add tests directory to pythonpath so that the utils.py file can be found by Tavern.
       run: export PYTHONPATH=/tests
-      
+
     - name: Start tests
       run: python3 -m pytest --showlocals
       env:
