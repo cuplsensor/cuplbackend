@@ -10,5 +10,5 @@ __all__ = ['BoxViewSchema']
 class BoxViewSchema(ma.ModelSchema):
     class Meta:
         model = BoxView
-        exclude = ('parent_box')
+        exclude = ('parent_box',)
     boxserial = fields.String()
