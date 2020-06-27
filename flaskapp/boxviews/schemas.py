@@ -13,4 +13,3 @@ class BoxViewSchema(ma.ModelSchema):
         exclude = ('parent_box', )
     boxserial = fields.String()
     user_id = fields.Integer()
-    

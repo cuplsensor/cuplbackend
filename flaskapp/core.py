@@ -13,7 +13,7 @@ import marshmallow_sqlalchemy as ma
 from flask import current_app, abort
 
 #: Flask-SQLAlchemy extension instance
-db = SQLAlchemy()
+db = SQLAlchemy(engine_options={'pool_pre_ping': True})
 sec = Security()
 
 

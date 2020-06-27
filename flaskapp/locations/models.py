@@ -8,6 +8,7 @@
 
 from ..core import db
 
+
 # Define the Location data model.
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
