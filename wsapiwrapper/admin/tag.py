@@ -69,7 +69,7 @@ class TagWrapper(AdminApiWrapper):
         if description is not None:
             payload.update({'description': description})
 
-        r = requests.post(tagsurl, data=payload, headers=self.headers)
+        r = requests.post(tagsurl, json=payload, headers=self.headers)
         tagresponse = r.json()
         return tagresponse
 
