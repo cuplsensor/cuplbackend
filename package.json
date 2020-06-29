@@ -5,9 +5,12 @@
   "main": "app.js",
   "private": false,
   "scripts": {
-        "start": "node app.js"
+    "start": "node app.js"
   },
   "devDependencies": {
-    "oauth2-mock-server" : "1.5.0"
+    "oauth2-mock-server": "1.5.0"
+  },
+  "dependencies": {
+    "forever": "^3.0.0"
   }
 }

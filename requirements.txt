@@ -4,7 +4,6 @@ Flask>=0.10.1
 Flask-SQLAlchemy>=2.0
 Flask-WTF>0.9.5
 flask-restful>=0.2.12
-flask-security>=3.0.0
 flasgger>=0.9.2
 marshmallow-sqlalchemy
 hashids>=1.1.0

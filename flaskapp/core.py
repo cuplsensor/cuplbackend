@@ -6,15 +6,12 @@
 """
 
 from flask_sqlalchemy import SQLAlchemy
-from flask_security import Security, SQLAlchemyUserDatastore, \
-    UserMixin, RoleMixin, login_required
 import marshmallow_sqlalchemy as ma
 
 from flask import current_app, abort
 
 #: Flask-SQLAlchemy extension instance
 db = SQLAlchemy(engine_options={'pool_pre_ping': True})
-sec = Security()
 
 
 class OverholtError(Exception):

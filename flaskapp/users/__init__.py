@@ -6,9 +6,10 @@
     users package
 """
 
-from ..core import Service, db, sec
+from ..core import Service, db
 from .models import User
 from datetime import datetime
+
 
 class UserNotFoundError(Exception):
     """ User Not Found Error
@@ -17,6 +18,7 @@ class UserNotFoundError(Exception):
     """
     def __init__(self):
         self.description = "No user in the Users table "
+
     def __str__(self):
         return self.description
 
@@ -34,7 +36,6 @@ class UserService(Service):
 
         # Assign serial to the box and commit to the db.
         return user
-
 
     def identity(self, token):
         """Find a user object from the credentials inside a decoded token."""

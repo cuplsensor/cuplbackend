@@ -6,13 +6,12 @@
     User model
 """
 
-from flask_security import UserMixin, RoleMixin
 from ..models import Capture, BoxView, Box
 from ..core import db
 
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
-class User(UserMixin, db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # OAuth ID field
@@ -30,10 +29,6 @@ class User(UserMixin, db.Model):
                                backref=db.backref('parent_user'),
                                cascade="all, delete-orphan",
                                lazy='dynamic')
-
-    # Relationships
-    roles = db.relationship('Role', secondary='roles_users',
-            backref=db.backref('users', lazy='dynamic'))
 
     def has_scanned_box(self, boxserial):
         # Returns true if this user has a capture on a box.
@@ -69,21 +64,10 @@ class User(UserMixin, db.Model):
 
         return stmt3.all()
 
-
     def __init__(self, oauth_id, timeregistered):
         # Initialise the user object
         self.oauth_id = oauth_id
         self.timeregistered = timeregistered
 
 
-# Define the Role data model
-class Role(RoleMixin, db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), unique=True)
-    description = db.Column(db.String(255))
 
-
-# Define models
-roles_users = db.Table('roles_users',
-        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
