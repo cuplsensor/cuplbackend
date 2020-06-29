@@ -122,7 +122,7 @@ class Tag(db.Model):
         if len(secretkey) == SECKEY_LEN_BYTES:
             self.secretkey = secretkey
         else:
-            self.__class__.gen_secret_key()
+            self.secretkey = self.__class__.gen_secret_key()
 
         self.fwversion = fwversion
         self.hwversion = hwversion
