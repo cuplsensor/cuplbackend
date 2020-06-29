@@ -38,7 +38,7 @@ class Token(Resource):
         parser.add_argument('client_secret', type=str, required=True, help='client_secret string needed')
         args = parser.parse_args()
         # Only clients that send the correct ID and Secret will be given a token.
-        if (args['client_id'] != ADMINAPI_CLIENTID) and (args['client_secret'] != ADMINAPI_CLIENTSERET):
+        if (args['client_id'] != ADMINAPI_CLIENTID) or (args['client_secret'] != ADMINAPI_CLIENTSERET):
             abort(401)
         else:
             token = self.createtoken()

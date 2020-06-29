@@ -46,6 +46,31 @@ stages:
     # and the expected response code and body
     response:
       status_code: 401
+---
+
+test_name: No token with incorrect client_secret
+
+marks:
+  - usefixtures:
+      - baseurl
+      - clientid
+
+stages:
+  - name: With a client_id and the wrong client_secret, no token is returned.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/token"
+      method: POST
+      json:
+        client_id: "{clientid}"
+        client_secret: "wrong"
+      headers:
+        content-type: application/json
+
+    # and the expected response code and body
+    response:
+      status_code: 401
 
 ---
 

@@ -48,6 +48,9 @@ class TokenAuth():
         except jwt.JWTClaimsError:
             abort(401, description="incorrect claims please check the audience and issuer")
 
+        except jwt.JWTError:
+            abort(401, description="bad token")
+
         except Exception:
             abort(400, description=traceback.format_exc())
 

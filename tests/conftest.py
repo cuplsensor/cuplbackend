@@ -108,7 +108,7 @@ def clientid():
 @pytest.fixture
 def clientsecret():
     """ Return client secret environment variable. """
-    return os.environ.get("ADMINAPI_CLIENTSECRET")
+    return os.getenv("ADMINAPI_CLIENTSECRET", defaults.ADMINAPI_CLIENTSECRET)
 
 
 @pytest.fixture(scope="function")

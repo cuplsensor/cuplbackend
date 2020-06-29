@@ -114,12 +114,12 @@ class Tag(db.Model):
     def __init__(self, serial: str = None, secretkey: str = None, fwversion: str = "", hwversion: str = "", description: str = "", **kwargs):
         # Initialise the tag object
         super(Tag, self).__init__(**kwargs)
-        if len(serial) == SERIAL_LEN_BYTES:
+        if isinstance(serial, str) and (len(serial) == SERIAL_LEN_BYTES):
             self.serial = serial
         else:
             self.serial = None
 
-        if len(secretkey) == SECKEY_LEN_BYTES:
+        if isinstance(secretkey, str) and (len(secretkey) == SECKEY_LEN_BYTES):
             self.secretkey = secretkey
         else:
             self.secretkey = self.__class__.gen_secret_key()
