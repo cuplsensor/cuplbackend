@@ -30,6 +30,7 @@ class TagWrapper(AdminApiWrapper):
         tagurl = "{apiurl}/tag/{tagid}/simulate".format(apiurl=self.apiurl, tagid=tagid)
         params = {'frontendurl': frontendurl, 'nsamples': nsamples}
         r = requests.get(tagurl, params=params, headers=self.headers)
+        r.raise_for_status()
         tagresponse = r.json()
         return tagresponse
 
@@ -69,6 +70,7 @@ class TagWrapper(AdminApiWrapper):
             payload.update({'description': description})
 
         r = requests.post(tagsurl, json=payload, headers=self.headers)
+        r.raise_for_status()
         tagresponse = r.json()
         return tagresponse
 

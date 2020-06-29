@@ -57,7 +57,6 @@ class CaptureWrapper(AdminApiWrapper):
         captpayload = json.dumps(capturepayload)
         capturesurl = "{apiurl}/captures".format(apiurl=self.apiurl)
         r = requests.post(capturesurl, data=captpayload, headers=self.headers)
-        if r.status_code != 200:
-            raise Exception('Capture Write Failed')
+        r.raise_for_status()
         captresponse = r.json()
         return captresponse

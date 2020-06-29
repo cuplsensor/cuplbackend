@@ -24,6 +24,7 @@ def request_admin_token(baseurl: str, adminapi_client_id: str, adminapi_client_s
     tokenpayload = {'client_id': adminapi_client_id, 'client_secret': adminapi_client_secret}
     jsonheader = {'content-type': 'application/json'}
     r = requests.post(tokenurl, json=tokenpayload, headers=jsonheader)
+    r.raise_for_status()
     tokenresponse = r.json()['token']
     return tokenresponse
 
@@ -42,6 +43,7 @@ class AdminApiWrapper(ApiWrapper):
         """
         url_one = "{apiurl}{endpoint_one}{id}".format(apiurl=self.apiurl, endpoint_one=self.endpoint_one, id=id)
         r = requests.get(url_one, headers=self.headers)
+        r.raise_for_status()
         response = r.json()
         return response
 
@@ -59,6 +61,7 @@ class AdminApiWrapper(ApiWrapper):
         params = {'offset': offset, 'limit': limit}
         params.update(kwargs) # Add extra key/value pairs to the params dictionary
         r = requests.get(url_many, params=params, headers=self.headers)
+        r.raise_for_status()
         response = r.json()
         return response
 
@@ -71,6 +74,7 @@ class AdminApiWrapper(ApiWrapper):
         """
         url_one = "{apiurl}{endpoint_one}{id}".format(apiurl=self.apiurl, endpoint_one=self.endpoint_one, id=id)
         r = requests.delete(url_one, headers=self.headers)
+        r.raise_for_status()
         print(r.status_code)
 
     def __init__(self, baseurl: str, tokenstr: str, endpoint_one: str, endpoint_many: str):
