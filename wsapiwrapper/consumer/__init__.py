@@ -9,10 +9,9 @@ class ConsumerApiWrapper(ApiWrapper):
             baseurl (str): Websensor backend base URL.
             tokenstr (str): OAuth access token.
         """
-        super().__init__(baseurl)
+        super().__init__(baseurl, tokenstr)
         self.apiurl = "{baseurl}/api/consumer/v1".format(baseurl=self.baseurl)
-        if tokenstr is not None:
-            self.headers = self.auth_header(tokenstr)
+
 
     @staticmethod
     def process_status(status_code: int, desc: str = None):

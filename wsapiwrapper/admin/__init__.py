@@ -2,6 +2,32 @@ import requests
 from .. import ApiWrapper
 
 
+def api_url(baseurl: str) -> str:
+    return "{baseurl}/api/admin/v1".format(baseurl=baseurl)
+
+
+def request_admin_token(baseurl: str, adminapi_client_id: str, adminapi_client_secret: str) -> str:
+    """Request a token from the token endpoint.
+
+    A client_id and client_secret are exchanged for a token. This uses
+    the OAuth Client Credentials flow:
+
+    1. A POST request is made to the token endpoint of wsbackend.
+    2. Client ID and Client Secret are validated.
+    3. Access token is returned.
+
+    Returns:
+        str: token received from wsbackend.
+    """
+    apiurl = api_url(baseurl)
+    tokenurl = "{apiurl}/token".format(apiurl=apiurl)
+    tokenpayload = {'client_id': adminapi_client_id, 'client_secret': adminapi_client_secret}
+    jsonheader = {'content-type': 'application/json'}
+    r = requests.post(tokenurl, json=tokenpayload, headers=jsonheader)
+    tokenresponse = r.json()['token']
+    return tokenresponse
+
+
 class AdminApiWrapper(ApiWrapper):
     """Wraps calls to the wsbackend Admin API
 
@@ -47,27 +73,7 @@ class AdminApiWrapper(ApiWrapper):
         r = requests.delete(url_one, headers=self.headers)
         print(r.status_code)
 
-    def get_admin_token(self) -> str:
-        """Request a token from the token endpoint.
-
-        A client_id and client_secret are exchanged for a token. This uses
-        the OAuth Client Credentials flow:
-
-        1. A POST request is made to the token endpoint of wsbackend.
-        2. Client ID and Client Secret are validated.
-        3. Access token is returned.
-
-        Returns:
-            str: token received from wsbackend.
-        """
-        tokenurl = "{apiurl}/token".format(apiurl=self.apiurl)
-        tokenpayload = {'client_id': self.adminapi_client_id, 'client_secret': self.adminapi_client_secret}
-        jsonheader = {'content-type': 'application/json'}
-        r = requests.post(tokenurl, json=tokenpayload, headers=jsonheader)
-        tokenresponse = r.json()['token']
-        return tokenresponse
-
-    def __init__(self, baseurl: str, adminapi_client_id: str, adminapi_client_secret: str, endpoint_one: str, endpoint_many: str):
+    def __init__(self, baseurl: str, tokenstr: str, endpoint_one: str, endpoint_many: str):
         """Constructor for AdminApiWrapper
 
         Args:
@@ -77,11 +83,7 @@ class AdminApiWrapper(ApiWrapper):
             endpoint_one (str): Endpoint for returning one resource instance.
             endpoint_many (str): Endpoint for returning a list of resource instances.
         """
-        super().__init__(baseurl)
+        super().__init__(baseurl, tokenstr)
         self.endpoint_one = endpoint_one
         self.endpoint_many = endpoint_many
-        self.adminapi_client_id = adminapi_client_id
-        self.adminapi_client_secret = adminapi_client_secret
-        self.apiurl = "{baseurl}/api/admin/v1".format(baseurl=baseurl)
-        tokenstr = self.get_admin_token()
-        self.headers = self.auth_header(tokenstr)
+        self.apiurl = api_url(baseurl)

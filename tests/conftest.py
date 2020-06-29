@@ -8,6 +8,7 @@ import requests
 from . import defaults
 
 from .helpers.capturehelper import CaptureListHelper
+from ..wsapiwrapper.admin import request_admin_token
 from ..wsapiwrapper.admin.tag import TagWrapper
 from ..wsapiwrapper.consumer.user import UserWrapper
 from ..wsapiwrapper.consumer.mecapture import MeCaptureWrapper
@@ -111,9 +112,14 @@ def clientsecret():
     return os.getenv("ADMINAPI_CLIENTSECRET", defaults.ADMINAPI_CLIENTSECRET)
 
 
+@pytest.fixture
+def admintoken(baseurl, clientid, clientsecret):
+    return request_admin_token(baseurl, clientid, clientsecret)
+
+
 @pytest.fixture(scope="function")
-def tag_fixture(request, baseurl, clientid, clientsecret):
-    taghelper = TagWrapper(baseurl, clientid, clientsecret)
+def tag_fixture(request, baseurl, admintoken):
+    taghelper = TagWrapper(baseurl, admintoken)
 
     def teardown():
         tagid = tagresponse['id']
@@ -132,8 +138,8 @@ def mecapture_fixture(token_fixture, baseurl):
 
 
 @pytest.fixture(scope="function")
-def tag_fixture_b(request, baseurl, clientid, clientsecret):
-    taghelper = TagWrapper(baseurl, clientid, clientsecret)
+def tag_fixture_b(request, baseurl, admintoken):
+    taghelper = TagWrapper(baseurl, admintoken)
 
     class TagFactory(object):
         tagids = []
@@ -186,12 +192,12 @@ def user_fixture(request, baseurl, token_fixture):
 
 
 @pytest.fixture(scope="function")
-def tag_with_captures_fixture(baseurl, clientid, clientsecret, tag_fixture_b):
+def tag_with_captures_fixture(baseurl, admintoken, tag_fixture_b):
     class TagWithCapturesFactory(object):
 
         def get(self, capturespeclist):
             tag = tag_fixture_b.add()
-            clisthelper = CaptureListHelper(baseurl, clientid, clientsecret, capturespeclist, tagid=tag['id'])
+            clisthelper = CaptureListHelper(baseurl, admintoken, capturespeclist, tagid=tag['id'])
             return {'tag': tag, 'clisthelper': clisthelper}
 
     return TagWithCapturesFactory()

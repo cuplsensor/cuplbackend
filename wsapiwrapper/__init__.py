@@ -20,10 +20,13 @@ class ApiWrapper:
         }
         return headers
 
-    def __init__(self, baseurl):
+    def __init__(self, baseurl: str, tokenstr: str):
         """Constructor for ApiWrapper.
 
         Args:
             baseurl (str): Websensor backend base URL.
         """
         self.baseurl = baseurl
+        if tokenstr is not None:
+            self.headers = self.auth_header(tokenstr)
+
