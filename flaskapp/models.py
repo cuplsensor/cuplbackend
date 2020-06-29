@@ -6,7 +6,7 @@
 """
 
 from .captures.models import *
-from .boxes.models import *
+from .tags.models import *
 from .users.models import *
 from .locations.models import *
-from .boxviews.models import *
+from .tagviews.models import *

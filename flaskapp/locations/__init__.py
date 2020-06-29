@@ -26,5 +26,5 @@ class LocationService(Service):
                                   timestamp=timestamp,
                                   description=description)
 
-        # Assign serial to the box and commit to the db.
+        # Assign serial to the tag and commit to the db.
         return location

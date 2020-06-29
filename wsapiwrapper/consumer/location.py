@@ -2,11 +2,11 @@ import requests
 from . import ConsumerApiWrapper, Exception401
 
 
-class NoScanOnBoxException(Exception401):
-    """Location data cannot be modified on boxes that have not been scanned."""
+class NoScanOnTagException(Exception401):
+    """Location data cannot be modified on tags that have not been scanned."""
 
     def __init__(self):
-        super().__init__(message="Not authorised because the user has not scanned the parent box. ")
+        super().__init__(message="Not authorised because the user has not scanned the parent tag. ")
 
 
 class LocationWrapper(ConsumerApiWrapper):
@@ -21,7 +21,7 @@ class LocationWrapper(ConsumerApiWrapper):
 
         """
         if status_code == 401:
-            raise NoScanOnBoxException
+            raise NoScanOnTagException
         else:
             ConsumerApiWrapper.process_status(status_code)
 
@@ -52,7 +52,7 @@ class LocationWrapper(ConsumerApiWrapper):
         """Delete one location by ID.
 
         Makes a DELETE request to the :ref:`Location <LocationsConsumerAPI>` endpoint. To delete locations the
-        current user must have scanned the box.
+        current user must have scanned the tag.
 
         Args:
             location_id (int): Location ID to delete.
@@ -68,17 +68,17 @@ class LocationWrapper(ConsumerApiWrapper):
         return r.status_code
 
     def get_list(self,
-                 boxserial: str,
+                 tagserial: str,
                  starttime: str = None,
                  endtime: str = None) -> list:
-        """Get a list of locations for a box.
+        """Get a list of locations for a tag.
 
         Optionally a time window can be specified, so that only location timestamps within that window will be returned.
 
         Makes a GET request to the :ref:`Locations <LocationsConsumerAPI>` endpoint.
 
         Args:
-            boxserial: Base64 serial identifying a box.
+            tagserial: Base64 serial identifying a tag.
             starttime: Start datetime as an ISO-8601 string.
             endtime: End datetime as an ISO-8601 string.
 
@@ -86,7 +86,7 @@ class LocationWrapper(ConsumerApiWrapper):
             list: A list of Location dictionaries.
 
         """
-        queryparams = {'boxserial': boxserial}
+        queryparams = {'tagserial': tagserial}
 
         if starttime is not None:
             queryparams['starttime'] = starttime
@@ -104,11 +104,11 @@ class LocationWrapper(ConsumerApiWrapper):
         """Annotate a sample with location.
 
         The timestamp of a location corresponds to that of its parent sample. All samples can be traced back to the
-        box that created them. This must have been scanned by the current user.
+        tag that created them. This must have been scanned by the current user.
 
         Args:
             capturesample_id (int): Capturesample ID to annotate.
-            description (str): The box location e.g. under the stairs.
+            description (str): The tag location e.g. under the stairs.
 
         Returns:
             dict: Location dictionary returned by the API and converted from JSON.
@@ -125,11 +125,11 @@ class LocationWrapper(ConsumerApiWrapper):
     def patch(self, location_id: int, description: str) -> dict:
         """Change description of an existing location.
 
-        The current user must have scanned the box.
+        The current user must have scanned the tag.
 
         Args:
             location_id (int): Location ID to modify.
-            description: New box location (e.g. above the fireplace).
+            description: New tag location (e.g. above the fireplace).
 
         Returns:
             dict: Location dictionary returned by the API.

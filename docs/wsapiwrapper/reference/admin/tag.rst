@@ -1,7 +1,7 @@
-Box
+Tag
 ^^^^^^^
 
-.. automodule:: wsapiwrapper.admin.box
+.. automodule:: wsapiwrapper.admin.tag
    :members:
    :undoc-members:
    :special-members:

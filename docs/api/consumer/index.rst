@@ -7,7 +7,7 @@ Consumer API Specification
    :hidden:
    :maxdepth: 2
 
-   box
+   tag
    capture
    samples
    users

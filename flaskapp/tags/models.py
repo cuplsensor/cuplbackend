@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-    web.boxes.models
+    web.tags.models
     ~~~~~~~~~~~~~~~~~
 
-    Box model
+    Tag model
 """
 
 from ..core import db
 from ..captures.models import Capture, CaptureSample
-from ..boxviews.models import BoxView
+from ..tagviews.models import TagView
 from ..locations.models import Location
 from flask import current_app
 import datetime
 
 
-# Define the Box data model.
-class Box(db.Model):
+# Define the Tag data model.
+class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    # Box identity is unique. It will correspond to the BLE MAC address.
+    # Tag identity is unique. It will correspond to the BLE MAC address.
     # See MAC_BLE_0 and MAC_BLE_1 to read this 48-bit (6 byte) address.
     serial = db.Column(db.String(8), unique=True)
     secretkey = db.Column(db.String(8))
@@ -27,19 +27,19 @@ class Box(db.Model):
     # ID of the owning user object
     captures = db.relationship('Capture',
                                order_by="desc(Capture.timestamp)",
-                               backref=db.backref('parent_box'),
+                               backref=db.backref('parent_tag'),
                                cascade="all, delete-orphan")
 
-    boxviews = db.relationship('BoxView',
-                               order_by="desc(BoxView.timestamp)",
-                               backref=db.backref('parent_box'),
+    tagviews = db.relationship('TagView',
+                               order_by="desc(TagView.timestamp)",
+                               backref=db.backref('parent_tag'),
                                cascade="all, delete-orphan")
 
     def locations_in_window(self,
                             starttime=datetime.datetime(year=1970, month=1, day=1),
                             endtime=datetime.datetime.utcnow()):
 
-        stmt = Location.query.join(CaptureSample).join(Capture).filter((Capture.parent_box == self) &
+        stmt = Location.query.join(CaptureSample).join(Capture).filter((Capture.parent_tag == self) &
                                                                        (CaptureSample.timestamp >= starttime) &
                                                                        (CaptureSample.timestamp <= endtime)).order_by(
                                                                         CaptureSample.timestamp.desc())
@@ -48,9 +48,9 @@ class Box(db.Model):
 
     def uniquesampleswindow(self, starttime, endtime, offset=0, limit=None):
         threshold_in_seconds = 120
-        # Select all capture samples belonging to this box, between the start time and the end time.
+        # Select all capture samples belonging to this tag, between the start time and the end time.
         # Crucially all samples must be ordered by timestamp for the grouping to work.
-        stmt = CaptureSample.query.join(Capture).filter((Capture.parent_box == self) &
+        stmt = CaptureSample.query.join(Capture).filter((Capture.parent_tag == self) &
                                                         (CaptureSample.timestamp >= starttime) &
                                                         (CaptureSample.timestamp <= endtime)).order_by(CaptureSample.timestamp.asc()).subquery()
         # Calculate the time difference between successive samples using the lag function.
@@ -91,16 +91,16 @@ class Box(db.Model):
 
     def get_all_locations(self):
         # Select all capturesamples to this one
-        stmta = db.session.query(CaptureSample).join(Capture).filter(Capture.parent_box == self).subquery()
+        stmta = db.session.query(CaptureSample).join(Capture).filter(Capture.parent_tag == self).subquery()
         # Only select capturesamples with a location element and pick the last one.
         stmtb = db.session.query(Location, stmta.c.timestamp).filter(Location.capturesample_id==stmta.c.id).order_by(stmta.c.timestamp.desc())
         return stmtb.all()
 
     def __repr__(self):
-        return '<Box id=%s with serial=%s and secret key=%s>' % (self.id, self.serial, self.secretkey)
+        return '<Tag id=%s with serial=%s and secret key=%s>' % (self.id, self.serial, self.secretkey)
 
     def __init__(self, **kwargs):
-    	# Initialise the box object
-        super(Box, self).__init__(**kwargs)
+    	# Initialise the tag object
+        super(Tag, self).__init__(**kwargs)
         self.timeregistered = datetime.datetime.utcnow()
         self.user_id = None

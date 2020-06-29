@@ -3,21 +3,21 @@ import pytz
 import datetime
 
 
-def create_capture_get_samples(capturespeclist, boxwithcaptures, samplewrapper):
-    bwc = boxwithcaptures.get(capturespeclist)
+def create_capture_get_samples(capturespeclist, tagwithcaptures, samplewrapper):
+    bwc = tagwithcaptures.get(capturespeclist)
 
-    box = bwc['box']
+    tag = bwc['tag']
     clisthelper = bwc['clisthelper']
 
     captures_in = clisthelper.writtencaptures
     starttime = clisthelper.mints
     endtime = clisthelper.maxts
 
-    samples_out = samplewrapper.get_samples(box['serial'], starttime, endtime)
+    samples_out = samplewrapper.get_samples(tag['serial'], starttime, endtime)
     return captures_in, samples_out
 
 
-def test_samples(box_with_captures_fixture, sample_fixture):
+def test_samples(tag_with_captures_fixture, sample_fixture):
     starttime = datetime.datetime.now().replace(tzinfo=pytz.utc)
     capturespeclist = [
         {
@@ -29,7 +29,7 @@ def test_samples(box_with_captures_fixture, sample_fixture):
             'nsamples': 5
         }
     ]
-    captures_in, samples_out = create_capture_get_samples(capturespeclist, box_with_captures_fixture, sample_fixture)
+    captures_in, samples_out = create_capture_get_samples(capturespeclist, tag_with_captures_fixture, sample_fixture)
 
     # Newest to oldest order
     expectedsamples = [
@@ -45,7 +45,7 @@ def test_samples(box_with_captures_fixture, sample_fixture):
     assert expectedsamples == samples_out
 
 
-def test_samples_two(box_with_captures_fixture, sample_fixture):
+def test_samples_two(tag_with_captures_fixture, sample_fixture):
     starttime = datetime.datetime.now().replace(tzinfo=pytz.utc)
     capturespeclist = [
         {
@@ -53,7 +53,7 @@ def test_samples_two(box_with_captures_fixture, sample_fixture):
             'nsamples': 4
         },
     ]
-    captures_in, samples_out = create_capture_get_samples(capturespeclist, box_with_captures_fixture, sample_fixture)
+    captures_in, samples_out = create_capture_get_samples(capturespeclist, tag_with_captures_fixture, sample_fixture)
 
     expectedsamples = [
         captures_in[0]['samples'][0],

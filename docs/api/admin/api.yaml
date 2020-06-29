@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0-oas3"
   title: Administrator API
-  description: Administrator-only API for provisioning boxes.
+  description: Administrator-only API for provisioning tags.
   contact:
     email: you@your-company.com
 paths:
@@ -109,9 +109,9 @@ paths:
           description: Limit the number of captures returned.
           schema:
             type: integer
-        - name: box_id
+        - name: tag_id
           in: query
-          description: Only returns captures from box_id.
+          description: Only returns captures from tag_id.
           schema:
             type: integer
       security:
@@ -160,28 +160,28 @@ paths:
             schema:
               $ref: '#/components/schemas/Capture'
         description: Capture object
-  /box:
+  /tag:
     get:
-      description: Get a box from an id.
-      summary: get a box
-      operationId: BoxGet
+      description: Get a tag from an id.
+      summary: get a tag
+      operationId: TagGet
       security:
         - Bearer: []
       parameters:
         - name: id
           in: query
           required: false
-          description: Box id
+          description: Tag id
           schema:
             type: integer
       responses:
         '200':
-          description: A box object
+          description: A tag object
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Box'
+                $ref: '#/components/schemas/Tag'
         '400':
           description: bad input parameter
           content:
@@ -189,21 +189,21 @@ paths:
               schema: {}
 
     delete:
-      description: delete a box
-      summary: delete a box
-      operationId: BoxDelete
+      description: delete a tag
+      summary: delete a tag
+      operationId: TagDelete
       security:
         - Bearer: []
       parameters:
         - name: id
           in: query
           required: false
-          description: Box id
+          description: Tag id
           schema:
             type: integer
       responses:
         '204':
-          description: Box has been deleted
+          description: Tag has been deleted
           content:
             application/json:
               schema: {}
@@ -213,23 +213,23 @@ paths:
             application/json:
               schema: {}
         '404':
-          description: No box found
+          description: No tag found
           content:
             application/json:
               schema: {}
 
-  /box/{id}/simulate:
+  /tag/{id}/simulate:
     get:
-      description: Obtain a simulated URL from the box. This will contain mock sensor data.
+      description: Obtain a simulated URL from the tag. This will contain mock sensor data.
       summary: Simulate URL.
-      operationId: BoxSimGet
+      operationId: TagSimGet
       security:
         - Bearer: []
       parameters:
         - name: id
           in: path
           required: true
-          description: Box id to simulate
+          description: Tag id to simulate
           schema:
             type: integer
         - name: frontendurl
@@ -258,11 +258,11 @@ paths:
             application/json:
               schema: {}
 
-  /boxes:
+  /tags:
     get:
-      description: Get a list of boxes
-      summary: Get a list of boxes ordered by ID.
-      operationId: BoxesGet
+      description: Get a list of tags
+      summary: Get a list of tags ordered by ID.
+      operationId: TagsGet
       parameters:
         - name: offset
           in: query
@@ -278,31 +278,31 @@ paths:
         - Bearer: []
       responses:
         200:
-          description: List of boxes
+          description: List of tags
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Box'
+                  $ref: '#/components/schemas/Tag'
         400:
           description: bad input parameter
           content:
             application/json:
               schema: {}
     post:
-      description: Create a box
-      summary: create a box
-      operationId: BoxPost
+      description: Create a tag
+      summary: create a tag
+      operationId: TagPost
       security:
         - Bearer: []
       responses:
         201:
-          description: Box created
+          description: Tag created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Box'
+                $ref: '#/components/schemas/Tag'
           headers: {}
         400:
           description: 'invalid input, object invalid'
@@ -318,73 +318,73 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BoxesPost'
-        description: Box id
+              $ref: '#/components/schemas/TagsPost'
+        description: Tag id
 
-  /boxviews:
+  /tagviews:
     get:
-      summary: Get a list of BoxViews.
-      description: Get a list of BoxViews.
-      operationId: BoxViewsGet
+      summary: Get a list of TagViews.
+      description: Get a list of TagViews.
+      operationId: TagViewsGet
       parameters:
-        - name: distinctOnBox
+        - name: distinctOnTag
           in: query
-          description: Return only the latest BoxView for each scanned box.
+          description: Return only the latest TagView for each scanned tag.
           schema:
             type: boolean
-        - name: box_id
+        - name: tag_id
           in: query
-          description: Filter BoxViews by box_id.
+          description: Filter TagViews by tag_id.
           schema:
             type: integer
       responses:
         200:
-          description: A list of boxview objects ordered from newest to oldest.
+          description: A list of tagview objects ordered from newest to oldest.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BoxView'
+                  $ref: '#/components/schemas/TagView'
 
-  /boxviews/{id}:
+  /tagviews/{id}:
     get:
-      summary: Get a boxview
-      description: Get a boxview
-      operationId: BoxViewGet
+      summary: Get a tagview
+      description: Get a tagview
+      operationId: TagViewGet
       parameters:
         - name: id
           in: path
           required: True
-          description: Box view ID
+          description: Tag view ID
           schema:
             type: integer
       responses:
         200:
-          description: A boxview object
+          description: A tagview object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BoxView'
+                $ref: '#/components/schemas/TagView'
         404:
-          description: BoxView not found.
+          description: TagView not found.
           content:
             application/json:
               schema:
                 type: object
     delete:
-      summary: Delete a box view
-      operationId: BoxViewDelete
+      summary: Delete a tag view
+      operationId: TagViewDelete
       parameters:
         - name: id
           in: path
           required: True
-          description: Box view ID
+          description: Tag view ID
           schema:
             type: integer
       responses:
         204:
-          description: BoxView deleted
+          description: TagView deleted
           content:
             application/json:
               schema:
@@ -396,7 +396,7 @@ paths:
               schema:
                 type: object
         404:
-          description: BoxView not found
+          description: TagView not found
           content:
             application/json:
               schema:
@@ -406,15 +406,15 @@ servers:
   - url: 'https://virtserver.swaggerhub.com/plots/UserAPI/1.0.0'
 components:
   schemas:
-    BoxesPost:
-      title: BoxPost
+    TagsPost:
+      title: TagPost
       type: object
       properties:
         id:
           type: integer
           format: int32
-    Box:
-      title: Box
+    Tag:
+      title: Tag
       type: object
       properties:
         id:
@@ -429,21 +429,21 @@ components:
         timeregistered:
           type: string
           format: date-time
-    BoxView:
-      title: Box View
+    TagView:
+      title: Tag View
       type: object
       properties:
         id:
           type: integer
-          description: Unique ID of the Boxview item
+          description: Unique ID of the Tagview item
           example: 20
-        boxserial:
+        tagserial:
           type: string
-          description: Serial of box that was viewed
+          description: Serial of tag that was viewed
           example: YWJjZGVM
         timestamp:
           type: string
-          description: Timestamp the box was viewed in seconds since January 1st 1970
+          description: Timestamp the tag was viewed in seconds since January 1st 1970
           format: date-time
           example: 2019-01-15T13:09:52.456Z
     Capture:
@@ -454,7 +454,7 @@ components:
           type: integer
           format: int32
         serial:
-          description: Serial of the box that made the capture
+          description: Serial of the tag that made the capture
           example: YWJjZGVM
           type: string
         statusb64:
@@ -472,7 +472,7 @@ components:
         hmac:
           description: >-
             valid HMAC. Possession of this proves that to the server that the
-            client has scanned a box.
+            client has scanned a tag.
           example: afnslh94hfala
           type: string
         start-timestamp:

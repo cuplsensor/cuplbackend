@@ -5,9 +5,9 @@ Me
    :undoc-members:
    :special-members:
 
-BoxView
+TagView
 ~~~~~~~~
-.. automodule:: wsapiwrapper.consumer.boxview
+.. automodule:: wsapiwrapper.consumer.tagview
    :members:
    :undoc-members:
    :special-members:

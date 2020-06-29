@@ -32,7 +32,7 @@ class CaptureSchema(ModelSchema):
         model = Capture
         sqla_session = db.session
         strict = True
-    box_id = fields.Integer()
+    tag_id = fields.Integer()
     user_id = fields.Integer(missing=None)
     status = fields.Nested(CaptureStatusSchema)
     samples = fields.Nested(CaptureSampleSchema, many=True)
@@ -40,8 +40,8 @@ class CaptureSchema(ModelSchema):
 
 class ConsumerCaptureSchema(CaptureSchema):
     class Meta(CaptureSchema.Meta):
-        exclude = ('samples', 'box_id', 'parent_box')
-    boxserial = fields.String()
+        exclude = ('samples', 'tag_id', 'parent_tag')
+    tagserial = fields.String()
 
 
 

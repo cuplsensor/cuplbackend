@@ -1,21 +1,21 @@
-.. _BoxAdminAPI:
+.. _TagAdminAPI:
 
-Box
+Tag
 ---
 .. openapi:: api.yaml
    :include:
-      /box/*
+      /tag/*
    :exclude:
-      /box/{id}/simulate
+      /tag/{id}/simulate
    :encoding: utf-8
    :examples:
 
-.. _BoxSimulateAdminAPI:
+.. _TagSimulateAdminAPI:
 
 Simulate
 ^^^^^^^^^^^
 .. openapi:: api.yaml
    :include:
-      /box/{id}/simulate
+      /tag/{id}/simulate
    :encoding: utf-8
    :examples:

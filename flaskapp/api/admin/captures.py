@@ -1,9 +1,9 @@
 # Inspired by overholt
 """
-    flaskapp.api.admin.boxes
+    flaskapp.api.admin.tags
     ~~~~~~~~~~~~~~
 
-    Box endpoints
+    Tag endpoints
 """
 
 from flask import Blueprint, request, jsonify, current_app
@@ -19,7 +19,7 @@ api = Api(bp)
 
 
 class Capture(SingleAdminResource):
-    """Get, modify or delete one box. """
+    """Get, modify or delete one tag. """
     def __init__(self):
         super().__init__(CaptureSchema, captures)
 
@@ -34,7 +34,7 @@ class Captures(MultipleAdminResource):
         Returns:
 
         """
-        return super().get_filtered(optfilterlist=['box_id'])
+        return super().get_filtered(optfilterlist=['tag_id'])
 
 
 api.add_resource(Capture, '/capture/<id>')

@@ -24,7 +24,7 @@ stages:
 
 ---
 
-test_name: Create a box, add a capture to it then delete the box.
+test_name: Create a tag, add a capture to it then delete the tag.
 
 marks:
   - usefixtures:
@@ -57,11 +57,11 @@ stages:
         body:
           admin_token: token
 
-  - name: Use the token to create a new box
+  - name: Use the token to create a new tag
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/boxes"
+      url: "{baseurl}/api/admin/v1/tags"
       method: POST
       headers:
         content-type: application/json
@@ -77,18 +77,18 @@ stages:
         serial: !anystr
       save:
         body:
-          test_box_id: id
+          test_tag_id: id
 
 
 
-  - name: Create a capture and add it to the box with the serial
+  - name: Create a capture and add it to the tag with the serial
 
     # Define the request to be made
     request:
       url: "{baseurl}/api/admin/v1/captures"
       method: POST
       json:
-        box_id: !int "{test_box_id:d}"
+        tag_id: !int "{test_tag_id:d}"
         batvoltagemv: !int "{testcapture.batvoltagemv:d}"
         timestamp: "{testcapture.timestamp}"
         loopcount: "{testcapture.loopcount}"
@@ -112,16 +112,16 @@ stages:
     response:
       status_code: 200
       body:
-        box_id: !int "{test_box_id:d}"
+        tag_id: !int "{test_tag_id:d}"
 
 
 
 
-  - name: Delete the box by ID.
+  - name: Delete the tag by ID.
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/box/{test_box_id}"
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json

@@ -10,7 +10,7 @@ from flask import Blueprint, request, jsonify, current_app
 from flask_restful import Api, abort
 from ...models import CaptureSample
 from sqlalchemy import desc
-from ...services import boxes, captures, capturesamples
+from ...services import tags, captures, capturesamples
 from ...captures.schemas import CaptureSampleSchema
 from ..baseresource import BaseResource, MultipleResource
 from dateutil.parser import parse
@@ -20,7 +20,7 @@ api = Api(bp)
 
 
 class CaptureSamples(MultipleResource):
-    """Get, modify or delete one box. """
+    """Get, modify or delete one tag. """
 
     def __init__(self):
         super().__init__(CaptureSampleSchema, None)
@@ -44,14 +44,14 @@ class CaptureSamples(MultipleResource):
 
 
 class Samples(BaseResource):
-    """Get, modify or delete one box. """
+    """Get, modify or delete one tag. """
 
     def __init__(self):
         super().__init__(CaptureSampleSchema, None)
 
     def get(self):
         """
-        Get unique samples for a box in a given time range
+        Get unique samples for a tag in a given time range
         """
         parsedargs = Samples.parse_body_args(request.args.to_dict(),
                                              requiredlist=['serial', 'starttimestr', 'endtimestr'],
@@ -66,11 +66,11 @@ class Samples(BaseResource):
         if offset is None:
             offset = 0
 
-        boxobj = boxes.get_by_serial(serial)
+        tagobj = tags.get_by_serial(serial)
         starttime = parse(starttimestr)
         endtime = parse(endtimestr)
 
-        samples = boxobj.uniquesampleswindow(starttime, endtime, offset, limit)
+        samples = tagobj.uniquesampleswindow(starttime, endtime, offset, limit)
 
         current_app.logger.info(samples)
 

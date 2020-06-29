@@ -7,5 +7,5 @@
 """
 
 from .captures.forms import *
-from .boxes.forms import *
+from .tags.forms import *
 from .users.forms import *

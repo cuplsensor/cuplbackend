@@ -1,23 +1,23 @@
-.. _BoxConsumerAPI:
+.. _TagConsumerAPI:
 
-Box
+Tag
 ---
 .. openapi:: api.yaml
    :include:
-      /box/*
+      /tag/*
    :exclude:
-      /box/{serial}/scanned
+      /tag/{serial}/scanned
    :encoding: utf-8
    :examples:
 
-.. _BoxScannedConsumerAPI:
+.. _TagScannedConsumerAPI:
 
 Scanned
 ^^^^^^^^^^^^
-Determines if a box has been scanned by the current user.
+Determines if a tag has been scanned by the current user.
 
 .. openapi:: api.yaml
    :include:
-      /box/{serial}/scanned
+      /tag/{serial}/scanned
    :encoding: utf-8
    :examples:

@@ -6,11 +6,11 @@
     consolidated schemas module
 """
 
-from .boxes.schemas import *
+from .tags.schemas import *
 from .captures.schemas import *
 from .locations.schemas import *
-from .boxviews.schemas import *
+from .tagviews.schemas import *
 from marshmallow import fields
 
-class BoxViewNestedSchema(BoxViewSchema):
-    box = fields.Nested(BoxSchema, only=('id', 'serial'))
+class TagViewNestedSchema(TagViewSchema):
+    tag = fields.Nested(TagSchema, only=('id', 'serial'))

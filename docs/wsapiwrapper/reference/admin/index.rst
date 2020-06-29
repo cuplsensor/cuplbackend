@@ -5,7 +5,7 @@ Admin API Wrapper
    :hidden:
    :maxdepth: 2
 
-   box
+   tag
    capture
    :caption: Contents
 

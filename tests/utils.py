@@ -5,12 +5,12 @@ import json
 from wscodec.encoder.pyencoder.instrumented import InstrumentedSampleTRH
 
 
-def create_capture_for_box(response, baseurl):
-    boxserial = response.json()["serial"]
-    boxsecretkey = response.json()["secretkey"]
+def create_capture_for_tag(response, baseurl):
+    tagserial = response.json()["serial"]
+    tagsecretkey = response.json()["secretkey"]
     capturetrh = InstrumentedSampleTRH(baseurl=baseurl,
-                                       serial=boxserial,
-                                       secretkey=boxsecretkey,
+                                       serial=tagserial,
+                                       secretkey=tagsecretkey,
                                        smplintervalmins=10)
     samplesin = capturetrh.pushsamples(10)
     queries = capturetrh.geturlqs()
@@ -35,8 +35,8 @@ def check_samples(response):
     print(response)
 
 if __name__ == "__main__":
-    boxresponse = Mock(spec=Response)
-    boxresponse.json.return_value = {'serial': 'ABCDEFGH'}
-    boxresponse.status_code = 200
-    test = create_capture_for_box(boxresponse)
+    tagresponse = Mock(spec=Response)
+    tagresponse.json.return_value = {'serial': 'ABCDEFGH'}
+    tagresponse.status_code = 200
+    test = create_capture_for_tag(tagresponse)
     print(test)

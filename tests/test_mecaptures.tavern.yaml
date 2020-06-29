@@ -1,4 +1,4 @@
-test_name: Create a box, add a capture to it then delete the box.
+test_name: Create a tag, add a capture to it then delete the tag.
 
 marks:
   - usefixtures:
@@ -32,11 +32,11 @@ stages:
         body:
           admin_token: token
 
-  - name: Use the token to create a new box
+  - name: Use the token to create a new tag
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/boxes"
+      url: "{baseurl}/api/admin/v1/tags"
       method: POST
       headers:
         content-type: application/json
@@ -52,15 +52,15 @@ stages:
         serial: !anystr
       save:
         $ext:
-          function: utils:create_capture_for_box
+          function: utils:create_capture_for_tag
           extra_kwargs:
             baseurl: "{baseurl}"
         body:
-          test_box_id: id
+          test_tag_id: id
 
 
 
-  - name: Create a capture and add it to the box with the serial
+  - name: Create a capture and add it to the tag with the serial
 
     # Define the request to be made
     request:
@@ -81,7 +81,7 @@ stages:
       status_code: 200
       body:
         batvoltagemv: !anyfloat
-        boxserial: !anystr
+        tagserial: !anystr
         cursorpos: !anyint
         id: !anyint
         loopcount: !anyint
@@ -103,7 +103,7 @@ stages:
         body:
           test_capture_id: id
 
-  - name: GET this list of captures for this box and verify that it contains the one we just created.
+  - name: GET this list of captures for this tag and verify that it contains the one we just created.
 
     # Define the request to be made
     request:
@@ -118,7 +118,7 @@ stages:
       status_code: 200
       body:
         - batvoltagemv: !anyfloat
-          boxserial: !anystr
+          tagserial: !anystr
           cursorpos: !anyint
           id: !int "{test_capture_id:d}"
           loopcount: !anyint
@@ -138,7 +138,7 @@ stages:
           version: !anyint
 
 
-  - name: GET the capture for this box and verify that it contains the correct fields
+  - name: GET the capture for this tag and verify that it contains the correct fields
 
     # Define the request to be made
     request:
@@ -152,7 +152,7 @@ stages:
       status_code: 200
       body:
         batvoltagemv: !anyfloat
-        boxserial: !anystr
+        tagserial: !anystr
         cursorpos: !anyint
         id: !int "{test_capture_id:d}"
         loopcount: !anyint
@@ -171,11 +171,11 @@ stages:
         timestamp: !anystr
         version: !anyint
 
-  - name: Delete the box by ID.
+  - name: Delete the tag by ID.
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/box/{test_box_id}"
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json

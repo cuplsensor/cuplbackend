@@ -12,7 +12,7 @@ from ..core import db
 # Define the Location data model.
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # ID of the owning box object.
+    # ID of the owning tag object.
     capturesample_id = db.Column(db.Integer, db.ForeignKey('capture_sample.id'), nullable=False)
 
     timestamp = db.Column(db.DateTime, nullable=False) # Entry timestamp

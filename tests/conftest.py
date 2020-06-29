@@ -8,11 +8,11 @@ import requests
 from . import defaults
 
 from .helpers.capturehelper import CaptureListHelper
-from ..wsapiwrapper.admin.box import BoxWrapper
+from ..wsapiwrapper.admin.tag import TagWrapper
 from ..wsapiwrapper.consumer.user import UserWrapper
 from ..wsapiwrapper.consumer.mecapture import MeCaptureWrapper
-from ..wsapiwrapper.consumer.boxview import BoxViewWrapper
-from ..wsapiwrapper.consumer.boxscanned import BoxScannedWrapper
+from ..wsapiwrapper.consumer.tagview import TagViewWrapper
+from ..wsapiwrapper.consumer.tagscanned import TagScannedWrapper
 from ..wsapiwrapper.consumer.location import LocationWrapper
 from ..wsapiwrapper.consumer.sample import SampleWrapper
 
@@ -61,13 +61,13 @@ def generate_capspec(user_id=None):
 
 
 @pytest.fixture(scope="function")
-def two_captures_on_two_boxes_fixture(box_with_captures_fixture, user_fixture):
-    boxcaptures = []
+def two_captures_on_two_tags_fixture(tag_with_captures_fixture, user_fixture):
+    tagcaptures = []
 
-    # Create 2 boxes with 2 captures each. These captures are assigned to the current user ID.
+    # Create 2 tags with 2 captures each. These captures are assigned to the current user ID.
     capspecgen = generate_capspec(user_id=user_fixture['id'])
 
-    # Create 1 box with 2 captures that does not have a user ID. These captures should not be returned by the
+    # Create 1 tag with 2 captures that does not have a user ID. These captures should not be returned by the
     # mecaptures endpoint.
     capspecgen_nouser = generate_capspec()
 
@@ -75,12 +75,12 @@ def two_captures_on_two_boxes_fixture(box_with_captures_fixture, user_fixture):
     capspec2 = next(capspecgen)
     capspec3 = next(capspecgen_nouser)
 
-    boxcaptures.append(box_with_captures_fixture.get(capspec1))
-    boxcaptures.append(box_with_captures_fixture.get(capspec2))
+    tagcaptures.append(tag_with_captures_fixture.get(capspec1))
+    tagcaptures.append(tag_with_captures_fixture.get(capspec2))
 
-    box_with_captures_fixture.get(capspec3) # We do not expect these captures to be returned
+    tag_with_captures_fixture.get(capspec3) # We do not expect these captures to be returned
 
-    return boxcaptures
+    return tagcaptures
 
 
 @pytest.fixture
@@ -112,18 +112,18 @@ def clientsecret():
 
 
 @pytest.fixture(scope="function")
-def box_fixture(request, baseurl, clientid, clientsecret):
-    boxhelper = BoxWrapper(baseurl, clientid, clientsecret)
+def tag_fixture(request, baseurl, clientid, clientsecret):
+    taghelper = TagWrapper(baseurl, clientid, clientsecret)
 
     def teardown():
-        boxid = boxresponse['id']
-        print("teardown box fixture")
-        boxhelper.delete(boxid)
+        tagid = tagresponse['id']
+        print("teardown tag fixture")
+        taghelper.delete(tagid)
 
     request.addfinalizer(teardown)
 
-    boxresponse = boxhelper.post()
-    return boxresponse
+    tagresponse = taghelper.post()
+    return tagresponse
 
 @pytest.fixture(scope="function")
 def mecapture_fixture(token_fixture, baseurl):
@@ -132,37 +132,37 @@ def mecapture_fixture(token_fixture, baseurl):
 
 
 @pytest.fixture(scope="function")
-def box_fixture_b(request, baseurl, clientid, clientsecret):
-    boxhelper = BoxWrapper(baseurl, clientid, clientsecret)
+def tag_fixture_b(request, baseurl, clientid, clientsecret):
+    taghelper = TagWrapper(baseurl, clientid, clientsecret)
 
-    class BoxFactory(object):
-        boxids = []
+    class TagFactory(object):
+        tagids = []
         def add(self):
-            boxresponse = boxhelper.post()
-            boxid = boxresponse['id']
-            self.boxids.append(boxid)
-            return boxresponse
+            tagresponse = taghelper.post()
+            tagid = tagresponse['id']
+            self.tagids.append(tagid)
+            return tagresponse
 
         def delete_all(self):
-            for boxid in self.boxids:
-                boxhelper.delete(boxid)
+            for tagid in self.tagids:
+                taghelper.delete(tagid)
 
-    bf = BoxFactory()
+    bf = TagFactory()
 
     def teardown():
-        print("teardown all boxes")
+        print("teardown all tags")
         bf.delete_all()
 
     request.addfinalizer(teardown)
     return bf
 
 @pytest.fixture(scope="function")
-def boxview_fixture(baseurl, token_fixture):
-    return BoxViewWrapper(baseurl, token_fixture)
+def tagview_fixture(baseurl, token_fixture):
+    return TagViewWrapper(baseurl, token_fixture)
 
 @pytest.fixture(scope="function")
-def boxscanned_fixture(baseurl, token_fixture):
-    return BoxScannedWrapper(baseurl, token_fixture)
+def tagscanned_fixture(baseurl, token_fixture):
+    return TagScannedWrapper(baseurl, token_fixture)
 
 @pytest.fixture(scope="function")
 def location_fixture(baseurl, token_fixture):
@@ -186,12 +186,12 @@ def user_fixture(request, baseurl, token_fixture):
 
 
 @pytest.fixture(scope="function")
-def box_with_captures_fixture(baseurl, clientid, clientsecret, box_fixture_b):
-    class BoxWithCapturesFactory(object):
+def tag_with_captures_fixture(baseurl, clientid, clientsecret, tag_fixture_b):
+    class TagWithCapturesFactory(object):
 
         def get(self, capturespeclist):
-            box = box_fixture_b.add()
-            clisthelper = CaptureListHelper(baseurl, clientid, clientsecret, capturespeclist, boxid=box['id'])
-            return {'box': box, 'clisthelper': clisthelper}
+            tag = tag_fixture_b.add()
+            clisthelper = CaptureListHelper(baseurl, clientid, clientsecret, capturespeclist, tagid=tag['id'])
+            return {'tag': tag, 'clisthelper': clisthelper}
 
-    return BoxWithCapturesFactory()
+    return TagWithCapturesFactory()

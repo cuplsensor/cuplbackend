@@ -34,7 +34,7 @@ class UserService(Service):
         user = super().create(oauth_id=oauth_id,
                               timeregistered=timeregistered)
 
-        # Assign serial to the box and commit to the db.
+        # Assign serial to the tag and commit to the db.
         return user
 
     def identity(self, token):
@@ -54,7 +54,7 @@ class UserService(Service):
         return None
 
     def get_by_oauth_id(self, oauth_id):
-        """Return the first instance of a box in the database with
+        """Return the first instance of a tag in the database with
         with the given serial.
         There will only be one because because serial is unique.
         :param serial: 6 character base 32 serial number

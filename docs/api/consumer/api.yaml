@@ -10,25 +10,25 @@ info:
 servers:
 - url: https://websensor.io/api/consumer/v1
 paths:
-  /box/{serial}:
+  /tag/{serial}:
     get:
       tags:
       - Open
-      summary: Get a box by its serial.
-      operationId: BoxGet
+      summary: Get a tag by its serial.
+      operationId: TagGet
       parameters:
       - name: serial
         in: query
-        description: Box serial
+        description: Tag serial
         schema:
           type: string
       responses:
         200:
-          description: A box object
+          description: A tag object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Box'
+                $ref: '#/components/schemas/Tag'
         400:
           description: Bad input parameter.
           content:
@@ -36,24 +36,24 @@ paths:
               schema:
                 type: object
         404:
-          description: Box not found.
+          description: Tag not found.
           content: {}
-  /box/{serial}/scanned:
+  /tag/{serial}/scanned:
     get:
       tags:
       - Access Token Required
-      summary: Has a box with a given serial been scanned by the current user?
-      operationId: HasScannedBox
+      summary: Has a tag with a given serial been scanned by the current user?
+      operationId: HasScannedTag
       parameters:
       - name: serial
         in: query
-        description: Box serial
+        description: Tag serial
         required: true
         schema:
           type: string
       responses:
         200:
-          description: True if the box has a capture taken by the current user.
+          description: True if the tag has a capture taken by the current user.
           content: {}
         400:
           description: Bad input parameter
@@ -62,7 +62,7 @@ paths:
               schema:
                 type: object
         404:
-          description: Box or user not found.
+          description: Tag or user not found.
           content:
             application/json:
               schema:
@@ -73,12 +73,12 @@ paths:
     get:
       tags:
       - Open
-      summary: Get a list of captures for a box
+      summary: Get a list of captures for a tag
       operationId: CapturesGet
       parameters:
       - name: serial
         in: query
-        description: Box serial
+        description: Tag serial
         required: true
         schema:
           type: string
@@ -106,7 +106,7 @@ paths:
               schema:
                 type: object
         404:
-          description: Box with serial not found.
+          description: Tag with serial not found.
           content:
             application/json:
               schema:
@@ -143,7 +143,7 @@ paths:
               schema:
                 type: object
         404:
-          description: Box not found
+          description: Tag not found
           content:
             application/json:
               schema:
@@ -217,7 +217,7 @@ paths:
     get:
       tags:
       - Open
-      summary: Get a list of locations for a box ordered by most recent
+      summary: Get a list of locations for a tag ordered by most recent
       security:
         - oAuthSample:
             - read_pets
@@ -225,7 +225,7 @@ paths:
       parameters:
       - name: serial
         in: query
-        description: Box serial
+        description: Tag serial
         required: true
         schema:
           type: string
@@ -265,7 +265,7 @@ paths:
     post:
       tags:
       - Capture by User Required
-      summary: Add location information to a box
+      summary: Add location information to a tag
       operationId: LocationPost
       requestBody:
         description: Location fields
@@ -288,7 +288,7 @@ paths:
               schema:
                 type: object
         401:
-          description: Not authorised. The user has no scanned this box.
+          description: Not authorised. The user has no scanned this tag.
           content:
             application/json:
               schema:
@@ -312,7 +312,7 @@ paths:
     get:
       tags:
       - Open
-      summary: Get a list of locations for a box ordered by most recent
+      summary: Get a list of locations for a tag ordered by most recent
       operationId: LocationGet
       parameters:
       - name: id
@@ -358,7 +358,7 @@ paths:
               schema:
                 type: object
         401:
-          description: Not authorised. The user has no scanned this box.
+          description: Not authorised. The user has no scanned this tag.
           content:
             application/json:
               schema:
@@ -380,7 +380,7 @@ paths:
     patch:
       tags:
       - Capture by User Required
-      summary: Edit location information for a box
+      summary: Edit location information for a tag
       operationId: LocationPut
       requestBody:
         description: Location fields
@@ -404,7 +404,7 @@ paths:
               schema:
                 type: object
         401:
-          description: Not authorised. The user has no scanned this box.
+          description: Not authorised. The user has no scanned this tag.
           content:
             application/json:
               schema:
@@ -450,7 +450,7 @@ paths:
       tags:
       - Access Token Required
       summary: Delete current user.
-      operationId: BoxDelete
+      operationId: TagDelete
       responses:
         204:
           description: User deleted
@@ -472,28 +472,28 @@ paths:
                 type: object
       security:
       - Bearer: []
-  /me/boxviews:
+  /me/tagviews:
     get:
       tags:
       - Access Token Required
-      summary: Get a list of BoxViews for the current user.
+      summary: Get a list of TagViews for the current user.
       description: Auth0 ID of the user.
-      operationId: BoxViewsGet
+      operationId: TagViewsGet
       parameters:
-      - name: distinctOnBox
+      - name: distinctOnTag
         in: query
-        description: Return only the latest BoxView for each scanned box.
+        description: Return only the latest TagView for each scanned tag.
         schema:
           type: boolean
       responses:
         200:
-          description: A list of boxview objects ordered from newest to oldest.
+          description: A list of tagview objects ordered from newest to oldest.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BoxView'
+                  $ref: '#/components/schemas/TagView'
         403:
           description: Invalid JWT
           content:
@@ -505,22 +505,22 @@ paths:
     post:
       tags:
       - Access Token Required
-      summary: Post a box view
-      operationId: BoxViewsPost
+      summary: Post a tag view
+      operationId: TagViewsPost
       requestBody:
-        description: Box view object
+        description: Tag view object
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/BoxView'
+              $ref: '#/components/schemas/TagView'
         required: true
       responses:
         201:
-          description: BoxView created
+          description: TagView created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BoxView'
+                $ref: '#/components/schemas/TagView'
         400:
           description: Invalid input, object invalid
           content:
@@ -542,26 +542,26 @@ paths:
       security:
       - Bearer: []
       x-codegen-request-body-name: body
-  /me/boxviews/{id}:
+  /me/tagviews/{id}:
     get:
       tags:
       - Access Token Required
-      summary: Get a boxview for the current user
+      summary: Get a tagview for the current user
       description: Auth0 ID of the user.
-      operationId: BoxViewGet
+      operationId: TagViewGet
       parameters:
       - name: id
         in: path
-        description: Box view ID
+        description: Tag view ID
         schema:
           type: integer
       responses:
         200:
-          description: A boxview object
+          description: A tagview object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BoxView'
+                $ref: '#/components/schemas/TagView'
         403:
           description: Invalid JWT
           content:
@@ -569,7 +569,7 @@ paths:
               schema:
                 type: object
         404:
-          description: BoxView not found.
+          description: TagView not found.
           content:
             application/json:
               schema:
@@ -579,11 +579,11 @@ paths:
     delete:
       tags:
       - Access Token Required
-      summary: Delete box view from the current user.
-      operationId: BoxViewDelete
+      summary: Delete tag view from the current user.
+      operationId: TagViewDelete
       responses:
         204:
-          description: BoxView deleted
+          description: TagView deleted
           content:
             application/json:
               schema:
@@ -595,7 +595,7 @@ paths:
               schema:
                 type: object
         404:
-          description: BoxView not found
+          description: TagView not found
           content:
             application/json:
               schema:
@@ -610,9 +610,9 @@ paths:
         first.
       operationId: MeCapturesGet
       parameters:
-      - name: distinctOnBox
+      - name: distinctOnTag
         in: query
-        description: Return only the latest capture for each scanned box.
+        description: Return only the latest capture for each scanned tag.
         schema:
           type: boolean
       responses:
@@ -638,7 +638,7 @@ paths:
               schema:
                 type: object
         404:
-          description: Box not found.
+          description: Tag not found.
           content:
             application/json:
               schema:
@@ -683,7 +683,7 @@ paths:
               schema:
                 type: object
         404:
-          description: Parent box or user not found.
+          description: Parent tag or user not found.
           content:
             application/json:
               schema:
@@ -702,12 +702,12 @@ paths:
     get:
       tags:
       - Open
-      summary: Get unique samples for a box in a given time range
+      summary: Get unique samples for a tag in a given time range
       operationId: UniqueSamplesGet
       parameters:
       - name: serial
         in: query
-        description: Box serial
+        description: Tag serial
         required: true
         schema:
           type: string
@@ -782,34 +782,34 @@ paths:
       - Bearer: []
 components:
   schemas:
-    Box:
-      title: Box
+    Tag:
+      title: Tag
       type: object
       properties:
         serial:
           type: string
-          description: Serial of the box that made the capture
+          description: Serial of the tag that made the capture
           example: YWJjZGVM
         timeregistered:
           type: string
-          description: Time the box was created
+          description: Time the tag was created
           format: date-time
           example: 2019-01-15T13:09:52.456Z
-    BoxView:
-      title: Box View
+    TagView:
+      title: Tag View
       type: object
       properties:
-        boxserial:
+        tagserial:
           type: string
-          description: Serial of box that was viewed
+          description: Serial of tag that was viewed
           example: YWJjZGVM
         id:
           type: integer
-          description: Unique ID of the Boxview item
+          description: Unique ID of the Tagview item
           example: 20
         timestamp:
           type: string
-          description: Timestamp the box was viewed in seconds since January 1st 1970
+          description: Timestamp the tag was viewed in seconds since January 1st 1970
           format: date-time
           example: 2019-01-15T13:09:52.456Z
     Capture:
@@ -819,9 +819,9 @@ components:
         batvoltagemv:
           type: integer
           example: 3000
-        boxserial:
+        tagserial:
           type: string
-          description: Serial of the box that made the capture
+          description: Serial of the tag that made the capture
           example: YWJjZGVM
         cursorpos:
           type: integer
@@ -938,7 +938,7 @@ components:
           example: Add example here
         serial:
           type: string
-          description: Serial of the box that made the capture
+          description: Serial of the tag that made the capture
           example: YWJjZGVM
         statusb64:
           type: string
@@ -962,7 +962,7 @@ components:
           example: 1
         description:
           type: string
-          description: Description of where a box was located at the time of a capturesample.
+          description: Description of where a tag was located at the time of a capturesample.
           example: Cupboard under the stairs
         id:
           type: integer

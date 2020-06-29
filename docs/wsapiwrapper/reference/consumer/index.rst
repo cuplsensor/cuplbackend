@@ -6,7 +6,7 @@ Consumer API Wrapper
    :maxdepth: 2
 
    me
-   box
+   tag
    capture
    sample
    location

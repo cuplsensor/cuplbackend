@@ -18,12 +18,12 @@ Captures
    :encoding: utf-8
    :examples:
 
-.. _BoxViewConsumerAPI:
+.. _TagViewConsumerAPI:
 
-BoxViews
+TagViews
 ^^^^^^^^^
 .. openapi:: api.yaml
    :include:
-      /me/boxviews
+      /me/tagviews
    :encoding: utf-8
    :examples:

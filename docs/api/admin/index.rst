@@ -7,9 +7,9 @@ Admin API Specification
    :hidden:
    :maxdepth: 2
 
-   box
+   tag
    capture
-   boxview
+   tagview
    user
    token
    :caption: Contents

@@ -20,7 +20,7 @@ api = Api(bp)
 
 
 class User(SingleAdminResource):
-    """Get, modify or delete one box. """
+    """Get, modify or delete one tag. """
     def __init__(self):
         super().__init__(UserSchema, users)
 

@@ -6,15 +6,15 @@
 """
 
 from .captures import CaptureService, CaptureSampleService
-from .boxes import BoxService
+from .tags import TagService
 from .users import UserService
 from .locations import LocationService
-from .boxviews import BoxViewService
+from .tagviews import TagViewService
 
-#: An instance of the :class:`BoxService` class
-boxviews = BoxViewService()
+#: An instance of the :class:`TagService` class
+tagviews = TagViewService()
 
-boxes = BoxService()
+tags = TagService()
 
 captures = CaptureService()
 capturesamples = CaptureSampleService()

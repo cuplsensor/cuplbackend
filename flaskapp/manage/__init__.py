@@ -5,4 +5,4 @@
     overholt manager package
 """
 
-from .boxes import *
+from .tags import *

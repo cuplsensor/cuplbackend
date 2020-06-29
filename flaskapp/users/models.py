@@ -6,7 +6,7 @@
     User model
 """
 
-from ..models import Capture, BoxView, Box
+from ..models import Capture, TagView, Tag
 from ..core import db
 
 
@@ -24,40 +24,40 @@ class User(db.Model):
                                backref=db.backref('scanned_by_user'),
                                lazy='dynamic')
 
-    boxviews = db.relationship('BoxView',
+    tagviews = db.relationship('TagView',
                                collection_class=list,
                                backref=db.backref('parent_user'),
                                cascade="all, delete-orphan",
                                lazy='dynamic')
 
-    def has_scanned_box(self, boxserial):
-        # Returns true if this user has a capture on a box.
-        stmt = Capture.query.join(Box).filter((Capture.scanned_by_user == self) & (Box.serial == boxserial))
+    def has_scanned_tag(self, tagserial):
+        # Returns true if this user has a capture on a tag.
+        stmt = Capture.query.join(Tag).filter((Capture.scanned_by_user == self) & (Tag.serial == tagserial))
 
         nresults = stmt.count()
         return nresults > 0
 
-    def latest_boxview_by_box(self):
-        stmt = BoxView.query.filter((BoxView.parent_user == self)).subquery()
-        # Rank the boxviews of each box by timestamp.
+    def latest_tagview_by_tag(self):
+        stmt = TagView.query.filter((TagView.parent_user == self)).subquery()
+        # Rank the tagviews of each tag by timestamp.
         stmt2 = db.session.query(stmt, db.func.rank().over(
             order_by=stmt.c.timestamp.desc(),
-            partition_by=stmt.c.box_id
+            partition_by=stmt.c.tag_id
         ).label('rnk')).subquery()
-        # Only select rank 1 i.e. the boxview with the most recent timestamp for each box. We want the box with the
+        # Only select rank 1 i.e. the tagview with the most recent timestamp for each tag. We want the tag with the
         # latest timestamp first.
-        stmt3 = BoxView.query.join(stmt2, ((stmt2.c.id == BoxView.id) & (stmt2.c.rnk == 1))).order_by(BoxView.timestamp.desc())
+        stmt3 = TagView.query.join(stmt2, ((stmt2.c.id == TagView.id) & (stmt2.c.rnk == 1))).order_by(TagView.timestamp.desc())
 
         return stmt3.all()
 
-    def latest_capture_by_box(self):
-        # Select all capture samples belonging to this box, between the start time and the end time.
+    def latest_capture_by_tag(self):
+        # Select all capture samples belonging to this tag, between the start time and the end time.
         # Crucially all samples must be ordered by timestamp for the grouping to work.
         # https://stackoverflow.com/questions/40635099/convert-rank-and-partition-query-to-sqlalchemy
         stmt = Capture.query.filter((Capture.scanned_by_user == self)).subquery()
         stmt2 = db.session.query(stmt, db.func.rank().over(
             order_by=stmt.c.timestamp.desc(),
-            partition_by=stmt.c.box_id
+            partition_by=stmt.c.tag_id
         ).label('rnk')).subquery()
 
         stmt3 = Capture.query.join(stmt2, ((stmt2.c.id == Capture.id) & (stmt2.c.rnk == 1))).order_by(Capture.timestamp.desc())

@@ -1,4 +1,4 @@
-test_name: Create a box, add a capture to it then delete the box.
+test_name: Create a tag, add a capture to it then delete the tag.
 
 marks:
   - usefixtures:
@@ -6,7 +6,7 @@ marks:
       - clientid
       - clientsecret
       - user_fixture
-      - box_fixture
+      - tag_fixture
       - token_fixture
 
 # Include variables
@@ -14,14 +14,14 @@ includes:
   - !include includes.yaml
 
 stages:
-  - name: Create a boxview and add it to the box with the serial
+  - name: Create a tagview and add it to the tag with the serial
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/me/boxviews"
+      url: "{baseurl}/api/consumer/v1/me/tagviews"
       method: POST
       json:
-        boxserial: "{box_fixture.serial}"
+        tagserial: "{tag_fixture.serial}"
       headers:
         content-type: application/json
         Authorization: "bearer {token_fixture:s}"
@@ -30,20 +30,20 @@ stages:
     response:
       status_code: 200
       body:
-        boxserial: !anystr
+        tagserial: !anystr
         id: !anyint
         timestamp: !anystr
       save:
         body:
-          boxview_id: id
-          boxview_timestamp: timestamp
-          boxview_boxserial: boxserial
+          tagview_id: id
+          tagview_timestamp: timestamp
+          tagview_tagserial: tagserial
 
-  - name: GET a list of boxviews for the current user. Verify that it contains the one we created.
+  - name: GET a list of tagviews for the current user. Verify that it contains the one we created.
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/me/boxviews"
+      url: "{baseurl}/api/consumer/v1/me/tagviews"
       method: GET
       headers:
         content-type: application/json
@@ -53,15 +53,15 @@ stages:
     response:
       status_code: 200
       body:
-        - boxserial: "{boxview_boxserial}"
-          id: !int "{boxview_id:d}"
-          timestamp: "{boxview_timestamp}"
+        - tagserial: "{tagview_tagserial}"
+          id: !int "{tagview_id:d}"
+          timestamp: "{tagview_timestamp}"
 
-  - name: GET the capture for this box and verify that it contains the correct fields
+  - name: GET the capture for this tag and verify that it contains the correct fields
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/me/boxviews/{boxview_id}"
+      url: "{baseurl}/api/consumer/v1/me/tagviews/{tagview_id}"
       method: GET
       headers:
         content-type: application/json
@@ -71,6 +71,6 @@ stages:
     response:
       status_code: 200
       body:
-        boxserial: "{boxview_boxserial}"
-        id: !int "{boxview_id:d}"
-        timestamp: "{boxview_timestamp}"
+        tagserial: "{tagview_tagserial}"
+        id: !int "{tagview_id:d}"
+        timestamp: "{tagview_timestamp}"

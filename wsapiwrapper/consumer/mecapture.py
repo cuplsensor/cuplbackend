@@ -14,7 +14,7 @@ class MeCaptureWrapper(ConsumerApiWrapper):
         :py:func:`constructor <wsapiwrapper.consumer.ConsumerApiWrapper.__init__>`.
 
         Args:
-            distinct (bool): When true, only the most recent capture is returned for each box.
+            distinct (bool): When true, only the most recent capture is returned for each tag.
 
         Returns:
             list: A list of capture dictionaries.
@@ -24,7 +24,7 @@ class MeCaptureWrapper(ConsumerApiWrapper):
         queryparams = None
 
         if distinct is True:
-            queryparams = {'distinctonbox': 'true'}
+            queryparams = {'distinctontag': 'true'}
 
         try:
             r = requests.get(capturesurl, params=queryparams, headers=self.headers)

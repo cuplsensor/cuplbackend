@@ -61,8 +61,8 @@ It shall be possible to migrate the DB schema when it changes. The chosen DB mig
 
 FR-DB-3 
 ~~~~~~~~
-Given a capturesample, it shall be possible to know where the box was located, based on the sparse location markers that the user has created. 
-The capturesample will have a function for retrieving the most recent location marker for the box that the capturesample belongs to.
+Given a capturesample, it shall be possible to know where the tag was located, based on the sparse location markers that the user has created.
+The capturesample will have a function for retrieving the most recent location marker for the tag that the capturesample belongs to.
 
 FR
 ~~~
@@ -70,7 +70,7 @@ The web application must not be URL specific. This must be passed in as an envir
 
 FR-API-1 
 ~~~~~~~~~
-Only Administrators can create a box.
+Only Administrators can create a tag.
 
 FR-WEB-0 
 ~~~~~~~~~
@@ -151,11 +151,11 @@ If the sample has a location stored against it, the text on the button will be t
 
 FR-WEB-11-4 
 ~~~~~~~~~~~~
-If the box has previous locations stored against it, the text on the button will be the description for the most recent location (FR-DB-3). The button colour will be grey.
+If the tag has previous locations stored against it, the text on the button will be the description for the most recent location (FR-DB-3). The button colour will be grey.
 
 FR-WEB-11-3 
 ~~~~~~~~~~~~
-If the box has no previous locations stored against it, the text on the button will be 'Add Location'. The button colour will be grey.
+If the tag has no previous locations stored against it, the text on the button will be 'Add Location'. The button colour will be grey.
 
 FR-WEB-11-5 
 ~~~~~~~~~~~~
@@ -265,27 +265,27 @@ temperature from her old-fashioned thermometer instead.
 It is vital that open endpoints prevent hoodlums from filling the database with rubbish. That is why nearly all of them
 are read-only (a.k.a. GET) requests.
 An exception is the POST captures endpoint, but its openness is deceptive. A new capture
-will not be created unless the POSTed data has originated from a registered box.
+will not be created unless the POSTed data has originated from a registered tag.
 
 
 
 User Authentication Endpoints
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Some resources on PSWebApp are user-specific. An example is /boxviews.
+Some resources on PSWebApp are user-specific. An example is /tagviews.
 
-1. Registered-user Ruth receives a link to a box on WhatsApp.
-   The message is from Grandma, who put the box in her fridge.
-2. Ruth follows the link and lands on the <<box page>>. She logs in.
-3. The frontend makes a POST request to the /boxviews endpoint to log that user Ruth has viewed this box.
+1. Registered-user Ruth receives a link to a tag on WhatsApp.
+   The message is from Grandma, who put the tag in her fridge.
+2. Ruth follows the link and lands on the <<tag page>>. She logs in.
+3. The frontend makes a POST request to the /tagviews endpoint to log that user Ruth has viewed this tag.
 4. Ruth is intrigued that the temperature of Grandma's fridge is sometimes getting to 5 degrees C.
 5. *Three weeks later*
 6. Ruth's Grandma tells her to take another look at the sensor online. It got up to 10 degrees yesterday and
    the milk has gone lumpy.
-7. Ruth logs into the frontend and lands on the <<user page>>. She cannot remember the serial of Grandma's box
+7. Ruth logs into the frontend and lands on the <<user page>>. She cannot remember the serial of Grandma's tag
    and scrolling up on WhatsApp is too much work.
-8. The frontend makes GET requests to the /boxviews endpoint and obtains a list of recently viewed boxes
+8. The frontend makes GET requests to the /tagviews endpoint and obtains a list of recently viewed tags
    and when they were viewed.
-9. Ruth selects the box she viewed "3 weeks ago".
+9. Ruth selects the tag she viewed "3 weeks ago".
 10. Ruth agrees that Grandma should buy a new fridge.
 
 Capture Required Endpoints

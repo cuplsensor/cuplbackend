@@ -11,10 +11,10 @@ from flasgger import Swagger
 from ... import factory
 
 from .token import bp as tokenbp
-from .boxes import bp as boxesbp
+from .tags import bp as tagsbp
 from .captures import bp as capturesbp
 from .users import bp as usersbp
-from .boxviews import bp as boxviewsbp
+from .tagviews import bp as tagviewsbp
 
 swaggertemplate = {
   "swagger": "2.0",
@@ -53,8 +53,8 @@ swaggertemplate = {
                                 "format": "int32",
                                 "description": "ID of the capture"
                             },
-                            "box_id": {
-                                "description": "ID of the box from which the capture was taken",
+                            "tag_id": {
+                                "description": "ID of the tag from which the capture was taken",
                                 "format": "int32",
                                 "type": "integer",
                                 "example": 1141
@@ -227,7 +227,7 @@ swaggertemplate = {
                                     "format": "date-time"
                                 },
                                 "description": {
-                                    "description": "Description of where a box was located at the time of a capturesample.",
+                                    "description": "Description of where a tag was located at the time of a capturesample.",
                                     "example": "Cupboard under the stairs",
                                     "type": "string"
                                 }
@@ -244,9 +244,9 @@ def create_app(settings_override=None):
     """Returns the Web API application instance"""
     app = factory.create_api_app(__name__, __path__, settings_override)
     app.register_blueprint(tokenbp)
-    app.register_blueprint(boxesbp)
+    app.register_blueprint(tagsbp)
     app.register_blueprint(capturesbp)
-    app.register_blueprint(boxviewsbp)
+    app.register_blueprint(tagviewsbp)
     app.register_blueprint(usersbp)
     swagger = Swagger(app, template=swaggertemplate)
 

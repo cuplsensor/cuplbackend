@@ -1,6 +1,6 @@
-Box
+Tag
 ^^^^^
-.. automodule:: wsapiwrapper.consumer.box
+.. automodule:: wsapiwrapper.consumer.tag
    :members:
    :undoc-members:
    :special-members:
@@ -8,7 +8,7 @@ Box
 
 Scanned
 ~~~~~~~~~
-.. automodule:: wsapiwrapper.consumer.boxscanned
+.. automodule:: wsapiwrapper.consumer.tagscanned
    :members:
    :undoc-members:
    :special-members:

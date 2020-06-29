@@ -7,8 +7,8 @@
 """
 
 from ..core import Service
-from .models import BoxView
+from .models import TagView
 
 
-class BoxViewService(Service):
-    __model__ = BoxView
+class TagViewService(Service):
+    __model__ = TagView

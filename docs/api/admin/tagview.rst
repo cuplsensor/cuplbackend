@@ -1,15 +1,15 @@
-.. _BoxViewAdminAPI:
+.. _TagViewAdminAPI:
 
-BoxView
+TagView
 --------
 .. openapi:: api.yaml
    :include:
-      /boxview/*
+      /tagview/*
    :encoding: utf-8
    :examples:
 
 .. openapi:: api.yaml
    :include:
-      /boxviews*
+      /tagviews*
    :encoding: utf-8
    :examples:

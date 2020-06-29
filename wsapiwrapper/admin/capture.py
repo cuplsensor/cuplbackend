@@ -20,32 +20,32 @@ class CaptureWrapper(AdminApiWrapper):
         endpoint_many = "/captures"
         super().__init__(baseurl, adminapi_client_id, adminapi_client_secret, endpoint_one, endpoint_many)
 
-    def get_many(self, offset: int = 0, limit: int = None, box_id: int = None) -> list:
+    def get_many(self, offset: int = 0, limit: int = None, tag_id: int = None) -> list:
         """Makes a GET request to endpoint_many.
 
         Args:
             offset (int):  Return captures with an ID greater than this number.
             limit (int): Number of captures to return.
-            box_id (int): Filter by box_id (optional)
+            tag_id (int): Filter by tag_id (optional)
 
         Returns:
             list: A list of capture dictionaries
         """
         kwargs = {'offset': offset, 'limit': limit}
 
-        if box_id is not None:
-            kwargs.update({'box_id': box_id})
+        if tag_id is not None:
+            kwargs.update({'tag_id': tag_id})
 
         return super().get_many(**kwargs)
 
     def post(self, capturepayload: dict):
         """Create a capture in the database directly.
 
-        The is made from a dictionary including a list of samples, a box_id and a user_id. The
+        The is made from a dictionary including a list of samples, a tag_id and a user_id. The
         endpoint is used for testing. It removes the need to encode test vectors with wscodec (introduces
         a second point of failure in an external library).
 
-        Captures can be created with a known list of samples. Then samples are collected from the box
+        Captures can be created with a known list of samples. Then samples are collected from the tag
         using the consumer API. These are compared with a vector of expected samples. If captures overlap slightly in
         time it is expected that duplicate samples are removed.
 

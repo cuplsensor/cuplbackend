@@ -14,11 +14,11 @@ from wscodec.decoder.decoderfactory import decode
 class CaptureService(Service):
     __model__ = Capture
 
-    def decode_and_create(self, boxobj, statb64, timeintb64, circb64, ver, userobj=None):
+    def decode_and_create(self, tagobj, statb64, timeintb64, circb64, ver, userobj=None):
         """Returns a new, saved instance of the capture model class.
         :param **kwargs: instance parameters
         """
-        decodedurl = decode(secretkey=boxobj.secretkey,
+        decodedurl = decode(secretkey=tagobj.secretkey,
                             statb64=statb64,
                             timeintb64=timeintb64,
                             circb64=circb64,
@@ -43,7 +43,7 @@ class CaptureService(Service):
         else:
             user_id = None
 
-        capture = super().create(box_id=boxobj.id,
+        capture = super().create(tag_id=tagobj.id,
                                  user_id=user_id,
                                  timestamp=decodedurl.scantimestamp,
                                  loopcount=decodedurl.status.loopcount,
@@ -55,11 +55,11 @@ class CaptureService(Service):
                                  md5=decodedurl.hash,
                                  samples=samples)
 
-        # Assign serial to the box and commit to the db.
+        # Assign serial to the tag and commit to the db.
         return capture
 
     def create(self,
-               boxobj,
+               tagobj,
                timestamp,
                loopcount,
                status,
@@ -77,7 +77,7 @@ class CaptureService(Service):
             user_id = None
 
         # Call base class constructor. By committing to the db we get an id.
-        capture = super().create(box_id=boxobj.id,
+        capture = super().create(tag_id=tagobj.id,
                                  user_id=user_id,
                                  timestamp=timestamp,
                                  loopcount=loopcount,

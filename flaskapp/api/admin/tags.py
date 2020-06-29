@@ -1,39 +1,39 @@
 # Inspired by overholt
 """
-    flaskapp.api.admin.boxes
+    flaskapp.api.admin.tags
     ~~~~~~~~~~~~~~
 
-    Box endpoints
+    Tag endpoints
 """
 
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, abort
-from ...services import boxes
-from ...boxes.schemas import BoxSchema
+from ...services import tags
+from ...tags.schemas import TagSchema
 from .adminresource import SingleAdminResource, MultipleAdminResource
 
 
-bp = Blueprint('adminboxes', __name__)
+bp = Blueprint('admintags', __name__)
 api = Api(bp)
 
 
-class Box(SingleAdminResource):
-    """Get, modify or delete one box. """
+class Tag(SingleAdminResource):
+    """Get, modify or delete one tag. """
     def __init__(self):
-        super().__init__(BoxSchema, boxes)
+        super().__init__(TagSchema, tags)
 
 
-class BoxSimulate(SingleAdminResource):
-    """Get a URL created by the encoder in wscodec. Similar to what the box will produce. """
+class TagSimulate(SingleAdminResource):
+    """Get a URL created by the encoder in wscodec. Similar to what the tag will produce. """
     def __init__(self):
-        super().__init__(BoxSchema, boxes)
+        super().__init__(TagSchema, tags)
 
     def get(self, id):
         """
-        Get a URL for simulating the website response to a box scan.
+        Get a URL for simulating the website response to a tag scan.
 
         Args:
-            id: Box id.
+            id: Tag id.
 
         Returns:
             A URL.
@@ -45,17 +45,17 @@ class BoxSimulate(SingleAdminResource):
         frontendurl = parsedargs['frontendurl']
         nsamples = int(parsedargs.get('nsamples', 100))
 
-        urlstr = boxes.simulate(id, frontendurl, nsamples)
+        urlstr = tags.simulate(id, frontendurl, nsamples)
         return urlstr
 
 
-class Boxes(MultipleAdminResource):
+class Tags(MultipleAdminResource):
     def __init__(self):
-        super().__init__(BoxSchema, boxes)
+        super().__init__(TagSchema, tags)
 
     def get(self):
         """
-        Get a list of boxes.
+        Get a list of tags.
         Returns:
 
         """
@@ -63,7 +63,7 @@ class Boxes(MultipleAdminResource):
 
     def post(self):
         """
-        Create a new box. Optionally an ID can be specified.
+        Create a new tag. Optionally an ID can be specified.
         """
         parsedargs = super().parse_body_args(request.args.to_dict(),
                                              optlist=['id'])
@@ -72,14 +72,14 @@ class Boxes(MultipleAdminResource):
         if 'id' in parsedargs.keys():
             kwargs['id'] = int(parsedargs['id'])
 
-        boxobj = self.service.create(**kwargs)
+        tagobj = self.service.create(**kwargs)
 
         schema = self.Schema()
-        return schema.dump(boxobj)
+        return schema.dump(tagobj)
 
 
 
 
-api.add_resource(Box, '/box/<id>')
-api.add_resource(Boxes, '/boxes')
-api.add_resource(BoxSimulate, '/box/<id>/simulate')
+api.add_resource(Tag, '/tag/<id>')
+api.add_resource(Tags, '/tags')
+api.add_resource(TagSimulate, '/tag/<id>/simulate')

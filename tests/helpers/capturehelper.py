@@ -19,10 +19,10 @@ class CaptureHelper:
             smpltime += timedelta(minutes=timeintmins)
         return samplelist
 
-    def makecapture(self, samples, timeintmins, box_id, user_id=None):
+    def makecapture(self, samples, timeintmins, tag_id, user_id=None):
         capture = {
             "batvoltagemv": 3000,
-            "box_id": box_id,
+            "tag_id": tag_id,
             "user_id": user_id,
             "cursorpos": 10,
             "loopcount": 20,
@@ -45,16 +45,16 @@ class CaptureHelper:
 
 
 
-    def make_capture_with_samples(self, starttime, box_id, user_id=None, timeintmins=12, nsamples=4):
+    def make_capture_with_samples(self, starttime, tag_id, user_id=None, timeintmins=12, nsamples=4):
         samples = self.makesamples(starttime, timeintmins, nsamples)
-        return self.makecapture(samples, timeintmins, box_id, user_id)
+        return self.makecapture(samples, timeintmins, tag_id, user_id)
 
     def __init__(self):
         super().__init__()
 
 
 class CaptureListHelper(CaptureHelper):
-    def __init__(self, baseurl, adminapi_client_id, adminapi_client_secret, capturespeclist, boxid, timeintmins=12):
+    def __init__(self, baseurl, adminapi_client_id, adminapi_client_secret, capturespeclist, tagid, timeintmins=12):
         super().__init__()
         self.capturelist = []
         self.writtencaptures = []
@@ -64,7 +64,7 @@ class CaptureListHelper(CaptureHelper):
 
         for capturespec in capturespeclist:
             capture = self.make_capture_with_samples(starttime=capturespec['starttime'],
-                                                     box_id=boxid,
+                                                     tag_id=tagid,
                                                      timeintmins=timeintmins,
                                                      nsamples=capturespec['nsamples'],
                                                      user_id=capturespec.get('user_id'))

@@ -111,7 +111,7 @@ stages:
         id: !anyint
         oauth_id: !anystr
         timeregistered: !anystr
-        boxviews: !anylist
+        tagviews: !anylist
         captures: !anylist
         userinfo: !anydict
 
@@ -145,7 +145,7 @@ stages:
         id: !anyint
         oauth_id: !anystr
         timeregistered: !anystr
-        boxviews: !anylist
+        tagviews: !anylist
         captures: !anylist
         userinfo: !anydict
 

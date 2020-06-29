@@ -12,7 +12,7 @@ class AdminApiWrapper(ApiWrapper):
         """Make a GET request to endpoint_single.
 
         Returns:
-            dict: A dictionary representing a box object.
+            dict: A dictionary representing a tag object.
         """
         url_one = "{apiurl}{endpoint_one}{id}".format(apiurl=self.apiurl, endpoint_one=self.endpoint_one, id=id)
         r = requests.get(url_one, headers=self.headers)
@@ -37,7 +37,7 @@ class AdminApiWrapper(ApiWrapper):
         return response
 
     def delete(self, id: int):
-        """Make a DELETE request to the :ref:`BoxAdminAPI` endpoint.
+        """Make a DELETE request to the :ref:`TagAdminAPI` endpoint.
 
         Args:
             id (int): ID of the resource to delete

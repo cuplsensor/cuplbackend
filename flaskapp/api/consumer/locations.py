@@ -10,7 +10,7 @@ from flask import Blueprint, request, jsonify, current_app
 from flask_restful import Api, abort
 from ...services import locations
 from ...services import capturesamples
-from ...services import boxes
+from ...services import tags
 from ...services import users
 from ...schemas import LocationSchema
 from ..baseresource import SingleResource, MultipleResource
@@ -26,7 +26,7 @@ class ScanRequiredResource:
         super().__init__(*args, **kwargs)
 
     def get_capturesample(self, usertoken, capturesample_id):
-        # Get a capturesample after checking the user has scanned the box that it belongs to.
+        # Get a capturesample after checking the user has scanned the tag that it belongs to.
         current_app.logger.info(usertoken)
         decodedtoken = usertoken['decoded']
         oauth_id = decodedtoken['sub']
@@ -35,14 +35,14 @@ class ScanRequiredResource:
         # Find the capturesample object corresponding to capturesample_id
         capturesample = capturesamples.first_or_404(id=capturesample_id)
 
-        # Find the box owning this capturesample
+        # Find the tag owning this capturesample
         parentcapture = capturesample.parent_capture
-        parentbox = parentcapture.parent_box
-        boxserial = parentbox.serial
+        parenttag = parentcapture.parent_tag
+        tagserial = parenttag.serial
 
-        # Check that the user has scanned this box
-        if userobj.has_scanned_box(boxserial) is False:
-            abort(401, message="the user has not scanned this box")
+        # Check that the user has scanned this tag
+        if userobj.has_scanned_tag(tagserial) is False:
+            abort(401, message="the user has not scanned this tag")
 
         return capturesample
 
@@ -70,7 +70,7 @@ class Location(SingleResource, ScanRequiredResource):
 
     def patch(self, usertoken, id):
         """
-        Edit location information for a box
+        Edit location information for a tag
         """
         location = self.service.get_or_404(id)
         capturesample = location.parent_capturesample
@@ -99,7 +99,7 @@ class Locations(MultipleResource, ScanRequiredResource):
 
     def post(self, usertoken):
         """
-        Add location information to a box
+        Add location information to a tag
         """
 
         # Obtain capture sample id from the body
@@ -130,9 +130,9 @@ class Locations(MultipleResource, ScanRequiredResource):
 
     def get(self):
         """
-        Get a list of locations for a box ordered by most recent
+        Get a list of locations for a tag ordered by most recent
         """
-        boxserial = request.args.get('boxserial')
+        tagserial = request.args.get('tagserial')
         starttimestr = request.args.get('starttime')
         endtimestr = request.args.get('endtime')
         kwargs = dict()
@@ -143,14 +143,14 @@ class Locations(MultipleResource, ScanRequiredResource):
         if endtimestr is not None:
             kwargs['endtime'] = parse(endtimestr)
 
-        if boxserial is None:
-            abort(400, message="boxserial is required")
+        if tagserial is None:
+            abort(400, message="tagserial is required")
 
-        # Obtain a box object
-        box = boxes.get_by_serial(boxserial)
+        # Obtain a tag object
+        tag = tags.get_by_serial(tagserial)
 
-        # Get a list of timestamped locations for this box
-        locationslist = box.locations_in_window(**kwargs)
+        # Get a list of timestamped locations for this tag
+        locationslist = tag.locations_in_window(**kwargs)
         current_app.logger.info(locationslist)
 
         # Dump location into the JSON schema

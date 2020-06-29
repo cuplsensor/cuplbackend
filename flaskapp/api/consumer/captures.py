@@ -7,7 +7,7 @@
 
 from flask import Flask, Blueprint, request, current_app, jsonify
 from flask_restful import Resource, Api, abort, reqparse
-from ...services import captures, boxes, users
+from ...services import captures, tags, users
 from ...captures.schemas import ConsumerCaptureSchema
 from ..baseresource import SingleResource, MultipleResource
 from .usertokenauth import requires_user_token
@@ -28,7 +28,7 @@ class Captures(MultipleResource):
 
     def get(self, userobj=None):
         """
-        Get a list of captures for a box
+        Get a list of captures for a tag
         """
         parsedargs = Captures.parse_body_args(request.args.to_dict(),
                                               requiredlist=['serial'],
@@ -38,8 +38,8 @@ class Captures(MultipleResource):
         offset = parsedargs.get('offset', 0)
         limit = parsedargs.get('limit', None)
 
-        boxobj = boxes.get_by_serial(serial)
-        capturelist = captures.find(parent_box=boxobj).order_by(captures.__model__.timestamp.desc()).offset(offset).limit(limit)
+        tagobj = tags.get_by_serial(serial)
+        capturelist = captures.find(parent_tag=tagobj).order_by(captures.__model__.timestamp.desc()).offset(offset).limit(limit)
 
         schema = self.Schema()
         result = schema.dump(capturelist, many=True)
@@ -52,9 +52,9 @@ class Captures(MultipleResource):
         parsedargs = super().parse_body_args(request.get_json(),
                                               requiredlist=['serial', 'statusb64', 'timeintb64', 'circbufb64', 'ver'])
 
-        boxobj = boxes.get_by_serial(parsedargs['serial'])
+        tagobj = tags.get_by_serial(parsedargs['serial'])
 
-        captureobj = captures.decode_and_create(boxobj=boxobj,
+        captureobj = captures.decode_and_create(tagobj=tagobj,
                                                 userobj=userobj,
                                                 statb64=parsedargs['statusb64'],
                                                 timeintb64=parsedargs['timeintb64'],
@@ -81,10 +81,10 @@ class MeCaptures(Captures):
         oauth_id = decodedtoken['sub']
         userobj = users.get_by_oauth_id(oauth_id=oauth_id)
 
-        distinctonbox = loads(request.args.get('distinctonbox') or 'false')
+        distinctontag = loads(request.args.get('distinctontag') or 'false')
 
-        if distinctonbox is True:
-            capturelist = userobj.latest_capture_by_box()
+        if distinctontag is True:
+            capturelist = userobj.latest_capture_by_tag()
         else:
             capturelist = captures.find(scanned_by_user=userobj).order_by(captures.__model__.timestamp.desc())
 

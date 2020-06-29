@@ -1,5 +1,5 @@
 # Every test file has one or more tests
-test_name: No access to boxes with no token
+test_name: No access to tags with no token
 
 marks:
   - usefixtures:
@@ -15,7 +15,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/boxes"
+      url: "{baseurl}/api/admin/v1/tags"
       method: POST
 
     # and the expected response code and body
@@ -52,11 +52,11 @@ stages:
         body:
           admin_token: token
 
-  - name: Use the token to create a new box
+  - name: Use the token to create a new tag
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/boxes"
+      url: "{baseurl}/api/admin/v1/tags"
       method: POST
       headers:
         content-type: application/json
@@ -72,14 +72,14 @@ stages:
         serial: !anystr
       save:
         body:
-          test_box_id: id
+          test_tag_id: id
 
 
-  - name: Verify that the box can be retrieved by running a GET request
+  - name: Verify that the tag can be retrieved by running a GET request
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/box/{test_box_id}"
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
       method: GET
       headers:
         content-type: application/json
@@ -89,16 +89,16 @@ stages:
     response:
       status_code: 200
       body:
-        id: !int '{test_box_id}'
+        id: !int '{test_tag_id}'
         secretkey: !anystr
         serial: !anystr
         timeregistered: !anything
 
-  - name: Verify that the box can be retrieved in a list by running a GET request
+  - name: Verify that the tag can be retrieved in a list by running a GET request
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/boxes"
+      url: "{baseurl}/api/admin/v1/tags"
       method: GET
       headers:
         content-type: application/json
@@ -113,11 +113,11 @@ stages:
           serial: !anystr
           timeregistered: !anything
 
-  - name: Delete the box by ID.
+  - name: Delete the tag by ID.
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/box/{test_box_id}"
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json

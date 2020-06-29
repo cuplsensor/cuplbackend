@@ -15,8 +15,8 @@ from flask import current_app
 # Define the Campaign data model.
 class Capture(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # ID of the owning box object.
-    box_id = db.Column(db.Integer, db.ForeignKey('box.id'))
+    # ID of the owning tag object.
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
     # Optional ID of the user that has created this capture
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -38,11 +38,11 @@ class Capture(db.Model):
                               cascade="all, delete-orphan")
 
     @hybrid_property
-    def boxserial(self):
-        return self.parent_box.serial
+    def tagserial(self):
+        return self.parent_tag.serial
 
     def __init__(self,
-                 box_id,
+                 tag_id,
                  timestamp,
                  loopcount,
                  version,
@@ -55,7 +55,7 @@ class Capture(db.Model):
                  id=None,
                  user_id=None):
 
-        self.box_id = box_id
+        self.tag_id = tag_id
         self.id = id
         self.timestamp = timestamp
         self.loopcount = loopcount
@@ -128,7 +128,7 @@ class CaptureSample(db.Model):
         """ Obtain the most recent location to this capturesample. """
         mostrecentlocation = None
         # Select all previous capturesamples to this one
-        stmtb = db.session.query(CaptureSample).join(Capture).filter(CaptureSample.timestamp < self.timestamp).filter(Capture.parent_box == self.parent_capture.parent_box).subquery()
+        stmtb = db.session.query(CaptureSample).join(Capture).filter(CaptureSample.timestamp < self.timestamp).filter(Capture.parent_tag == self.parent_capture.parent_tag).subquery()
         # Only select capturesamples with a location element and pick the last one.
         stmta = db.session.query(Location, stmtb).filter(Location.capturesample_id==stmtb.c.id).order_by(stmtb.c.timestamp.desc())
         firstresult = stmta.first()
