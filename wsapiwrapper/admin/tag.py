@@ -34,18 +34,41 @@ class TagWrapper(AdminApiWrapper):
         tagresponse = r.json()
         return tagresponse
 
-    def post(self, tagid: int = None) -> dict:
-        """Make a POST request to the :ref:`TagAdminAPI` endpoint.
+    def post(self, serial: str = None,
+                secretkey: str = None,
+                fwversion: str = None,
+                hwversion: str = None,
+                description: str = None) -> dict:
+        """
+        Make a POST request to the :ref:`TagAdminAPI` endpoint.
 
-        Returns:
+        :param serial: Tag serial string (8 characters).
+        :param secretkey: Secret key (16 characters).
+        :param fwversion: Tag firmware version.
+        :param hwversion: Tag hardware version.
+        :param description: Tag description.
+        :return:
             dict: A dictionary representing the new tag object.
-
         """
         tagsurl = "{apiurl}/tags".format(apiurl=self.apiurl)
-        if tagid is not None:
-            payload = {'id': tagid}
-        else:
-            payload = None
+
+        payload = dict()
+
+        if serial is not None:
+            payload.update({'serial': serial})
+
+        if secretkey is not None:
+            payload.update({'secretkey': secretkey})
+
+        if fwversion is not None:
+            payload.update({'fwversion': fwversion})
+
+        if hwversion is not None:
+            payload.update({'hwversion': hwversion})
+
+        if description is not None:
+            payload.update({'description': description})
+
         r = requests.post(tagsurl, data=payload, headers=self.headers)
         tagresponse = r.json()
         return tagresponse

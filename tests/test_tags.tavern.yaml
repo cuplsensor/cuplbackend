@@ -126,3 +126,119 @@ stages:
     # and the expected response body
     response:
       status_code: 204
+
+---
+test_name: Create tag with serial and secretkey
+
+marks:
+  - usefixtures:
+      - baseurl
+      - clientid
+      - clientsecret
+
+stages:
+  - name: With a client_id and a client_secret a token is returned
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/token"
+      method: POST
+      json:
+        client_id: "{clientid}"
+        client_secret: "{clientsecret}"
+      headers:
+        content-type: application/json
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      save:
+        body:
+          admin_token: token
+
+  - name: Use the token to create a new tag with a serial, secretkey, fwversion, hwversion and description specified.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tags"
+      method: POST
+      json:
+        serial: "{testtag.serial:s}"
+        secretkey: "{testtag.secretkey:s}"
+        fwversion: "{testtag.fwversion:s}"
+        hwversion: "{testtag.hwversion:s}"
+        description: "{testtag.description:s}"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        timeregistered: !anything
+        id: !anyint
+        serial: "{testtag.serial:s}"
+        secretkey: "{testtag.secretkey:s}"
+        fwversion: "{testtag.fwversion:s}"
+        hwversion: "{testtag.hwversion:s}"
+        description: "{testtag.description:s}"
+      save:
+        body:
+          test_tag_id: id
+
+
+  - name: Verify that the tag can be retrieved by running a GET request
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        id: !int '{test_tag_id}'
+        serial: "{testtag.serial:s}"
+        secretkey: "{testtag.secretkey:s}"
+        fwversion: "{testtag.fwversion:s}"
+        hwversion: "{testtag.hwversion:s}"
+        description: "{testtag.description:s}"
+        timeregistered: !anything
+
+  - name: Verify that the tag can be retrieved in a list by running a GET request
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tags"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        - id: !anyint
+          serial: "{testtag.serial:s}"
+          secretkey: "{testtag.secretkey:s}"
+          timeregistered: !anything
+
+  - name: Delete the tag by ID.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 204

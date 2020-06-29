@@ -12,19 +12,20 @@ from ...services import tags
 from ...tags.schemas import TagSchema
 from .adminresource import SingleAdminResource, MultipleAdminResource
 
-
 bp = Blueprint('admintags', __name__)
 api = Api(bp)
 
 
 class Tag(SingleAdminResource):
     """Get, modify or delete one tag. """
+
     def __init__(self):
         super().__init__(TagSchema, tags)
 
 
 class TagSimulate(SingleAdminResource):
     """Get a URL created by the encoder in wscodec. Similar to what the tag will produce. """
+
     def __init__(self):
         super().__init__(TagSchema, tags)
 
@@ -63,21 +64,18 @@ class Tags(MultipleAdminResource):
 
     def post(self):
         """
-        Create a new tag. Optionally an ID can be specified.
+        Create a new tag. It is optional to specify serial, secretkey, fwversion, hwversion and description.
         """
-        parsedargs = super().parse_body_args(request.args.to_dict(),
-                                             optlist=['id'])
+        jsondata = request.get_json(silent=True) or dict()
+        parsedargs = super().parse_body_args(jsondata, optlist=['serial',
+                                                                'secretkey',
+                                                                'fwversion',
+                                                                'hwversion',
+                                                                'description'])
 
-        kwargs = dict()
-        if 'id' in parsedargs.keys():
-            kwargs['id'] = int(parsedargs['id'])
-
-        tagobj = self.service.create(**kwargs)
-
+        tagobj = self.service.create(**parsedargs)
         schema = self.Schema()
         return schema.dump(tagobj)
-
-
 
 
 api.add_resource(Tag, '/tag/<id>')

@@ -11,7 +11,12 @@ from ..captures.models import Capture, CaptureSample
 from ..tagviews.models import TagView
 from ..locations.models import Location
 from flask import current_app
+from random import getrandbits
+import base64
 import datetime
+
+SERIAL_LEN_BYTES = 8
+SECKEY_LEN_BYTES = 16
 
 
 # Define the Tag data model.
@@ -20,8 +25,11 @@ class Tag(db.Model):
 
     # Tag identity is unique. It will correspond to the BLE MAC address.
     # See MAC_BLE_0 and MAC_BLE_1 to read this 48-bit (6 byte) address.
-    serial = db.Column(db.String(8), unique=True)
-    secretkey = db.Column(db.String(8))
+    serial = db.Column(db.String(SERIAL_LEN_BYTES), unique=True)
+    secretkey = db.Column(db.String(SECKEY_LEN_BYTES))
+    fwversion = db.Column(db.String(16))
+    hwversion = db.Column(db.String(16))
+    description = db.Column(db.String(280))
     timeregistered = db.Column(db.DateTime, nullable=False)
 
     # ID of the owning user object
@@ -38,11 +46,10 @@ class Tag(db.Model):
     def locations_in_window(self,
                             starttime=datetime.datetime(year=1970, month=1, day=1),
                             endtime=datetime.datetime.utcnow()):
-
         stmt = Location.query.join(CaptureSample).join(Capture).filter((Capture.parent_tag == self) &
                                                                        (CaptureSample.timestamp >= starttime) &
                                                                        (CaptureSample.timestamp <= endtime)).order_by(
-                                                                        CaptureSample.timestamp.desc())
+            CaptureSample.timestamp.desc())
 
         return stmt.all()
 
@@ -52,7 +59,8 @@ class Tag(db.Model):
         # Crucially all samples must be ordered by timestamp for the grouping to work.
         stmt = CaptureSample.query.join(Capture).filter((Capture.parent_tag == self) &
                                                         (CaptureSample.timestamp >= starttime) &
-                                                        (CaptureSample.timestamp <= endtime)).order_by(CaptureSample.timestamp.asc()).subquery()
+                                                        (CaptureSample.timestamp <= endtime)).order_by(
+            CaptureSample.timestamp.asc()).subquery()
         # Calculate the time difference between successive samples using the lag function.
         # Append this as a new column named tdiffseconds.
         stmt2 = db.session.query(stmt,
@@ -63,16 +71,19 @@ class Tag(db.Model):
         # 0 indicates (duplicate) samples inside a group.
         # It is assumed that all samples with a time difference less than the threshold
         # must be duplicates.
-        stmt2a = db.session.query(stmt2, db.case([(stmt2.c.tdiffseconds > threshold_in_seconds, 1), ], else_=0).label('groupstart')).subquery()
+        stmt2a = db.session.query(stmt2, db.case([(stmt2.c.tdiffseconds > threshold_in_seconds, 1), ], else_=0).label(
+            'groupstart')).subquery()
         # Make the group markers contiguous i.e. all members of a group should share the same number.
         # To do this iterate through all rows and
         # calculate the sum of groupstart over rows
         # between unbounded preceeding and the current row.
         # See the documentation for rows over unbounded preceeding here:
         # https://docs.sqlalchemy.org/en/latest/core/sqlelement.html#sqlalchemy.sql.expression.over
-        stmt2b = db.session.query(stmt2a, db.func.sum(stmt2a.c.groupstart).over(rows=(None, 0)).label('groupid')).subquery()
+        stmt2b = db.session.query(stmt2a,
+                                  db.func.sum(stmt2a.c.groupstart).over(rows=(None, 0)).label('groupid')).subquery()
         # Calculate the minimum capture_id in each group. Append this as a new column.
-        stmt3 = db.session.query(stmt2b, db.func.min(stmt2b.c.capture_id).over(partition_by=stmt2b.c.groupid).label('mincaptid')).subquery()
+        stmt3 = db.session.query(stmt2b, db.func.min(stmt2b.c.capture_id).over(partition_by=stmt2b.c.groupid).label(
+            'mincaptid')).subquery()
         # Select capture samples from the list above. Only return samples that have the minimum capture_id.
         stmt4 = db.session.query(CaptureSample).join(stmt3,
                                                      ((stmt3.c.id == CaptureSample.id) &
@@ -93,14 +104,34 @@ class Tag(db.Model):
         # Select all capturesamples to this one
         stmta = db.session.query(CaptureSample).join(Capture).filter(Capture.parent_tag == self).subquery()
         # Only select capturesamples with a location element and pick the last one.
-        stmtb = db.session.query(Location, stmta.c.timestamp).filter(Location.capturesample_id==stmta.c.id).order_by(stmta.c.timestamp.desc())
+        stmtb = db.session.query(Location, stmta.c.timestamp).filter(Location.capturesample_id == stmta.c.id).order_by(
+            stmta.c.timestamp.desc())
         return stmtb.all()
 
     def __repr__(self):
         return '<Tag id=%s with serial=%s and secret key=%s>' % (self.id, self.serial, self.secretkey)
 
-    def __init__(self, **kwargs):
-    	# Initialise the tag object
+    def __init__(self, serial=None, secretkey=None, fwversion="", hwversion="", description="", **kwargs):
+        # Initialise the tag object
         super(Tag, self).__init__(**kwargs)
+        self.serial = serial
+        self.secretkey = secretkey or self.__class__.gen_secret_key()
+        self.fwversion = fwversion
+        self.hwversion = hwversion
+        self.description = description
         self.timeregistered = datetime.datetime.utcnow()
         self.user_id = None
+
+    @staticmethod
+    def gen_secret_key():
+        """Generate a random secret key.
+        """
+        bitsperbyte = 8
+        skeyintlenbytes = 12
+        # Generate a random integer of 6 bytes * 8 bits.
+        skeyint = getrandbits(bitsperbyte * skeyintlenbytes)
+        # Convert the random integer into a bytes object
+        skeybytes = skeyint.to_bytes(skeyintlenbytes, byteorder='big')
+        # Convert the bytes object into a base 64 string.
+        skeyb64 = base64.urlsafe_b64encode(skeybytes)
+        return skeyb64.decode("utf-8")

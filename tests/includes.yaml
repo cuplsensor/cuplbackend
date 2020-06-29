@@ -8,6 +8,12 @@ description: Used by all test files
 # Variables should just be a mapping of key: value pairs
 variables:
   protocol: https
+  testtag:
+    serial: "ABCDEFGH"
+    secretkey: "abcdefghij123456"
+    fwversion: "1.2.0"
+    hwversion: "2.2.0"
+    description: "a description"
   testcapture:
     batvoltagemv: 3000
     loopcount: 1
