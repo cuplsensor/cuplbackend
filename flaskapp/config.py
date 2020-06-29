@@ -21,6 +21,8 @@ SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(
     )
 DATABASE_CONNECT_OPTIONS = {}
 
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 # Application threads. A common general assumption is
 # using 2 per available processor cores - to handle
 # incoming requests using one and performing background
@@ -55,9 +57,5 @@ API_AUDIENCE = os.getenv('API_AUDIENCE', defaults.API_AUDIENCE)
 ADMINAPI_AUDIENCE = os.getenv('ADMINAPI_AUDIENCE', defaults.ADMINAPI_AUDIENCE)
 ADMINAPI_CLIENTID = os.getenv('ADMINAPI_CLIENTID', defaults.ADMINAPI_CLIENTID)
 ADMINAPI_CLIENTSERET = os.environ['ADMINAPI_CLIENTSECRET']
-
-# Auth0 credentials for decoding a JWT. Moved to wsfrontend.
-#AUTHO_CLIENTSECRET = b64decode(os.environ['AUTH0_CLIENTSECRET'].replace("_","/").replace("-","+"))
-#AUTH0_CLIENTID = os.environ['AUTH0_CLIENTID']
 
 
