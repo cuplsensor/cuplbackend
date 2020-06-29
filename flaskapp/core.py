@@ -11,7 +11,7 @@ import marshmallow_sqlalchemy as ma
 from flask import current_app, abort
 
 #: Flask-SQLAlchemy extension instance
-db = SQLAlchemy(engine_options={'pool_pre_ping': True})
+db = SQLAlchemy(engine_options={'pool_pre_ping': True, 'pool_recycle': 300})
 
 
 class OverholtError(Exception):
