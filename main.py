@@ -4,6 +4,7 @@
     ~~~~
     overholt wsgi module
 """
+from werkzeug.serving import run_simple
 from werkzeug.debug import DebuggedApplication
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flaskapp.api import admin, consumer
@@ -20,3 +21,6 @@ app = DispatcherMiddleware(simple, {
     })
 app = DebuggedApplication(app, evalex=False)
 app.debug = True
+
+if __name__ == "__main__":
+    app.run()
