@@ -35,6 +35,14 @@ jobs:
     - run: forever start tests/oauth2-mock/app.js
     - run: cd ../../
 
+    - name: Install postgres
+      uses: harmon758/postgresql-action@v1
+      with:
+        postgresql version: '11'  # See https://hub.docker.com/_/postgres for available versions
+        postgresql db: ${{ env.DB_HOST }}
+        postgresql user: ${{ env.DB_USER }}
+        postgresql password: ${{ env.DB_PASS }}
+
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
@@ -61,13 +69,7 @@ jobs:
         pip install -r requirements.txt
         pip install uwsgi
 
-    - name: Install postgres
-      uses: harmon758/postgresql-action@v1
-      with:
-        postgresql version: '11'  # See https://hub.docker.com/_/postgres for available versions
-        postgresql db: ${{ env.DB_HOST }}
-        postgresql user: ${{ env.DB_USER }}
-        postgresql password: ${{ env.DB_PASS }}
+
 
     - name: Run uwsgi server and daemonize
       run: uwsgi --protocol http --daemonize /tmp/uwsgi_daemonize.log -w -d --ini uwsgi.ini
