@@ -111,11 +111,19 @@ class Tag(db.Model):
     def __repr__(self):
         return '<Tag id=%s with serial=%s and secret key=%s>' % (self.id, self.serial, self.secretkey)
 
-    def __init__(self, serial=None, secretkey=None, fwversion="", hwversion="", description="", **kwargs):
+    def __init__(self, serial: str = None, secretkey: str = None, fwversion: str = "", hwversion: str = "", description: str = "", **kwargs):
         # Initialise the tag object
         super(Tag, self).__init__(**kwargs)
-        self.serial = serial
-        self.secretkey = secretkey or self.__class__.gen_secret_key()
+        if len(serial) == SERIAL_LEN_BYTES:
+            self.serial = serial
+        else:
+            self.serial = None
+
+        if len(secretkey) == SECKEY_LEN_BYTES:
+            self.secretkey = secretkey
+        else:
+            self.__class__.gen_secret_key()
+
         self.fwversion = fwversion
         self.hwversion = hwversion
         self.description = description
