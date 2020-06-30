@@ -7,7 +7,6 @@
 """
 
 from functools import wraps
-from flasgger import Swagger
 from ... import factory
 
 from .token import bp as tokenbp
@@ -248,7 +247,6 @@ def create_app(settings_override=None):
     app.register_blueprint(capturesbp)
     app.register_blueprint(tagviewsbp)
     app.register_blueprint(usersbp)
-    swagger = Swagger(app, template=swaggertemplate)
 
     return app
 

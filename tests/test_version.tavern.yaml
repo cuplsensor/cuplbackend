@@ -1,0 +1,24 @@
+# Every test file has one or more tests
+test_name: Get the version dictionary.
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# ...and each test has one or more stages (e.g. an HTTP request)
+stages:
+  - name: Make sure we get a dictionary with 2 elements cuplcodecversion and cuplbackendversion
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/version"
+      method: GET
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      headers:
+        content-type: application/json
+      body:
+        cuplcodec: !anystr
+        cuplbackend: !anystr
