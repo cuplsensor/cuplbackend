@@ -19,8 +19,8 @@ app = DispatcherMiddleware(simple, {
         '/api/admin/v1': admin.create_app(),
         '/api/consumer/v1': consumer.create_app()
     })
-app = DebuggedApplication(app, evalex=False)
-app.debug = True
 
 if __name__ == "__main__":
+    app = DebuggedApplication(app, evalex=False)
+    app.debug = True
     app.run()

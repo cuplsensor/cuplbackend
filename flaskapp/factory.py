@@ -10,6 +10,7 @@ from flask import Flask
 
 from .core import db
 
+
 def create_api_app(package_name, package_path, settings_override=None):
     app = create_app(package_name, settings_override)
 
@@ -18,12 +19,14 @@ def create_api_app(package_name, package_path, settings_override=None):
 
     # Drop all uses a tip from http://piotr.banaszkiewicz.org/blog/2012/06/29/flask-sqlalchemy-init_app/
     with app.test_request_context():
-        db.drop_all()
+        if app.config.get('DROP_AND_CREATE') is True:
+            db.drop_all()
         db.create_all()
     # Register all blueprints to the application
     # register_blueprints(app, package_name, package_path.api)
 
     return app
+
 
 def create_app(package_name, package_path, settings_override=None):
     """Return a Flask application instance configured with common
