@@ -19,7 +19,7 @@ def create_api_app(package_name, package_path, settings_override=None):
 
     # Drop all uses a tip from http://piotr.banaszkiewicz.org/blog/2012/06/29/flask-sqlalchemy-init_app/
     with app.test_request_context():
-        if app.config.get('DROP_AND_CREATE') is True:
+        if app.config.get('DROP_ON_INIT') is True:
             db.drop_all()
         db.create_all()
     # Register all blueprints to the application

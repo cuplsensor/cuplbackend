@@ -6,4 +6,4 @@ API_ISSUER = "http://localhost:3000"
 API_AUDIENCE = "mock_api_audience"
 ADMINAPI_AUDIENCE = "default_adminapi_audience"
 ADMINAPI_CLIENTID = "default_adminapi_clientid"
-DROP_AND_CREATE = False
+DROP_ON_INIT = False
