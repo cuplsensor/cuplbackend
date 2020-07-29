@@ -267,6 +267,51 @@ paths:
           schema:
             type: bool
             default: true
+        - name: batvoltagemv
+          in: query
+          required: false
+          description: Battery voltage in mV.
+          schema:
+            type: integer
+            default: 3000
+        - name: bor
+          in: query
+          required: false
+          description: Reset caused by Brownout.
+          schema:
+            type: bool
+            default: false
+        - name: svsh
+          in: query
+          required: false
+          description: Reset caused by Supply Voltage Supervisor (High Side).
+          schema:
+            type: bool
+            default: false
+        - name: wdt
+          required: false
+          description: Reset caused by watchdog timer.
+          schema:
+            type: bool
+            default: false
+        - name: misc
+          required: false
+          description: Miscellaneous error flag on cupl Tag.
+          schema:
+            type: bool
+            default: false
+        - name: lpm5wu
+          required: false
+          description: Low Power Mode x.5 wakeup flag.
+          schema:
+            type: bool
+            default: false
+        - name: clockfail
+          required: false
+          description: Clock failure error flag.
+          schema:
+            type: bool
+            default: false
         - name: tagerror
           in: query
           required: false
