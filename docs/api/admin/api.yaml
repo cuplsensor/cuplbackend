@@ -265,7 +265,7 @@ paths:
           required: false
           description: Use HMAC rather than MD5.
           schema:
-            type: bool
+            type: boolean
             default: true
         - name: batvoltagemv
           in: query
@@ -279,45 +279,49 @@ paths:
           required: false
           description: Reset caused by Brownout.
           schema:
-            type: bool
+            type: boolean
             default: false
         - name: svsh
           in: query
           required: false
           description: Reset caused by Supply Voltage Supervisor (High Side).
           schema:
-            type: bool
+            type: boolean
             default: false
         - name: wdt
+          in: query
           required: false
           description: Reset caused by watchdog timer.
           schema:
-            type: bool
+            type: boolean
             default: false
         - name: misc
+          in: query
           required: false
           description: Miscellaneous error flag on cupl Tag.
           schema:
-            type: bool
+            type: boolean
             default: false
         - name: lpm5wu
+          in: query
           required: false
           description: Low Power Mode x.5 wakeup flag.
           schema:
-            type: bool
+            type: boolean
             default: false
         - name: clockfail
+          in: query
           required: false
           description: Clock failure error flag.
           schema:
-            type: bool
+            type: boolean
             default: false
         - name: tagerror
           in: query
           required: false
           description: Initialise encoder with the error flag set. The circular buffer will be empty.
           schema:
-            type: bool
+            type: boolean
             default: false
 
       responses:
