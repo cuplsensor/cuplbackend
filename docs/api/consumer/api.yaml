@@ -4,8 +4,8 @@ info:
   description: API for my data
   termsOfService: http://me.com/terms
   contact:
-    url: www.me.com
-    email: me@me.com
+    url: www.plotsensor.com
+    email: malcolm@plotsensor.com
   version: 0.0.1
 servers:
 - url: https://websensor.io/api/consumer/v1

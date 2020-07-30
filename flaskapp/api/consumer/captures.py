@@ -7,6 +7,7 @@
 
 from flask import Flask, Blueprint, request, current_app, jsonify
 from flask_restful import Resource, Api, abort, reqparse
+from wscodec.decoder.exceptions import *
 from ...services import captures, tags, users
 from ...captures.schemas import ConsumerCaptureSchema
 from ..baseresource import SingleResource, MultipleResource
@@ -54,17 +55,33 @@ class Captures(MultipleResource):
 
         tagobj = tags.get_by_serial(parsedargs['serial'])
 
-        captureobj = captures.decode_and_create(tagobj=tagobj,
-                                                userobj=userobj,
-                                                statb64=parsedargs['statusb64'],
-                                                timeintb64=parsedargs['timeintb64'],
-                                                circb64=parsedargs['circbufb64'],
-                                                ver=parsedargs['ver'])
+        try:
+            captureobj = captures.decode_and_create(tagobj=tagobj,
+                                                    userobj=userobj,
+                                                    statb64=parsedargs['statusb64'],
+                                                    timeintb64=parsedargs['timeintb64'],
+                                                    circb64=parsedargs['circbufb64'],
+                                                    ver=parsedargs['ver'])
 
-        schema = self.Schema()
-        result = schema.dump(captureobj)
+            schema = self.Schema()
+            result = schema.dump(captureobj)
+            return jsonify(result)
 
-        return jsonify(result)
+        except InvalidMajorVersionError as e:
+            return jsonify(ecode=101, description=str(e),
+                           encoderversion=e.encoderversion, decoderversion=e.decoderversion), 422
+
+        except InvalidFormatError as e:
+            return jsonify(ecode=102, description=str(e), circformat=e.circformat), 422
+
+        except MessageIntegrityError as e:
+            return jsonify(ecode=103, description=str(e), urlhash=e.urlhash, calchash=e.calchash), 401
+
+        except NoCircularBufferError as e:
+            return jsonify(ecode=104, description=str(e), status=e.status), 400
+
+        except DelimiterNotFoundError as e:
+            return jsonify(ecode=105, description=str(e), status=e.status, circb64=e.circb64), 422
 
 
 class MeCaptures(Captures):

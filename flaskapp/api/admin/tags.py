@@ -41,12 +41,47 @@ class TagSimulate(SingleAdminResource):
         """
         parsedargs = super().parse_body_args(request.args.to_dict(),
                                              requiredlist=['frontendurl'],
-                                             optlist=['nsamples'])
+                                             optlist=['nsamples',
+                                                      'smplintervalmins',
+                                                      'format',
+                                                      'usehmac',
+                                                      'batvoltagemv',
+                                                      'bor',
+                                                      'svsh',
+                                                      'wdt',
+                                                      'misc',
+                                                      'lpm5wu',
+                                                      'clockfail',
+                                                      'tagerror'])
 
         frontendurl = parsedargs['frontendurl']
         nsamples = int(parsedargs.get('nsamples', 100))
+        smplintervalmins = int(parsedargs.get('sampleintervalmins', 10))
+        format = int(parsedargs.get('format', 1))
+        usehmac = bool(parsedargs.get('usehmac', True))
+        batvoltagemv = int(parsedargs.get('batvoltagemv', 3000))
+        bor = bool(parsedargs.get('bor', False))
+        svsh = bool(parsedargs.get('svsh', False))
+        wdt = bool(parsedargs.get('wdt', False))
+        misc = bool(parsedargs.get('misc', False))
+        lpm5wu = bool(parsedargs.get('lpm5wu', False))
+        clockfail = bool(parsedargs.get('clockfail', False))
+        tagerror = bool(parsedargs.get('tag', False))
 
-        urlstr = tags.simulate(id, frontendurl, nsamples)
+        urlstr = tags.simulate(id,
+                               frontendurl,
+                               nsamples,
+                               smplintervalmins,
+                               format,
+                               usehmac,
+                               batvoltagemv,
+                               bor,
+                               svsh,
+                               wdt,
+                               misc,
+                               lpm5wu,
+                               clockfail,
+                               tagerror)
         return urlstr
 
 

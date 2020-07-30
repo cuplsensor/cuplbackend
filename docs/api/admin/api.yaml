@@ -246,7 +246,7 @@ paths:
           schema:
             type: integer
             default: 100
-        - name: sampleintervalmins
+        - name: smplintervalmins
           in: query
           required: false
           description: Time interval between samples in minutes.
