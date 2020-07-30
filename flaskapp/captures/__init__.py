@@ -14,7 +14,7 @@ from wscodec.decoder.decoderfactory import decode
 class CaptureService(Service):
     __model__ = Capture
 
-    def decode_and_create(self, tagobj, statb64, timeintb64, circb64, ver, userobj=None):
+    def decode_and_create(self, tagobj, statb64, timeintb64, circb64, vfmtb64, userobj=None):
         """Returns a new, saved instance of the capture model class.
         :param **kwargs: instance parameters
         """
@@ -22,7 +22,7 @@ class CaptureService(Service):
                             statb64=statb64,
                             timeintb64=timeintb64,
                             circb64=circb64,
-                            ver=ver,
+                            vfmtb64=vfmtb64,
                             usehmac=True)
 
         resetcause = decodedurl.status.resetcause

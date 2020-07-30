@@ -45,7 +45,7 @@ CSRF_SESSION_KEY = os.environ['CSRF_SESSION_KEY']
 # Secret key for signing cookies
 SECRET_KEY = os.environ['SECRET_KEY']
 
-DROP_AND_CREATE = os.getenv('DROP_ON_INIT', defaults.DROP_ON_INIT) # Flag to drop tables on startup.
+DROP_ON_INIT = bool(os.getenv('DROP_ON_INIT', defaults.DROP_ON_INIT)) # Flag to drop tables on startup.
 IDP_PROTOCOL = os.getenv('IDP_PROTOCOL', defaults.IDP_PROTOCOL)
 IDP_HOST = os.getenv('IDP_HOST', defaults.IDP_HOST)
 IDP_PORT = os.getenv('IDP_PORT', defaults.IDP_PORT)

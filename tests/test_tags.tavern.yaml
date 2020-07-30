@@ -108,10 +108,7 @@ stages:
     response:
       status_code: 200
       body:
-        - id: !anyint
-          secretkey: !anystr
-          serial: !anystr
-          timeregistered: !anything
+        !anylist
 
   - name: Delete the tag by ID.
 
@@ -224,10 +221,7 @@ stages:
     response:
       status_code: 200
       body:
-        - id: !anyint
-          serial: "{testtag.serial:s}"
-          secretkey: "{testtag.secretkey:s}"
-          timeregistered: !anything
+        !anylist
 
   - name: Delete the tag by ID.
 

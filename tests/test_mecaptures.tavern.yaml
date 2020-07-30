@@ -71,7 +71,7 @@ stages:
         statusb64: "{statusb64}"
         timeintb64: "{timeintb64}"
         circbufb64: "{circbufb64}"
-        ver: "{ver}"
+        vfmtb64: "{vfmtb64}"
       headers:
         content-type: application/json
         Authorization: "bearer {token_fixture:s}"

@@ -90,7 +90,7 @@ class CaptureWrapper(ConsumerApiWrapper):
              serial: str,
              statusb64: str,
              timeintb64: str,
-             versionStr: str) -> dict:
+             vfmtb64: str) -> dict:
         """Create a new capture from parameters encoded by wscodec.
 
         These data are included in URL parameters passed to wsfrontend when a tag is scanned.
@@ -103,7 +103,7 @@ class CaptureWrapper(ConsumerApiWrapper):
             serial (str): Base64 serial identifying the tag the capture has originated from.
             statusb64 (str): Base64 encoded status information (e.g. battery level). Output by wscodec.
             timeintb64 (str): Base64 encoded time interval between samples. Output by wscodec.
-            versionStr (str): Tag version string. See wscodec.
+            vfmtb64 (str): Tag version string. See wscodec.
 
         Returns:
             dict: Capture dictionary.
@@ -114,7 +114,7 @@ class CaptureWrapper(ConsumerApiWrapper):
                    'serial': serial,
                    'statusb64': statusb64,
                    'timeintb64': timeintb64,
-                   'ver': versionStr}
+                   'vfmtb64': vfmtb64}
 
         r = requests.post(capturesurl, json=payload)
         r.raise_for_status()

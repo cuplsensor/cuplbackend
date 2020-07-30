@@ -18,13 +18,13 @@ def create_capture_for_tag(response, baseurl):
     statusb64 = queries['x'][0]
     timeintb64 = queries['t'][0]
     circbufb64 = queries['q'][0]
-    ver = queries['v'][0]
+    vfmtb64 = queries['v'][0]
     outlist = {
             'serial': serial,
             'statusb64': statusb64,
             'timeintb64': timeintb64,
             'circbufb64': circbufb64,
-            'ver': ver,
+            'vfmtb64': vfmtb64,
             'samplesin': samplesin
             }
     print(outlist)

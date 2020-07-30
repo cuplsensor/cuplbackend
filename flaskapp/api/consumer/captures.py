@@ -51,7 +51,7 @@ class Captures(MultipleResource):
         Create a capture
         """
         parsedargs = super().parse_body_args(request.get_json(),
-                                              requiredlist=['serial', 'statusb64', 'timeintb64', 'circbufb64', 'ver'])
+                                              requiredlist=['serial', 'statusb64', 'timeintb64', 'circbufb64', 'vfmtb64'])
 
         tagobj = tags.get_by_serial(parsedargs['serial'])
 
@@ -61,7 +61,7 @@ class Captures(MultipleResource):
                                                     statb64=parsedargs['statusb64'],
                                                     timeintb64=parsedargs['timeintb64'],
                                                     circb64=parsedargs['circbufb64'],
-                                                    ver=parsedargs['ver'])
+                                                    vfmtb64=parsedargs['vfmtb64'])
 
             schema = self.Schema()
             result = schema.dump(captureobj)
