@@ -85,9 +85,3 @@ jobs:
       if: failure()
       run: cat /tmp/uwsgi_daemonize.log
 
-    - name: Install and upgrade wheel
-      run: python3 -m pip install --user --upgrade setuptools wheel
-
-    - name: Create source distribution and wheel.
-      run: python3 wsapiwrapper/setup.py sdist bdist_wheel
-
