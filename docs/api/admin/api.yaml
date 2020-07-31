@@ -244,6 +244,22 @@ paths:
           description: Number of temperature and humidity samples to include in the wscodec URL.
           schema:
             type: integer
+            default: 100
+        - name: sampleintervalmins
+          in: query
+          required: false
+          description: Time interval between samples in minutes.
+          schema:
+            type: integer
+            default: 10
+        - name: format
+          in: query
+          required: false
+          description: Format code e.g. 1 for temperature and humidity and 2 for temperarture samples only.
+          schema:
+            type: integer
+            default: 1
+
       responses:
         '200':
           description: URL containing sensor data.
