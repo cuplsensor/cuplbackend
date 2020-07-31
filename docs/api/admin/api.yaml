@@ -242,6 +242,7 @@ paths:
           in: query
           required: false
           description: Number of temperature and humidity samples to include in the wscodec URL.
+                       0 samples is valid and should raise an error.
           schema:
             type: integer
             default: 100
@@ -259,6 +260,20 @@ paths:
           schema:
             type: integer
             default: 1
+        - name: usehmac
+          in: query
+          required: false
+          description: Use HMAC rather than MD5.
+          schema:
+            type: bool
+            default: true
+        - name: tagerror
+          in: query
+          required: false
+          description: Initialise encoder with the error flag set. The circular buffer will be empty.
+          schema:
+            type: bool
+            default: false
 
       responses:
         '200':
