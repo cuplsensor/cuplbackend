@@ -1,5 +1,5 @@
-cupl Backend
-==============
+cupl Backend Documentation
+============================
 See also :ref:`cuplcodec <wscodec:index>` and :ref:`cuplfrontend <wsfrontend:index>`.
 
 .. _index:
