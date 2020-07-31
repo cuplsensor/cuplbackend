@@ -1,6 +1,6 @@
-websensor Web App Backend
-==================================
-See also :ref:`wscodec <wscodec:index>` and :ref:`wsfrontend <wsfrontend:index>`.
+cupl Backend
+==============
+See also :ref:`cuplcodec <wscodec:index>` and :ref:`cuplfrontend <wsfrontend:index>`.
 
 .. _index:
 .. toctree::
