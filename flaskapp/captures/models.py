@@ -34,6 +34,7 @@ class Capture(db.Model):
                              cascade="all, delete-orphan")
     samples = db.relationship('CaptureSample',
                               order_by="desc(CaptureSample.timestamp)",
+                              lazy='select',
                               backref=db.backref('parent_capture'),
                               cascade="all, delete-orphan")
 
