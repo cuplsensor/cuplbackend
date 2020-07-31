@@ -20,7 +20,7 @@ import sys
 # -- Project information -----------------------------------------------------
 
 project = 'backend'
-copyright = '2020, Malcolm Mackay'
+copyright = '2020, Plotsensor Ltd.'
 author = 'Malcolm Mackay'
 
 # The short X.Y version
