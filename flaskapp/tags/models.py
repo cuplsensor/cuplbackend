@@ -11,7 +11,7 @@ from ..captures.models import Capture, CaptureSample
 from ..tagviews.models import TagView
 from ..locations.models import Location
 from flask import current_app
-from random import getrandbits
+from secrets import token_urlsafe
 import base64
 import datetime
 
@@ -134,12 +134,5 @@ class Tag(db.Model):
     def gen_secret_key():
         """Generate a random secret key.
         """
-        bitsperbyte = 8
-        skeyintlenbytes = 12
-        # Generate a random integer of 6 bytes * 8 bits.
-        skeyint = getrandbits(bitsperbyte * skeyintlenbytes)
-        # Convert the random integer into a bytes object
-        skeybytes = skeyint.to_bytes(skeyintlenbytes, byteorder='big')
-        # Convert the bytes object into a base 64 string.
-        skeyb64 = base64.urlsafe_b64encode(skeybytes)
-        return skeyb64.decode("utf-8")
+        skeylenbytes = 12
+        return token_urlsafe(skeylenbytes)
