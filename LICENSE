@@ -1,0 +1,11 @@
+Copyright (c) Plotsensor Ltd. 2020
+
+cuplbackend is an open source project licensed under the terms of
+the AGPLv3 license.  Please see <https://www.gnu.org/licenses/agpl-3.0.html> for license text.
+
+Plotsensor Ltd. offers a proprietary license for cuplbackend in exchange for a fee.
+This permits distribution of cuplbackend and any derivative work, without the obligation to release source code.
+Please contact malcolm@plotsensor.com for more details.
+
+The wsapiwrapper Python library is issued under a different license to the rest of cuplbackend.
+Read wsapiwrapper/LICENSE for more details.
