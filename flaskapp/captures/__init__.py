@@ -27,7 +27,7 @@ class CaptureService(Service):
 
         resetcause = decodedurl.status.resetcause
 
-        samples = [CaptureSample(sample.timestamp, sample.temp, sample.rh) for sample in decodedurl.samples]
+        samples = [CaptureSample(sample.timestamp, sample.temp, sample.rh or None) for sample in decodedurl.samples]
 
         status = CaptureStatus(resetsalltime=decodedurl.status.resetsalltime,
                                brownout=resetcause['brownout'],
