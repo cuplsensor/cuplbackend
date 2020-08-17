@@ -57,5 +57,5 @@ services:
    - WSB_PORT=80
    - IDP_HOST=oauth-mock
    - IDP_PORT=3000
-  command: python3 -m pytest tests/ -vvvv --showlocals
+  command: bash -c "cd tests && python3 -m pytest -vvvv --showlocals"
   
