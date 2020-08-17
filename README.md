@@ -1,4 +1,4 @@
-# wsbackend
+# cuplbackend
 Websensor Web Application Backend. --EVERYTHING IN DEVELOPMENT, NOT UP TO RELEASE QUALITY YET.
 
 Documentation in progress at https://wsbackend.readthedocs.io/en/latest/
