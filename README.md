@@ -40,7 +40,7 @@ Install it with:
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-As an alternative, a commercial licence can be purchased from Plotsensor Ltd.
+If the Affero GPLv3 licence is too restrictive for your needs, a commercial licence can be purchased from Plotsensor Ltd.
 
 ### cuplapiwrapper
 
