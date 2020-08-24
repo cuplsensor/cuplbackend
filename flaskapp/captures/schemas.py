@@ -32,10 +32,10 @@ class CaptureSchema(ModelSchema):
         model = Capture
         sqla_session = db.session
         strict = True
-        exclude = ('samples',)
     tag_id = fields.Integer()
     user_id = fields.Integer(missing=None)
     status = fields.Nested(CaptureStatusSchema)
+    samples = fields.Nested(CaptureSampleSchema, many=True)
 
 
 class ConsumerCaptureSchema(CaptureSchema):
