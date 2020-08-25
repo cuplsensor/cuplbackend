@@ -12,6 +12,7 @@ from ..wsapiwrapper.admin import request_admin_token
 from ..wsapiwrapper.admin.tag import TagWrapper
 from ..wsapiwrapper.consumer.user import UserWrapper
 from ..wsapiwrapper.consumer.mecapture import MeCaptureWrapper
+from ..wsapiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
 from ..wsapiwrapper.consumer.tagview import TagViewWrapper
 from ..wsapiwrapper.consumer.tagscanned import TagScannedWrapper
 from ..wsapiwrapper.consumer.location import LocationWrapper
@@ -161,6 +162,10 @@ def tag_fixture_b(request, baseurl, admintoken):
 
     request.addfinalizer(teardown)
     return bf
+
+@pytest.fixture(scope="function")
+def capture_fixture(baseurl, token_fixture):
+    return ConsumerCaptureWrapper(baseurl)
 
 @pytest.fixture(scope="function")
 def tagview_fixture(baseurl, token_fixture):

@@ -7,7 +7,8 @@
 """
 
 from ..core import db
-from datetime import timezone
+from datetime import timezone, datetime
+from dateutil import parser
 from ..locations.models import Location
 from sqlalchemy.ext.hybrid import hybrid_method, hybrid_property
 from flask import current_app
@@ -116,7 +117,9 @@ class CaptureSample(db.Model):
                                backref=db.backref('parent_capturesample'),
                                cascade="all, delete-orphan")
 
-    def __init__(self, timestamp, temp, rh=None, location=None):
+    def __init__(self, timestamp: datetime, temp, rh=None, location=None):
+        if type(timestamp) is str:
+            timestamp = parser.isoparse(timestamp)
         self.timestamp = timestamp
         #tzinfo utc is unlikely to be needed. Timestamp is in UTC anyway
         self.timestampPosix = timestamp.replace(tzinfo=timezone.utc).timestamp()

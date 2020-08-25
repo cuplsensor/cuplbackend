@@ -17,7 +17,7 @@ def create_capture_get_samples(capturespeclist, tagwithcaptures, samplewrapper):
     return captures_in, samples_out
 
 
-def test_samples(tag_with_captures_fixture, sample_fixture):
+def test_samples(tag_with_captures_fixture, sample_fixture, capture_fixture):
     starttime = datetime.datetime.now().replace(tzinfo=pytz.utc)
     capturespeclist = [
         {
@@ -30,6 +30,8 @@ def test_samples(tag_with_captures_fixture, sample_fixture):
         }
     ]
     captures_in, samples_out = create_capture_get_samples(capturespeclist, tag_with_captures_fixture, sample_fixture)
+    captures_in[0]['samples'] = capture_fixture.get_samples(capture_id=captures_in[0]['id'])
+    captures_in[1]['samples'] = capture_fixture.get_samples(capture_id=captures_in[1]['id'])
 
     # Newest to oldest order
     expectedsamples = [
@@ -45,7 +47,7 @@ def test_samples(tag_with_captures_fixture, sample_fixture):
     assert expectedsamples == samples_out
 
 
-def test_samples_two(tag_with_captures_fixture, sample_fixture):
+def test_samples_two(tag_with_captures_fixture, sample_fixture, capture_fixture):
     starttime = datetime.datetime.now().replace(tzinfo=pytz.utc)
     capturespeclist = [
         {
@@ -54,6 +56,7 @@ def test_samples_two(tag_with_captures_fixture, sample_fixture):
         },
     ]
     captures_in, samples_out = create_capture_get_samples(capturespeclist, tag_with_captures_fixture, sample_fixture)
+    captures_in[0]['samples'] = capture_fixture.get_samples(capture_id=captures_in[0]['id'])
 
     expectedsamples = [
         captures_in[0]['samples'][0],

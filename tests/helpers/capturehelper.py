@@ -1,6 +1,7 @@
 from datetime import timedelta
 import pytz
 from ...wsapiwrapper.admin.capture import CaptureWrapper
+from ...wsapiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
 
 tz = pytz.timezone("Europe/London")
 
@@ -60,6 +61,7 @@ class CaptureListHelper(CaptureHelper):
         self.writtencaptures = []
         alltimestamps = []
         capturewrapper = CaptureWrapper(baseurl, adminapi_token)
+        consumercapturewrapper = ConsumerCaptureWrapper(baseurl)
 
 
         for capturespec in capturespeclist:
@@ -71,8 +73,10 @@ class CaptureListHelper(CaptureHelper):
 
             writtencapture = capturewrapper.post(capture)
 
+            samples = consumercapturewrapper.get_samples(capture_id=writtencapture['id'])
+
             # Make a list of all timestamps to find the maximum and minimum
-            timestamps = [sample['timestamp'] for sample in capture['samples']]
+            timestamps = [sample['timestamp'] for sample in samples]
             alltimestamps.extend(timestamps)
 
             self.capturelist.append(capture)
