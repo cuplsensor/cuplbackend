@@ -8,10 +8,9 @@
 from flask import Flask, Blueprint, request, current_app, jsonify
 from flask_restful import Resource, Api, abort, reqparse
 from wscodec.decoder.exceptions import *
-from ...services import captures, tags, users
+from ...services import captures, tags
 from ...captures.schemas import ConsumerCaptureSchema
 from ..baseresource import SingleResource, MultipleResource
-from .usertokenauth import requires_user_token
 from json import loads
 
 bp = Blueprint('captures', __name__)
@@ -27,7 +26,7 @@ class Captures(MultipleResource):
     def __init__(self):
         super().__init__(ConsumerCaptureSchema, captures)
 
-    def get(self, userobj=None):
+    def get(self):
         """
         Get a list of captures for a tag
         """
@@ -46,7 +45,7 @@ class Captures(MultipleResource):
         result = schema.dump(capturelist, many=True)
         return jsonify(result)
 
-    def post(self, userobj=None):
+    def post(self):
         """
         Create a capture
         """
@@ -57,7 +56,6 @@ class Captures(MultipleResource):
 
         try:
             captureobj = captures.decode_and_create(tagobj=tagobj,
-                                                    userobj=userobj,
                                                     statb64=parsedargs['statusb64'],
                                                     timeintb64=parsedargs['timeintb64'],
                                                     circb64=parsedargs['circbufb64'],
@@ -84,41 +82,5 @@ class Captures(MultipleResource):
             return jsonify(ecode=105, description=str(e), status=e.status, circb64=e.circb64), 422
 
 
-class MeCaptures(Captures):
-    method_decorators = [requires_user_token]
-
-    def __init__(self):
-        super().__init__()
-
-    def get(self, usertoken):
-        """
-        Get a list of captures taken by the current user ordered by most recent first.
-        """
-        decodedtoken = usertoken['decoded']
-        oauth_id = decodedtoken['sub']
-        userobj = users.get_by_oauth_id(oauth_id=oauth_id)
-
-        distinctontag = loads(request.args.get('distinctontag') or 'false')
-
-        if distinctontag is True:
-            capturelist = userobj.latest_capture_by_tag()
-        else:
-            capturelist = captures.find(scanned_by_user=userobj).order_by(captures.__model__.timestamp.desc())
-
-        schema = self.Schema()
-        result = schema.dump(capturelist, many=True)
-        return jsonify(result)
-
-    def post(self, usertoken):
-        """
-        Create a capture for a user
-        """
-        decodedtoken = usertoken['decoded']
-        oauth_id = decodedtoken['sub']
-        userobj = users.get_by_oauth_id(oauth_id=oauth_id)
-        return super().post(userobj=userobj)
-
-
 api.add_resource(Capture, '/captures/<id>')
 api.add_resource(Captures, '/captures')
-api.add_resource(MeCaptures, '/me/captures')

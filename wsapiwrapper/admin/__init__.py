@@ -34,6 +34,21 @@ class AdminApiWrapper(ApiWrapper):
 
     The Admin API is intended for administrators.
     """
+    def auth_header(self, tokenstr):
+        """Get a dictionary of headers. One contains an API access token.
+        This is needed for some API requests to be authorized.
+
+        Args:
+            tokenstr (str): API access token
+
+        Returns:
+            dict: a dictionary containing two HTTP headers.
+        """
+        headers = {
+        'content-type': 'application/json',
+        'Authorization': 'bearer {tokenstr}'.format(tokenstr=tokenstr)
+        }
+        return headers
 
     def get(self, id: int) -> dict:
         """Make a GET request to endpoint_single.
@@ -87,7 +102,8 @@ class AdminApiWrapper(ApiWrapper):
             endpoint_one (str): Endpoint for returning one resource instance.
             endpoint_many (str): Endpoint for returning a list of resource instances.
         """
-        super().__init__(baseurl, tokenstr)
+        super().__init__(baseurl)
+        self.headers = self.auth_header(tokenstr)
         self.endpoint_one = endpoint_one
         self.endpoint_many = endpoint_many
         self.apiurl = api_url(baseurl)

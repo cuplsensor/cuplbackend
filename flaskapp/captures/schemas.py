@@ -1,7 +1,6 @@
 from ..core import db
 from ..baseschema import BaseSchema
 from .models import Capture, CaptureSample, CaptureStatus
-from ..locations.schemas import LocationSchema
 
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import Schema, fields
@@ -24,7 +23,6 @@ class CaptureSampleSchema(ModelSchema):
         sqla_session = db.session
         exclude = ('timestampPosix',)
         strict = True
-    location = fields.Nested(LocationSchema)
 
 
 class CaptureSchema(ModelSchema):
@@ -33,7 +31,6 @@ class CaptureSchema(ModelSchema):
         sqla_session = db.session
         strict = True
     tag_id = fields.Integer()
-    user_id = fields.Integer(missing=None)
     status = fields.Nested(CaptureStatusSchema)
     samples = fields.Nested(CaptureSampleSchema, many=True, load_only=True)
 

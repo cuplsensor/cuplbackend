@@ -41,14 +41,7 @@ class CaptureService(Service):
                                lpm5wakeup=resetcause['lpm5wakeup'],
                                clockfail=resetcause['clockfail'])
 
-        # Call base class constructor. By committing to the db we get an id.
-        if userobj is not None:
-            user_id = userobj.id
-        else:
-            user_id = None
-
         capture = super().create(tag_id=tagobj.id,
-                                 user_id=user_id,
                                  timestamp=decodedurl.scantimestamp,
                                  loopcount=decodedurl.status.loopcount,
                                  status=status,
@@ -72,17 +65,12 @@ class CaptureService(Service):
                version,
                timeintmins,
                md5,
-               samples,
-               userobj=None):
+               samples):
 
-        if userobj is not None:
-            user_id = userobj.id
-        else:
-            user_id = None
+
 
         # Call base class constructor. By committing to the db we get an id.
         capture = super().create(tag_id=tagobj.id,
-                                 user_id=user_id,
                                  timestamp=timestamp,
                                  loopcount=loopcount,
                                  status=status,

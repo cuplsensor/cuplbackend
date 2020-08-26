@@ -10,7 +10,4 @@ Consumer API Specification
    tag
    capture
    samples
-   users
-   me
-   locations
    :caption: Contents

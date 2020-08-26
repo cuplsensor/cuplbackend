@@ -8,11 +8,8 @@
 
 from ..core import db
 from ..captures.models import Capture, CaptureSample
-from ..tagviews.models import TagView
-from ..locations.models import Location
 from flask import current_app
 from secrets import token_urlsafe
-import base64
 import datetime
 
 SERIAL_LEN_BYTES = 8
@@ -37,21 +34,6 @@ class Tag(db.Model):
                                order_by="desc(Capture.timestamp)",
                                backref=db.backref('parent_tag'),
                                cascade="all, delete-orphan")
-
-    tagviews = db.relationship('TagView',
-                               order_by="desc(TagView.timestamp)",
-                               backref=db.backref('parent_tag'),
-                               cascade="all, delete-orphan")
-
-    def locations_in_window(self,
-                            starttime=datetime.datetime(year=1970, month=1, day=1),
-                            endtime=datetime.datetime.utcnow()):
-        stmt = Location.query.join(CaptureSample).join(Capture).filter((Capture.parent_tag == self) &
-                                                                       (CaptureSample.timestamp >= starttime) &
-                                                                       (CaptureSample.timestamp <= endtime)).order_by(
-            CaptureSample.timestamp.desc())
-
-        return stmt.all()
 
     def uniquesampleswindow(self, starttime, endtime, offset=0, limit=None):
         threshold_in_seconds = 120
@@ -89,7 +71,7 @@ class Tag(db.Model):
                                                      ((stmt3.c.id == CaptureSample.id) &
                                                       (stmt3.c.capture_id == stmt3.c.mincaptid))).order_by(
             CaptureSample.timestamp.desc()
-        ).offset(offset).limit(limit).options(db.joinedload(CaptureSample.location))
+        ).offset(offset).limit(limit)
         capturesamplelist = stmt4.all()
         current_app.logger.info(stmt4)
         current_app.logger.info("statement 2a")
@@ -99,14 +81,6 @@ class Tag(db.Model):
         current_app.logger.info("---")
         current_app.logger.info(stmt4.all())
         return capturesamplelist
-
-    def get_all_locations(self):
-        # Select all capturesamples to this one
-        stmta = db.session.query(CaptureSample).join(Capture).filter(Capture.parent_tag == self).subquery()
-        # Only select capturesamples with a location element and pick the last one.
-        stmtb = db.session.query(Location, stmta.c.timestamp).filter(Location.capturesample_id == stmta.c.id).order_by(
-            stmta.c.timestamp.desc())
-        return stmtb.all()
 
     def __repr__(self):
         return '<Tag id=%s with serial=%s and secret key=%s>' % (self.id, self.serial, self.secretkey)

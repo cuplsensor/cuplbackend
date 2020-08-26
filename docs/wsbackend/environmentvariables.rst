@@ -29,41 +29,6 @@ Default: ``5000``
 
 Port of wsbackend.
 
-Identity Provider
------------------------
-
-.. _idpurl:
-
-``IDP_PROTOCOL``
-^^^^^^^^^^^^^^^^
-Default: ``http://``
-
-Protocol of the OpenID Connect Identity Provider.
-
-Defaults to the protocol of the mock IdP.
-
-``IDP_HOST``
-^^^^^^^^^^^^^^^^
-Default: ``localhost``
-
-Hostname of the OpenID Connect Identity Provider.
-
-``IDP_PORT``
-^^^^^^^^^^^^^^^^
-Default: ``3000``
-
-Port of the OpenID Connect Identity Provider.
-
-.. _idp_jwks:
-
-``IDP_JWKS``
-^^^^^^^^^^^^^^
-Default: ``/jwks``
-
-Endpoint on the IdP from which the public JSON Web Key set can be downloaded.
-
-Defaults to the `mock IdP JWKs endpoint <https://www.npmjs.com/package/oauth2-mock-server#get-jwks>`_.
-
 Database
 ---------------
 

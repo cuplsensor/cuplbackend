@@ -10,12 +10,7 @@ from . import defaults
 from .helpers.capturehelper import CaptureListHelper
 from ..wsapiwrapper.admin import request_admin_token
 from ..wsapiwrapper.admin.tag import TagWrapper
-from ..wsapiwrapper.consumer.user import UserWrapper
-from ..wsapiwrapper.consumer.mecapture import MeCaptureWrapper
 from ..wsapiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
-from ..wsapiwrapper.consumer.tagview import TagViewWrapper
-from ..wsapiwrapper.consumer.tagscanned import TagScannedWrapper
-from ..wsapiwrapper.consumer.location import LocationWrapper
 from ..wsapiwrapper.consumer.sample import SampleWrapper
 
 sys.path.append(".")
@@ -132,11 +127,6 @@ def tag_fixture(request, baseurl, admintoken):
     tagresponse = taghelper.post()
     return tagresponse
 
-@pytest.fixture(scope="function")
-def mecapture_fixture(token_fixture, baseurl):
-    mecaphelper = MeCaptureWrapper(baseurl, tokenstr=token_fixture)
-    return mecaphelper
-
 
 @pytest.fixture(scope="function")
 def tag_fixture_b(request, baseurl, admintoken):
@@ -163,37 +153,15 @@ def tag_fixture_b(request, baseurl, admintoken):
     request.addfinalizer(teardown)
     return bf
 
+
 @pytest.fixture(scope="function")
 def capture_fixture(baseurl, token_fixture):
     return ConsumerCaptureWrapper(baseurl)
 
-@pytest.fixture(scope="function")
-def tagview_fixture(baseurl, token_fixture):
-    return TagViewWrapper(baseurl, token_fixture)
-
-@pytest.fixture(scope="function")
-def tagscanned_fixture(baseurl, token_fixture):
-    return TagScannedWrapper(baseurl, token_fixture)
-
-@pytest.fixture(scope="function")
-def location_fixture(baseurl, token_fixture):
-    return LocationWrapper(baseurl, token_fixture)
 
 @pytest.fixture(scope="function")
 def sample_fixture(baseurl, token_fixture):
     return SampleWrapper(baseurl, token_fixture)
-
-@pytest.fixture(scope="function")
-def user_fixture(request, baseurl, token_fixture):
-    userhelper = UserWrapper(baseurl, tokenstr=token_fixture)
-
-    def teardown():
-        print("teardown test user")
-        userhelper.delete()
-
-    request.addfinalizer(teardown)
-    return userhelper.post()
-
 
 
 @pytest.fixture(scope="function")

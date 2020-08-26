@@ -7,10 +7,10 @@ __all__ = ['TagSchema', 'ConsumerTagSchema']
 class TagSchema(ma.ModelSchema):
     class Meta:
         model = Tag
-        exclude = ('captures', 'tagviews')
+        exclude = ('captures',)
 
 
 class ConsumerTagSchema(ma.ModelSchema):
     class Meta:
         model = Tag
-        exclude = ('secretkey', 'captures', 'id', 'tagviews')
+        exclude = ('secretkey', 'captures', 'id',)

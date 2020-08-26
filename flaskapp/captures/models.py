@@ -9,17 +9,14 @@
 from ..core import db
 from datetime import timezone, datetime
 from dateutil import parser
-from ..locations.models import Location
-from sqlalchemy.ext.hybrid import hybrid_method, hybrid_property
+from sqlalchemy.ext.hybrid import hybrid_property
 from flask import current_app
 
-# Define the Campaign data model.
+
 class Capture(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # ID of the owning tag object.
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
-    # Optional ID of the user that has created this capture
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     timestamp = db.Column(db.DateTime, nullable=False)
     batvoltagemv = db.Column(db.Float)
@@ -54,8 +51,7 @@ class Capture(db.Model):
                  md5,
                  status,
                  samples=[],
-                 id=None,
-                 user_id=None):
+                 id=None):
 
         self.tag_id = tag_id
         self.id = id
@@ -68,9 +64,6 @@ class Capture(db.Model):
         self.md5 = md5
         self.status = status
         self.samples = samples
-        self.user_id = user_id
-
-        current_app.logger.info(user_id)
 
 
 class CaptureStatus(db.Model):
@@ -112,30 +105,11 @@ class CaptureSample(db.Model):
     timestampPosix = db.Column(db.Integer, nullable=False)
     temp = db.Column(db.Float)
     rh = db.Column(db.Float, nullable=True)
-    location = db.relationship('Location',
-                               uselist=False,
-                               backref=db.backref('parent_capturesample'),
-                               cascade="all, delete-orphan")
 
     def __init__(self, timestamp: datetime, temp, rh=None, location=None):
         if type(timestamp) is str:
             timestamp = parser.isoparse(timestamp)
         self.timestamp = timestamp
-        #tzinfo utc is unlikely to be needed. Timestamp is in UTC anyway
         self.timestampPosix = timestamp.replace(tzinfo=timezone.utc).timestamp()
         self.temp = temp
         self.rh = rh
-        self.location = location
-
-    @hybrid_method
-    def mr_location(self):
-        """ Obtain the most recent location to this capturesample. """
-        mostrecentlocation = None
-        # Select all previous capturesamples to this one
-        stmtb = db.session.query(CaptureSample).join(Capture).filter(CaptureSample.timestamp < self.timestamp).filter(Capture.parent_tag == self.parent_capture.parent_tag).subquery()
-        # Only select capturesamples with a location element and pick the last one.
-        stmta = db.session.query(Location, stmtb).filter(Location.capturesample_id==stmtb.c.id).order_by(stmtb.c.timestamp.desc())
-        firstresult = stmta.first()
-        if firstresult is not None:
-            mostrecentlocation = firstresult[0]
-        return mostrecentlocation

@@ -7,6 +7,3 @@
 
 from .captures.models import *
 from .tags.models import *
-from .users.models import *
-from .locations.models import *
-from .tagviews.models import *

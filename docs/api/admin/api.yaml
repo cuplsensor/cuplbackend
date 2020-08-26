@@ -1,10 +1,11 @@
-openapi: 3.0.0
+openapi: 3.0.1
 info:
-  version: "1.0.0-oas3"
-  title: Administrator API
-  description: Administrator-only API for provisioning tags.
+  title: cupl Administrator API
+  description: API endpoints that require administrator access.
   contact:
-    email: you@your-company.com
+    url: www.plotsensor.com
+    email: malcolm@plotsensor.com
+  version: 0.0.2
 paths:
   /token:
     post:
@@ -217,7 +218,6 @@ paths:
           content:
             application/json:
               schema: {}
-
   /tag/{id}/simulate:
     get:
       description: Obtain a simulated URL from the tag. This will contain mock sensor data.
@@ -337,7 +337,6 @@ paths:
           content:
             application/json:
               schema: {}
-
   /tags:
     get:
       description: Get a list of tags
@@ -400,90 +399,6 @@ paths:
             schema:
               $ref: '#/components/schemas/TagsPost'
         description: Tag id
-
-  /tagviews:
-    get:
-      summary: Get a list of TagViews.
-      description: Get a list of TagViews.
-      operationId: TagViewsGet
-      parameters:
-        - name: distinctOnTag
-          in: query
-          description: Return only the latest TagView for each scanned tag.
-          schema:
-            type: boolean
-        - name: tag_id
-          in: query
-          description: Filter TagViews by tag_id.
-          schema:
-            type: integer
-      responses:
-        200:
-          description: A list of tagview objects ordered from newest to oldest.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TagView'
-
-  /tagviews/{id}:
-    get:
-      summary: Get a tagview
-      description: Get a tagview
-      operationId: TagViewGet
-      parameters:
-        - name: id
-          in: path
-          required: True
-          description: Tag view ID
-          schema:
-            type: integer
-      responses:
-        200:
-          description: A tagview object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TagView'
-        404:
-          description: TagView not found.
-          content:
-            application/json:
-              schema:
-                type: object
-    delete:
-      summary: Delete a tag view
-      operationId: TagViewDelete
-      parameters:
-        - name: id
-          in: path
-          required: True
-          description: Tag view ID
-          schema:
-            type: integer
-      responses:
-        204:
-          description: TagView deleted
-          content:
-            application/json:
-              schema:
-                type: object
-        400:
-          description: Bad input.
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: TagView not found
-          content:
-            application/json:
-              schema:
-                type: object
-tags: []
-servers:
-  - url: 'https://virtserver.swaggerhub.com/plots/UserAPI/1.0.0'
 components:
   schemas:
     TagsPost:
@@ -509,23 +424,6 @@ components:
         timeregistered:
           type: string
           format: date-time
-    TagView:
-      title: Tag View
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique ID of the Tagview item
-          example: 20
-        tagserial:
-          type: string
-          description: Serial of tag that was viewed
-          example: YWJjZGVM
-        timestamp:
-          type: string
-          description: Timestamp the tag was viewed in seconds since January 1st 1970
-          format: date-time
-          example: 2019-01-15T13:09:52.456Z
     Capture:
       title: Capture
       type: object
