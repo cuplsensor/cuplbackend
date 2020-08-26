@@ -1,0 +1,95 @@
+test_name: Create a tag, add a capture to it then delete the tag.
+
+marks:
+  - usefixtures:
+      - baseurl
+      - clientid
+      - clientsecret
+
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+stages:
+  - name: Obtain a token
+
+    # Define the request to \be made
+    request:
+      url: "{baseurl}/api/admin/v1/token"
+      method: POST
+      json:
+        client_id: "{clientid}"
+        client_secret: "{clientsecret}"
+      headers:
+        content-type: application/json
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      save:
+        body:
+          admin_token: token
+
+  - name: Use the token to create a new tag
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tags"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        serial: !anystr
+      save:
+        body:
+          test_tag_id: id
+
+
+
+  - name: Simulate
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id:d}/simulate"
+      method: GET
+      params:
+        frontendurl: "http://localhost:5001"
+        nsamples: 100
+        smplintervalmins: 10
+        tagerror: False
+        bor: True
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body (still writing this).
+    response:
+      status_code: 200
+      body:
+        !anystr
+
+
+
+
+  - name: Delete the tag by ID.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 204

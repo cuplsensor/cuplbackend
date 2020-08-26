@@ -58,15 +58,15 @@ class TagSimulate(SingleAdminResource):
         nsamples = int(parsedargs.get('nsamples', 100))
         smplintervalmins = int(parsedargs.get('sampleintervalmins', 10))
         format = int(parsedargs.get('format', 1))
-        usehmac = bool(parsedargs.get('usehmac', True))
+        usehmac = (parsedargs.get('usehmac', 'True').lower() == 'true')
         batvoltagemv = int(parsedargs.get('batvoltagemv', 3000))
-        bor = bool(parsedargs.get('bor', False))
-        svsh = bool(parsedargs.get('svsh', False))
-        wdt = bool(parsedargs.get('wdt', False))
-        misc = bool(parsedargs.get('misc', False))
-        lpm5wu = bool(parsedargs.get('lpm5wu', False))
-        clockfail = bool(parsedargs.get('clockfail', False))
-        tagerror = bool(parsedargs.get('tag', False))
+        bor = (parsedargs.get('bor', 'false').lower() == 'true')
+        svsh = (parsedargs.get('svsh', 'false').lower() == 'true')
+        wdt = (parsedargs.get('wdt', 'false').lower() == 'true')
+        misc = (parsedargs.get('misc', 'false').lower() == 'true')
+        lpm5wu = (parsedargs.get('lpm5wu', 'false').lower() == 'true')
+        clockfail = (parsedargs.get('clockfail', 'false').lower() == 'true')
+        tagerror = (parsedargs.get('tagerror', 'false').lower() == 'true')
 
         urlstr = tags.simulate(id,
                                frontendurl,
