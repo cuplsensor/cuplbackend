@@ -9,6 +9,7 @@
 from ..core import Service
 from .models import Capture, CaptureSample, CaptureStatus
 from wscodec.decoder.decoderfactory import decode
+from wscodec.decoder.hdc2021 import Temp_URL, TempRH_URL
 
 
 class CaptureService(Service):
@@ -27,7 +28,10 @@ class CaptureService(Service):
 
         resetcause = decodedurl.status.resetcause
 
-        samples = [CaptureSample(sample.timestamp, sample.temp, sample.rh) for sample in decodedurl.samples]
+        if type(decodedurl) == TempRH_URL:
+            samples = [CaptureSample(sample.timestamp, sample.temp, sample.rh) for sample in decodedurl.samples]
+        else:
+            samples = [CaptureSample(sample.timestamp, sample.temp) for sample in decodedurl.samples]
 
         status = CaptureStatus(resetsalltime=decodedurl.status.resetsalltime,
                                brownout=resetcause['brownout'],

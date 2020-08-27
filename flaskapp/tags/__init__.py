@@ -92,6 +92,7 @@ class TagService(Service):
 
         # Convert battery voltage to an ADC reading
         batteryadc = (256 * 1500) / batvoltagemv
+        batteryadc = int(batteryadc)  # It is vital to convert from float to integer. No type checking is done yet.
 
         # Assemble reset cause bitfield
         resetcause = 0

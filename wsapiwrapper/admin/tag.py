@@ -66,7 +66,7 @@ class TagWrapper(AdminApiWrapper):
         params = {'frontendurl': frontendurl,
                   'nsamples': nsamples,
                   'smplintervalmins': smplintervalmins,
-                  'format': tagformat,
+                  'format': tagformat.value,
                   'usehmac': usehmac,
                   'batvoltagemv': batvoltagemv,
                   'bor': bor,

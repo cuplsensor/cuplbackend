@@ -35,20 +35,24 @@ def test_scannedbyuser_false(tag_with_captures_fixture, user_fixture, tagscanned
     assert expected == scannedbyuser
 
 
-def test_post_location(tag_with_mecapture_fixture, location_fixture):
+def test_post_location(tag_with_mecapture_fixture, location_fixture, capture_fixture):
     tagserial = tag_with_mecapture_fixture['tag']['serial']
-    capturesample = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]['samples'][0]
+    firstcapture = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]
+    firstsample = capture_fixture.get_samples(capture_id=firstcapture['id'])[0]
 
-    response = location_fixture.post(capturesample['id'], description="test location")
+    response = location_fixture.post(firstsample['id'], description="test location")
 
-    assert response['parent_capturesample'] == capturesample['id']
+    assert response['parent_capturesample'] == firstsample['id']
 
 
-def test_get_location_list(tag_with_mecapture_fixture, location_fixture):
+def test_get_location_list(tag_with_mecapture_fixture, location_fixture, capture_fixture):
     tagserial = tag_with_mecapture_fixture['tag']['serial']
 
-    capturesample_older = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]['samples'][2]
-    capturesample_newer = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]['samples'][0]
+    firstcapture = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]
+    firstcapture_samples = capture_fixture.get_samples(capture_id=firstcapture['id'])
+
+    capturesample_older = firstcapture_samples[2]
+    capturesample_newer = firstcapture_samples[0]
 
     loc_older = location_fixture.post(capturesample_older['id'], description="test location")
     loc_newer = location_fixture.post(capturesample_newer['id'], description="test location 2")
@@ -64,10 +68,12 @@ def test_get_location_list(tag_with_mecapture_fixture, location_fixture):
     assert (response[0]['id'] == expected_first_id) & (response[1]['id'] == expected_second_id)
 
 
-def test_get_location(tag_with_mecapture_fixture, location_fixture):
-    capturesample = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]['samples'][0]
+def test_get_location(tag_with_mecapture_fixture, location_fixture, capture_fixture):
+    firstcapture = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]
+    firstcapture_samples = capture_fixture.get_samples(capture_id=firstcapture['id'])
+    firstcapture_firstsample = firstcapture_samples[0]
 
-    response = location_fixture.post(capturesample['id'], description="test location")
+    response = location_fixture.post(firstcapture_firstsample['id'], description="test location")
     posted_id = response['id']
 
     response = location_fixture.get(location_id=posted_id)
@@ -75,10 +81,12 @@ def test_get_location(tag_with_mecapture_fixture, location_fixture):
     assert response['id'] == posted_id
 
 
-def test_patch_location(tag_with_mecapture_fixture, location_fixture):
-    capturesample = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]['samples'][0]
+def test_patch_location(tag_with_mecapture_fixture, location_fixture, capture_fixture):
+    firstcapture = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]
+    firstcapture_samples = capture_fixture.get_samples(capture_id=firstcapture['id'])
+    firstcapture_firstsample = firstcapture_samples[0]
 
-    response = location_fixture.post(capturesample['id'], description="test location")
+    response = location_fixture.post(firstcapture_firstsample['id'], description="test location")
     posted_id = response['id']
 
     response = location_fixture.patch(location_id=posted_id, description="altered description")
@@ -86,10 +94,12 @@ def test_patch_location(tag_with_mecapture_fixture, location_fixture):
     assert response['id'] == posted_id
 
 
-def test_delete_location(tag_with_mecapture_fixture, location_fixture):
-    capturesample = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]['samples'][0]
+def test_delete_location(tag_with_mecapture_fixture, location_fixture, capture_fixture):
+    firstcapture = tag_with_mecapture_fixture['clisthelper'].writtencaptures[0]
+    firstcapture_samples = capture_fixture.get_samples(capture_id=firstcapture['id'])
+    firstcapture_firstsample = firstcapture_samples[0]
 
-    response = location_fixture.post(capturesample['id'], description="test location")
+    response = location_fixture.post(firstcapture_firstsample['id'], description="test location")
     posted_id = response['id']
 
     status_code = location_fixture.delete(location_id=posted_id)
