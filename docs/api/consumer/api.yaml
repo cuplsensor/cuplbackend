@@ -303,8 +303,6 @@ components:
           description: CaptureSample ID
           format: int32
           example: 1
-        location:
-          $ref: '#/components/schemas/Location'
         rh:
           type: number
           description: Relative Humidity in percent
