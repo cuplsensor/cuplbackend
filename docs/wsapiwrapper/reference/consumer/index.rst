@@ -5,11 +5,9 @@ Consumer API Wrapper
    :hidden:
    :maxdepth: 2
 
-   me
    tag
    capture
    sample
-   location
 
    :caption: Contents
 
