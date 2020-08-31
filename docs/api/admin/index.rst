@@ -9,7 +9,5 @@ Admin API Specification
 
    tag
    capture
-   tagview
-   user
    token
    :caption: Contents
