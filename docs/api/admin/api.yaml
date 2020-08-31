@@ -388,11 +388,6 @@ paths:
           content:
             application/json:
               schema: {}
-        409:
-          description: a user with the same oauth_id already exists
-          content:
-            application/json:
-              schema: {}
       requestBody:
         content:
           application/json:
