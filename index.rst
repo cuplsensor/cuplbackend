@@ -9,7 +9,6 @@ See also :ref:`cuplcodec <wscodec:index>` and :ref:`cuplfrontend <wsfrontend:ind
 
    docs/api/index
    docs/development
-   docs/authentication
    docs/wsapiwrapper/index
    docs/wsbackend/index
 
