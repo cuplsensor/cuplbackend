@@ -448,12 +448,6 @@ components:
             client has scanned a tag.
           example: afnslh94hfala
           type: string
-        start-timestamp:
-          type: string
-          format: date-time
-        end-timestamp:
-          type: string
-          format: date-time
     Token:
       title: Token
       type: object
