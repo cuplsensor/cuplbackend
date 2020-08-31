@@ -10,6 +10,6 @@ Capture
 
 .. openapi:: api.yaml
    :include:
-      /captures*
+      /captures/*
    :encoding: utf-8
    :examples:
