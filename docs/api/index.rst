@@ -3,6 +3,8 @@
 API Specifications
 =========================
 
+.. include:: <isonum.txt>
+
 .. toctree::
    :maxdepth: 2
 
