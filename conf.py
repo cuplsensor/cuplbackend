@@ -117,8 +117,11 @@ html_static_path = ['_doc_static']
 # html_sidebars = {}
 
 git_commit_id = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode("utf-8")
-rst_epilog = '.. |redocly_adminapi| replace:: `AdminAPI <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/%s/docs/api/admin/api.yaml>`_' % git_commit_id
-rst_epilog += '.. |redocly_consumerapi| replace:: `ConsumerAPI <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/%s/docs/api/consumer/api.yaml>`_' % git_commit_id
+adminapiurl = 'https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{git_commit_id}/docs/api/admin/api.yaml'.format(git_commit_id=git_commit_id)
+consumerapiurl = 'https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{git_commit_id}/docs/api/consumer/api.yaml'.format(git_commit_id=git_commit_id)
+
+extlinks = {'redocly_adminapi': ('adminapiurl', 'AdminAPI (Redocly)'),
+            'redocly_consumerapi': ('consumerapiurl', 'ConsumerAPI (Redocly)')}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
