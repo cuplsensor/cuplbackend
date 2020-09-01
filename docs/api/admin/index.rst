@@ -8,9 +8,12 @@ Admin API Specification
    :maxdepth: 2
 
    adminapi.html
-   api.yaml
+
    tag
    capture
    token
 
    :caption: Contents
+
+:download:`api.yaml <api.yaml>`
+:download:`common.yaml <../common.yaml>`
