@@ -14,6 +14,7 @@
 #
 import os
 import sys
+import subprocess
 # sys.path.insert(0, os.path.abspath('.'))
 
 
@@ -114,6 +115,8 @@ html_static_path = ['_doc_static']
 #
 # html_sidebars = {}
 
+git_commit_id = subprocess.check_output(["git", "rev-parse HEAD"]).strip()
+rst_epilog = '.. |git_commit_id| replace:: %d' % git_commit_id
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

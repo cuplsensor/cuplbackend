@@ -3,6 +3,8 @@
 Admin API Specification
 ===============================
 
+|git_commit_id|
+
 Latest yaml GitHubYaml_.
 .. toctree::
    :hidden:
@@ -16,7 +18,6 @@ Latest yaml GitHubYaml_.
 
    :caption: Contents
 
-.. git_commit_detail::
-    :no_github_link:
+
 
 .. _GitHubYaml: http://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{{revision}}/docs/api/admin/api.yaml
