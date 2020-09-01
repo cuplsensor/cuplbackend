@@ -2,8 +2,6 @@
 
 Capture
 --------
-:redocly_adminapi:''
-
 .. openapi:: api.yaml
    :include:
       /capture/*

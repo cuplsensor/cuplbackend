@@ -3,6 +3,6 @@
 Admin API Specification
 ===============================
 
-Latest yaml :redocly_adminapi:''
+Latest yaml :githubusercontent:'AdminAPI <docs/api/admin/api.yaml>'
 
 

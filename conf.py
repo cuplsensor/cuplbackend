@@ -48,8 +48,6 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinx.ext.extlinks',
-    'sphinx_git',
-    'sphinxcontrib.openapi',
     'sphinx_rtd_theme',
 ]
 
@@ -117,11 +115,9 @@ html_static_path = ['_doc_static']
 # html_sidebars = {}
 
 git_commit_id = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode("utf-8")
-adminapiurl = 'https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{git_commit_id}/docs/api/admin/api.yaml'.format(git_commit_id=git_commit_id)
-consumerapiurl = 'https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{git_commit_id}/docs/api/consumer/api.yaml'.format(git_commit_id=git_commit_id)
+ghusercontenturl = 'https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{git_commit_id}/'.format(git_commit_id=git_commit_id)
 
-extlinks = {'redocly_adminapi': ('adminapiurl%s', 'AdminAPI (Redocly)'),
-            'redocly_consumerapi': ('consumerapiurl%s', 'ConsumerAPI (Redocly)')}
+extlinks = {'githubusercontent': ('ghusercontenturl%s', 'AdminAPI (Redocly)')}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
