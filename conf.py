@@ -120,8 +120,8 @@ git_commit_id = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().de
 adminapiurl = 'https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{git_commit_id}/docs/api/admin/api.yaml'.format(git_commit_id=git_commit_id)
 consumerapiurl = 'https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{git_commit_id}/docs/api/consumer/api.yaml'.format(git_commit_id=git_commit_id)
 
-extlinks = {'redocly_adminapi': ('adminapiurl', 'AdminAPI (Redocly)'),
-            'redocly_consumerapi': ('consumerapiurl', 'ConsumerAPI (Redocly)')}
+extlinks = {'redocly_adminapi': ('adminapiurl%s', 'AdminAPI (Redocly)'),
+            'redocly_consumerapi': ('consumerapiurl%s', 'ConsumerAPI (Redocly)')}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
