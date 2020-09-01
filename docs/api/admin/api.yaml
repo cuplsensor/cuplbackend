@@ -54,7 +54,7 @@ paths:
   /capture:
     get:
       description: Get a capture by its ID.
-      summary: get a capture.
+      summary: Get a capture.
       tags:
         - Captures
       operationId: AdminCaptureGet
@@ -81,7 +81,7 @@ paths:
             application/json:
               schema: {}
     delete:
-      description: delete a capture
+      description: Delete a capture
       summary: delete a capture
       tags:
         - Captures
@@ -113,8 +113,8 @@ paths:
               schema: {}
   /captures:
     get:
-      description: Get a list of captures
-      summary: Get a list of captures ordered by ID.
+      summary: Get a list of captures
+      description: Get a list of captures ordered by ID.
       tags:
         - Captures
       operationId: CapturesGet
@@ -152,7 +152,7 @@ paths:
               schema: {}
     post:
       description: Create a capture
-      summary: create a capture
+      summary: Create a capture
       tags:
         - Captures
       operationId: AdminCapturePost
@@ -213,8 +213,8 @@ paths:
               schema: {}
 
     delete:
-      description: delete a tag
-      summary: delete a tag
+      description: Delete a tag
+      summary: Delete a tag
       tags:
         - Tags
       operationId: TagDelete
@@ -245,8 +245,8 @@ paths:
               schema: {}
   /tags:
     get:
-      description: Get a list of tags
-      summary: Get a list of tags ordered by ID.
+      description: Get a list of tags ordered by ID
+      summary: Get a list of tags
       tags:
         - Tags
       operationId: TagsGet
@@ -279,7 +279,7 @@ paths:
               schema: {}
     post:
       description: Create a tag
-      summary: create a tag
+      summary: Create a tag
       tags:
         - Tags
       operationId: TagPost
@@ -306,8 +306,8 @@ paths:
         description: Tag id
   /tag/{id}/simulate:
     get:
-      description: Obtain a simulated URL from the tag. This will contain mock sensor data.
-      summary: Simulate URL.
+      summary: Get URL from Simulated Tag.
+      description: Get URL from a simulated tag. This contains mock sensor data.
       tags:
         - Simulate
       operationId: TagSimGet
