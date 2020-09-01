@@ -240,7 +240,7 @@ components:
         description:
           type: string
           description: A free text field that a user can modify. It may be a description of the tag location.
-          Alternatively, this may be the URL of a linked frontend web application.
+                       Alternatively, this may be the URL of a linked frontend web application.
           example: In the kitchen.
         fwversion:
           type: string
