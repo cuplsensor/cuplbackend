@@ -3,6 +3,7 @@
 Admin API Specification
 ===============================
 
+Latest yaml GitHubYaml_.
 .. toctree::
    :hidden:
    :maxdepth: 2
@@ -15,5 +16,4 @@ Admin API Specification
 
    :caption: Contents
 
-:download:`api.yaml <api.yaml>`
-:download:`common.yaml <../common.yaml>`
+.. _GitHubYaml: http://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{{revision}}/docs/api/admin/api.yaml
