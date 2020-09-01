@@ -161,7 +161,7 @@ man_pages = [
 redoc = [
     {
         'name': 'Admin API',
-        'page': 'adminapi',
+        'page': 'docs/api/admin/adminapi',
         'spec': 'docs/api/admin/api.yaml',
         'embed': True,
     },
