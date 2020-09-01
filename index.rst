@@ -1,6 +1,6 @@
 cupl Backend Documentation
 ============================
-See also :ref:`cuplcodec <wscodec:index>` and :ref:`cuplfrontend <wsfrontend:index>`.
+See also :ref:`cuplcodec <wscodec:index>` and :ref:`cuplfrontend <wsfrontend:index>`. :download:`pdf <github.yml>`
 
 .. _index:
 .. toctree::
@@ -16,7 +16,7 @@ See also :ref:`cuplcodec <wscodec:index>` and :ref:`cuplfrontend <wsfrontend:ind
 
    :caption: Contents:
 
-:download:`pdf <github.yml>`
+
 
 Indices and tables
 ==================
