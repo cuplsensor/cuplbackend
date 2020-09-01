@@ -47,6 +47,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
+    'sphinx.ext.extlinks',
     'sphinx_git',
     'sphinxcontrib.openapi',
     'sphinx_rtd_theme',
@@ -116,7 +117,8 @@ html_static_path = ['_doc_static']
 # html_sidebars = {}
 
 git_commit_id = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode("utf-8")
-rst_epilog = '.. |git_commit_id| replace:: %s' % git_commit_id
+rst_epilog = '.. |redocly_adminapi| replace:: `AdminAPI <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/%s/docs/api/admin/api.yaml>`_' % git_commit_id
+rst_epilog += '.. |redocly_consumerapi| replace:: `ConsumerAPI <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/%s/docs/api/consumer/api.yaml>`_' % git_commit_id
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
