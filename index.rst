@@ -11,12 +11,12 @@ See also :ref:`cuplcodec <wscodec:index>` and :ref:`cuplfrontend <wsfrontend:ind
    docs/development
    docs/wsapiwrapper/index
    docs/wsbackend/index
-   github.yml
+
 
 
    :caption: Contents:
 
-
+:download:`pdf <github.yml>`
 
 Indices and tables
 ==================
