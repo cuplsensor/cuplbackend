@@ -20,4 +20,4 @@ Latest yaml GitHubYaml_.
 
 
 
-.. _GitHubYaml: http://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{{revision}}/docs/api/admin/api.yaml
+.. _GitHubYaml: http://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/|git_commit_id|/docs/api/admin/api.yaml
