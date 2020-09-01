@@ -46,7 +46,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
-    'sphinxcontrib.redoc',
+    'sphinx_git',
     'sphinxcontrib.openapi',
     'sphinx_rtd_theme',
 ]
@@ -156,15 +156,6 @@ latex_documents = [
 man_pages = [
     (master_doc, 'pswebapp', 'PSWebApp Documentation',
      [author], 1)
-]
-
-redoc = [
-    {
-        'name': 'Admin API',
-        'page': 'docs/api/admin/adminapi',
-        'spec': 'github.yml',
-        'embed': True,
-    },
 ]
 
 
