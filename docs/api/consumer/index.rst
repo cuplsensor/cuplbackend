@@ -3,4 +3,4 @@
 Consumer API Specification
 ============================
 
-Latest yaml :redocly_consumerapi:
+Latest yaml :redocly_consumerapi:''
