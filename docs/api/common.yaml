@@ -1,0 +1,142 @@
+components:
+  schemas:
+    Tag:
+      title: Tag
+      type: object
+      properties:
+        description:
+          type: string
+          description: A free text field that a user can modify. It may be a description of the tag location.
+                       Alternatively, this may be the URL of a linked frontend web application.
+          example: In the kitchen.
+        fwversion:
+          type: string
+          description: Version string for the cuplTag firmware.
+          example: HT04_F1.1_C2
+        hwversion:
+          type: string
+          description: Version string for the cuplTag hardware.
+          example: HT04
+        serial:
+          type: string
+          description: Serial of the tag that made the capture
+          example: YWJjZGVM
+        timeregistered:
+          type: string
+          description: Time the tag was created
+          format: date-time
+          example: 2019-01-15T13:09:52.456
+    Capture:
+      title: Capture
+      type: object
+      properties:
+        batvoltagemv:
+          type: integer
+          example: 3000
+        tagserial:
+          type: string
+          description: Serial of the tag that made the capture
+          example: YWJjZGVM
+        cursorpos:
+          type: integer
+          example: 20
+        id:
+          type: integer
+          format: int32
+          example: 232
+        loopcount:
+          type: integer
+          description: Number of times the circularbuffer pointer has wrapped from
+            the end to the beginning
+          example: 2
+        md5:
+          type: string
+          example: 2f324022a223
+        status:
+          $ref: '#/components/schemas/CaptureStatus'
+        timeintmins:
+          type: integer
+          example: 12
+        timestamp:
+          type: string
+          format: date-time
+          example: 2019-01-15T13:09:52.456Z
+        version:
+          type: integer
+          example: 1
+    CaptureSample:
+      title: CaptureSample
+      required:
+      - capture_id
+      - id
+      - temp
+      - timestamp
+      type: object
+      properties:
+        capture_id:
+          type: integer
+          description: ID of the parent Capture object
+          format: int32
+          example: 1
+        id:
+          type: integer
+          description: CaptureSample ID
+          format: int32
+          example: 1
+        rh:
+          type: number
+          description: Relative Humidity in percent
+          format: double
+          example: 55.0
+        temp:
+          type: number
+          description: Temperature in degrees Celsius
+          format: double
+          example: 21.0
+        timestamp:
+          type: string
+          description: Unix timestamp in seconds since January 1st 1970
+          format: date-time
+          example: 2019-01-15T13:09:52.456Z
+    CaptureStatus:
+      title: CaptureStatus
+      type: object
+      properties:
+        brownout:
+          type: boolean
+          description: True if the cause of the most recentreset was a brown out condition.
+          example: false
+        clockfail:
+          type: boolean
+          description: True if the most recent reset was caused by an MCU clock failure.
+          example: false
+        id:
+          type: integer
+          description: CaptureStatus ID
+          format: int32
+          example: 1
+        lpm5wakeup:
+          type: boolean
+          description: True if the MCU has woken up from LPM (Low Power Mode) x.5
+          example: false
+        misc:
+          type: boolean
+          description: True if a reset has occured for miscellaneous reasons
+          example: false
+        parent_capture:
+          type: integer
+          description: Parent Capture ID
+          format: int32
+          example: 232
+        resetsalltime:
+          type: integer
+          example: 20
+        supervisor:
+          type: boolean
+          description: True if the supply voltage supervisor caused the most recent
+            reset
+          example: false
+        watchdog:
+          type: boolean
+          description: True if the MCU watchdog caused the most recent reset.
+          example: false
