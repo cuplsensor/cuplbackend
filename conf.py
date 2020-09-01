@@ -116,7 +116,7 @@ html_static_path = ['_doc_static']
 # html_sidebars = {}
 
 git_commit_id = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
-rst_epilog = '.. |git_commit_id| replace:: %d' % git_commit_id
+rst_epilog = '.. |git_commit_id| replace:: %s' % git_commit_id
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
