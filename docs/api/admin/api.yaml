@@ -448,7 +448,7 @@ components:
           format: int32
           example: 10
           description: The number of times the tag circular buffer has looped around. This indicates how long the
-          tag has been running for.
+            tag has been running for.
         version:
           type: integer
           format: int32
@@ -458,8 +458,7 @@ components:
           type: integer
           format: int32
           example: 24
-          description: Position of cursor in the circular buffer. The newest environmental sensor data are to the left of
-          this cursor and the oldest to the right.
+          description: Position of cursor in the circular buffer. The newest environmental sensor data are to the left of this cursor and the oldest to the right.
         timeintmins:
           type: integer
           format: int32
@@ -571,3 +570,8 @@ components:
         client_secret:
           example: nsfsaeASEFGSAE
           type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
