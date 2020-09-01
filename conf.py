@@ -162,7 +162,7 @@ redoc = [
     {
         'name': 'Admin API',
         'page': 'docs/api/admin/adminapi',
-        'spec': 'github.yml',
+        'spec': 'docs/api/admin/api.yaml',
         'embed': True,
     },
 ]
