@@ -398,7 +398,7 @@ components:
   schemas:
     AdminTag:
       allOf:     # Combines the BasicErrorModel and the inline model
-        - $ref: './common.yaml#/components/schemas/Tag'
+        - $ref: '../common.yaml#/components/schemas/Tag'
         - type: object
           properties:
             id:
