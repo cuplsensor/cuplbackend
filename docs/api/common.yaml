@@ -76,7 +76,7 @@ components:
           example: d673aafc976e85
           description: Hash of the capture. This may be either HMAC or MD5 (the name will be altered in future).
         status:
-          $ref: '../common.yaml#/components/schemas/CaptureStatus'
+          $ref: '#/components/schemas/CaptureStatus'
     CaptureSample:
       title: CaptureSample
       required:
