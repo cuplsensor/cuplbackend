@@ -3,6 +3,8 @@
 Admin API Specification
 ===============================
 
+{{ commit }}
+
 .. toctree::
    :hidden:
    :maxdepth: 2
@@ -13,7 +15,5 @@ Admin API Specification
    capture
    token
 
-   :caption: Contents
 
-:download:`api.yaml <api.yaml>`
-:download:`common.yaml <../common.yaml>`
+   :caption: Contents
