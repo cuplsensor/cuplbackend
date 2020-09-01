@@ -7,6 +7,7 @@ Admin API Specification
    :hidden:
    :maxdepth: 2
 
+   adminapi
    tag
    capture
    token
