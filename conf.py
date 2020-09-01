@@ -117,7 +117,7 @@ html_static_path = ['_doc_static']
 git_commit_id = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode("utf-8")
 ghusercontenturl = 'https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{git_commit_id}/'.format(git_commit_id=git_commit_id)
 
-extlinks = {'githubusercontent': ('ghusercontenturl%s', 'AdminAPI (Redocly)')}
+extlinks = {'githubusercontent': (ghusercontenturl+'%s', '')}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
