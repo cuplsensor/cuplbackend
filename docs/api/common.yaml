@@ -30,40 +30,53 @@ components:
       title: Capture
       type: object
       properties:
-        batvoltagemv:
-          type: integer
-          example: 3000
-        tagserial:
-          type: string
-          description: Serial of the tag that made the capture
-          example: YWJjZGVM
-        cursorpos:
-          type: integer
-          example: 20
         id:
           type: integer
           format: int32
-          example: 232
-        loopcount:
+          example: 1
+          readOnly: true
+          description: Database ID of the capture.
+        tag_id:
           type: integer
-          description: Number of times the circularbuffer pointer has wrapped from
-            the end to the beginning
-          example: 2
-        md5:
-          type: string
-          example: 2f324022a223
-        status:
-          $ref: '#/components/schemas/CaptureStatus'
-        timeintmins:
+          format: int32
+          example: 1
+          description: Database ID of a tag the capture was taken from.
+        batvoltagemv:
           type: integer
-          example: 12
+          format: int32
+          example: 2900
+          description: Tag battery voltage in mV.
         timestamp:
           type: string
-          format: date-time
-          example: 2019-01-15T13:09:52.456Z
+          example: 2020-09-01T05:27:06Z
+          description: Time the capture was taken in the ISO 8601 format.
+        loopcount:
+          type: integer
+          format: int32
+          example: 10
+          description: The number of times the tag circular buffer has looped around. This indicates how long the
+            tag has been running for.
         version:
           type: integer
-          example: 1
+          format: int32
+          example: 2
+          description: Major version of cuplCodec running on the tag.
+        cursorpos:
+          type: integer
+          format: int32
+          example: 24
+          description: Position of cursor in the circular buffer. The newest environmental sensor data are to the left of this cursor and the oldest to the right.
+        timeintmins:
+          type: integer
+          format: int32
+          example: 10
+          description: Time interval between samples in minutes.
+        md5:
+          type: string
+          example: d673aafc976e85
+          description: Hash of the capture. This may be either HMAC or MD5 (the name will be altered in future).
+        status:
+          $ref: '../common.yaml#/components/schemas/CaptureStatus'
     CaptureSample:
       title: CaptureSample
       required:

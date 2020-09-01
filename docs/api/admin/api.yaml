@@ -59,7 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CaptureResponse'
+                $ref: '../common.yaml#/components/schemas/Capture'
         '400':
           description: bad input parameter
           content:
@@ -125,7 +125,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CaptureResponse'
+                  $ref: '../common.yaml#/components/schemas/Capture'
         400:
           description: bad input parameter
           content:
@@ -143,7 +143,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CaptureResponse'
+                $ref: '../common.yaml#/components/schemas/Capture'
           headers: {}
         '400':
           description: 'invalid input, object invalid'
@@ -392,17 +392,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TagsPost'
+              $ref: '#/components/schemas/AdminTag'
         description: Tag id
 components:
   schemas:
-    TagsPost:
-      title: TagPost
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
     AdminTag:
       allOf:     # Combines the BasicErrorModel and the inline model
         - $ref: '../common.yaml#/components/schemas/Tag'
@@ -415,111 +408,13 @@ components:
               example: AAAAcCcC
               type: string
     CapturePost:
-      title: Capture
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-          example: 1
-          readOnly: true
-          description: Database ID of the capture.
-        tag_id:
-          type: integer
-          format: int32
-          example: 1
-          description: Database ID of a tag the capture was taken from.
-        batvoltage:
-          type: integer
-          format: int32
-          example: 2900
-          description: Tag battery voltage in mV.
-        timestamp:
-          type: string
-          example: 2020-09-01T05:27:06Z
-          description: Time the capture was taken in the ISO 8601 format.
-        loopcount:
-          type: integer
-          format: int32
-          example: 10
-          description: The number of times the tag circular buffer has looped around. This indicates how long the
-            tag has been running for.
-        version:
-          type: integer
-          format: int32
-          example: 2
-          description: Major version of cuplCodec running on the tag.
-        cursorpos:
-          type: integer
-          format: int32
-          example: 24
-          description: Position of cursor in the circular buffer. The newest environmental sensor data are to the left of this cursor and the oldest to the right.
-        timeintmins:
-          type: integer
-          format: int32
-          example: 10
-          description: Time interval between samples in minutes.
-        md5:
-          type: string
-          example: d673aafc976e85
-          description: Hash of the capture. This may be either HMAC or MD5 (the name will be altered in future).
-        status:
-          $ref: '../common.yaml#/components/schemas/CaptureStatus'
-        samples:
-          type: array
-          items:
-            $ref: '../common.yaml#/components/schemas/CaptureSample'
-    CaptureResponse:
-      title: Capture
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-          example: 1
-          readOnly: true
-          description: Database ID of the capture.
-        tag_id:
-          type: integer
-          format: int32
-          example: 1
-          description: Database ID of a tag the capture was taken from.
-        batvoltage:
-          type: integer
-          format: int32
-          example: 2900
-          description: Tag battery voltage in mV.
-        timestamp:
-          type: string
-          example: 2020-09-01T05:27:06Z
-          description: Time the capture was taken in the ISO 8601 format.
-        loopcount:
-          type: integer
-          format: int32
-          example: 10
-          description: The number of times the tag circular buffer has looped around. This indicates how long the
-            tag has been running for.
-        version:
-          type: integer
-          format: int32
-          example: 2
-          description: Major version of cuplCodec running on the tag.
-        cursorpos:
-          type: integer
-          format: int32
-          example: 24
-          description: Position of cursor in the circular buffer. The newest environmental sensor data are to the left of this cursor and the oldest to the right.
-        timeintmins:
-          type: integer
-          format: int32
-          example: 10
-          description: Time interval between samples in minutes.
-        md5:
-          type: string
-          example: d673aafc976e85
-          description: Hash of the capture. This may be either HMAC or MD5 (the name will be altered in future).
-        status:
-          $ref: '../common.yaml#/components/schemas/CaptureStatus'
+      allOf:     # Combines the BasicErrorModel and the inline model
+        - $ref: '../common.yaml#/components/schemas/Capture'
+        - type: object
+          samples:
+            type: array
+            items:
+              $ref: '../common.yaml#/components/schemas/CaptureSample'
     Token:
       title: Token
       type: object
