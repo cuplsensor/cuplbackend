@@ -3,6 +3,6 @@
 Admin API Specification
 ===============================
 
-Latest yaml :githubusercontent:'AdminAPI <docs/api/admin/api.yaml>'
+Latest yaml :githubusercontent:`AdminAPI <docs/api/admin/api.yaml>`
 
 
