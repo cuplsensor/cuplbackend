@@ -6,6 +6,19 @@ info:
     url: www.plotsensor.com
     email: malcolm@plotsensor.com
   version: 0.0.2
+tags:
+  - name: Tags
+    description: Tag endpoints
+    externalDocs:
+      url: http://docs.my-api.com/pet-operations.htm
+  - name: Captures
+    description: Capture endpoints
+    externalDocs:
+      url: http://docs.my-api.com/store-orders.htm
+  - name: Simulate
+    description: Simulate endpoint
+    externalDocs:
+      url: http://docs.my-api.com/store-orders.htm
 paths:
   /token:
     post:
@@ -42,6 +55,8 @@ paths:
     get:
       description: Get a capture by its ID.
       summary: get a capture.
+      tags:
+        - Captures
       operationId: AdminCaptureGet
       security:
         - Bearer: []
@@ -68,6 +83,8 @@ paths:
     delete:
       description: delete a capture
       summary: delete a capture
+      tags:
+        - Captures
       operationId: AdminCaptureDelete
       security:
         - Bearer: []
@@ -98,6 +115,8 @@ paths:
     get:
       description: Get a list of captures
       summary: Get a list of captures ordered by ID.
+      tags:
+        - Captures
       operationId: CapturesGet
       parameters:
         - name: offset
@@ -134,6 +153,8 @@ paths:
     post:
       description: Create a capture
       summary: create a capture
+      tags:
+        - Captures
       operationId: AdminCapturePost
       security:
         - Bearer: []
@@ -165,6 +186,8 @@ paths:
     get:
       description: Get a tag from an id.
       summary: get a tag
+      tags:
+        - Tags
       operationId: TagGet
       security:
         - Bearer: []
@@ -192,6 +215,8 @@ paths:
     delete:
       description: delete a tag
       summary: delete a tag
+      tags:
+        - Tags
       operationId: TagDelete
       security:
         - Bearer: []
@@ -218,10 +243,73 @@ paths:
           content:
             application/json:
               schema: {}
+  /tags:
+    get:
+      description: Get a list of tags
+      summary: Get a list of tags ordered by ID.
+      tags:
+        - Tags
+      operationId: TagsGet
+      parameters:
+        - name: offset
+          in: query
+          description: Return samples starting from this index.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Limit the number of samples returned.
+          schema:
+            type: integer
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminTag'
+        400:
+          description: bad input parameter
+          content:
+            application/json:
+              schema: {}
+    post:
+      description: Create a tag
+      summary: create a tag
+      tags:
+        - Tags
+      operationId: TagPost
+      security:
+        - Bearer: []
+      responses:
+        201:
+          description: Tag created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminTag'
+          headers: {}
+        400:
+          description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminTag'
+        description: Tag id
   /tag/{id}/simulate:
     get:
       description: Obtain a simulated URL from the tag. This will contain mock sensor data.
       summary: Simulate URL.
+      tags:
+        - Simulate
       operationId: TagSimGet
       security:
         - Bearer: []
@@ -242,7 +330,7 @@ paths:
           in: query
           required: false
           description: Number of temperature and humidity samples to include in the wscodec URL.
-                       0 samples is valid and should raise an error.
+            0 samples is valid and should raise an error.
           schema:
             type: integer
             default: 100
@@ -337,63 +425,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /tags:
-    get:
-      description: Get a list of tags
-      summary: Get a list of tags ordered by ID.
-      operationId: TagsGet
-      parameters:
-        - name: offset
-          in: query
-          description: Return samples starting from this index.
-          schema:
-            type: integer
-        - name: limit
-          in: query
-          description: Limit the number of samples returned.
-          schema:
-            type: integer
-      security:
-        - Bearer: []
-      responses:
-        200:
-          description: List of tags
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AdminTag'
-        400:
-          description: bad input parameter
-          content:
-            application/json:
-              schema: {}
-    post:
-      description: Create a tag
-      summary: create a tag
-      operationId: TagPost
-      security:
-        - Bearer: []
-      responses:
-        201:
-          description: Tag created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminTag'
-          headers: {}
-        400:
-          description: 'invalid input, object invalid'
-          content:
-            application/json:
-              schema: {}
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminTag'
-        description: Tag id
+
 components:
   schemas:
     AdminTag:
