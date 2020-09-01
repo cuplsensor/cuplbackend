@@ -460,7 +460,6 @@ components:
         timeregistered:
           type: string
           description: Time the tag was created
-          format: date-time
           example: 2019-01-15T13:09:52.456
     Capture:
       title: Capture
@@ -545,7 +544,6 @@ components:
         timestamp:
           type: string
           description: Unix timestamp in seconds since January 1st 1970
-          format: date-time
           example: 2019-01-15T13:09:52.456Z
     CaptureStatus:
       title: CaptureStatus
