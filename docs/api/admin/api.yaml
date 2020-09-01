@@ -59,7 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../common.yaml#/components/schemas/Capture'
+                $ref: './common.yaml#/components/schemas/Capture'
         '400':
           description: bad input parameter
           content:
@@ -125,7 +125,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '../common.yaml#/components/schemas/Capture'
+                  $ref: './common.yaml#/components/schemas/Capture'
         400:
           description: bad input parameter
           content:
@@ -143,7 +143,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../common.yaml#/components/schemas/Capture'
+                $ref: './common.yaml#/components/schemas/Capture'
           headers: {}
         '400':
           description: 'invalid input, object invalid'
@@ -398,7 +398,7 @@ components:
   schemas:
     AdminTag:
       allOf:     # Combines the BasicErrorModel and the inline model
-        - $ref: '../common.yaml#/components/schemas/Tag'
+        - $ref: './common.yaml#/components/schemas/Tag'
         - type: object
           properties:
             id:
@@ -409,12 +409,12 @@ components:
               type: string
     CapturePost:
       allOf:     # Combines the BasicErrorModel and the inline model
-        - $ref: '../common.yaml#/components/schemas/Capture'
+        - $ref: './common.yaml#/components/schemas/Capture'
         - type: object
           samples:
             type: array
             items:
-              $ref: '../common.yaml#/components/schemas/CaptureSample'
+              $ref: './common.yaml#/components/schemas/CaptureSample'
     Token:
       title: Token
       type: object
