@@ -82,7 +82,7 @@ paths:
               schema: {}
     delete:
       description: Delete a capture
-      summary: delete a capture
+      summary: Delete a capture
       tags:
         - Captures
       operationId: AdminCaptureDelete
@@ -185,7 +185,7 @@ paths:
   /tag:
     get:
       description: Get a tag from an id.
-      summary: get a tag
+      summary: Get a tag
       tags:
         - Tags
       operationId: TagGet
@@ -306,7 +306,7 @@ paths:
         description: Tag id
   /tag/{id}/simulate:
     get:
-      summary: Get URL from Simulated Tag.
+      summary: Get URL.
       description: Get URL from a simulated tag. This contains mock sensor data.
       tags:
         - Simulate
