@@ -59,7 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Capture'
+                $ref: '../common.yaml#/components/schemas/Capture'
         '400':
           description: bad input parameter
           content:
@@ -125,7 +125,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Capture'
+                  $ref: '../common.yaml#/components/schemas/Capture'
         400:
           description: bad input parameter
           content:
@@ -143,7 +143,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Capture'
+                $ref: '../common.yaml#/components/schemas/Capture'
           headers: {}
         '400':
           description: 'invalid input, object invalid'
@@ -398,7 +398,7 @@ components:
   schemas:
     AdminTag:
       allOf:     # Combines the BasicErrorModel and the inline model
-        - $ref: '#/components/schemas/Tag'
+        - $ref: '../common.yaml#/components/schemas/Tag'
         - type: object
           properties:
             id:
@@ -409,12 +409,12 @@ components:
               type: string
     CapturePost:
       allOf:     # Combines the BasicErrorModel and the inline model
-        - $ref: '#/components/schemas/Capture'
+        - $ref: '../common.yaml#/components/schemas/Capture'
         - type: object
           samples:
             type: array
             items:
-              $ref: '#/components/schemas/CaptureSample'
+              $ref: '../common.yaml#/components/schemas/CaptureSample'
     Token:
       title: Token
       type: object
@@ -435,160 +435,6 @@ components:
         client_secret:
           example: nsfsaeASEFGSAE
           type: string
-    # Common to both APIs.
-    Tag:
-      title: Tag
-      type: object
-      properties:
-        description:
-          type: string
-          description: A free text field that a user can modify. It may be a description of the tag location.
-            Alternatively, this may be the URL of a linked frontend web application.
-          example: In the kitchen.
-        fwversion:
-          type: string
-          description: Version string for the cuplTag firmware.
-          example: HT04_F1.1_C2
-        hwversion:
-          type: string
-          description: Version string for the cuplTag hardware.
-          example: HT04
-        serial:
-          type: string
-          description: Serial of the tag that made the capture
-          example: YWJjZGVM
-        timeregistered:
-          type: string
-          description: Time the tag was created
-          format: date-time
-          example: 2019-01-15T13:09:52.456
-      Capture:
-        title: Capture
-        type: object
-        properties:
-          id:
-            type: integer
-            format: int32
-            example: 1
-            readOnly: true
-            description: Database ID of the capture.
-          tag_id:
-            type: integer
-            format: int32
-            example: 1
-            description: Database ID of a tag the capture was taken from.
-          batvoltagemv:
-            type: integer
-            format: int32
-            example: 2900
-            description: Tag battery voltage in mV.
-          timestamp:
-            type: string
-            example: 2020-09-01T05:27:06Z
-            description: Time the capture was taken in the ISO 8601 format.
-          loopcount:
-            type: integer
-            format: int32
-            example: 10
-            description: The number of times the tag circular buffer has looped around. This indicates how long the
-              tag has been running for.
-          version:
-            type: integer
-            format: int32
-            example: 2
-            description: Major version of cuplCodec running on the tag.
-          cursorpos:
-            type: integer
-            format: int32
-            example: 24
-            description: Position of cursor in the circular buffer. The newest environmental sensor data are to the left of this cursor and the oldest to the right.
-          timeintmins:
-            type: integer
-            format: int32
-            example: 10
-            description: Time interval between samples in minutes.
-          md5:
-            type: string
-            example: d673aafc976e85
-            description: Hash of the capture. This may be either HMAC or MD5 (the name will be altered in future).
-          status:
-            $ref: '#/components/schemas/CaptureStatus'
-      CaptureSample:
-        title: CaptureSample
-        required:
-          - capture_id
-          - id
-          - temp
-          - timestamp
-        type: object
-        properties:
-          capture_id:
-            type: integer
-            description: ID of the parent Capture object
-            format: int32
-            example: 1
-          id:
-            type: integer
-            description: CaptureSample ID
-            format: int32
-            example: 1
-          rh:
-            type: number
-            description: Relative Humidity in percent
-            format: double
-            example: 55.0
-          temp:
-            type: number
-            description: Temperature in degrees Celsius
-            format: double
-            example: 21.0
-          timestamp:
-            type: string
-            description: Unix timestamp in seconds since January 1st 1970
-            format: date-time
-            example: 2019-01-15T13:09:52.456Z
-      CaptureStatus:
-        title: CaptureStatus
-        type: object
-        properties:
-          brownout:
-            type: boolean
-            description: True if the cause of the most recentreset was a brown out condition.
-            example: false
-          clockfail:
-            type: boolean
-            description: True if the most recent reset was caused by an MCU clock failure.
-            example: false
-          id:
-            type: integer
-            description: CaptureStatus ID
-            format: int32
-            example: 1
-          lpm5wakeup:
-            type: boolean
-            description: True if the MCU has woken up from LPM (Low Power Mode) x.5
-            example: false
-          misc:
-            type: boolean
-            description: True if a reset has occured for miscellaneous reasons
-            example: false
-          parent_capture:
-            type: integer
-            description: Parent Capture ID
-            format: int32
-            example: 232
-          resetsalltime:
-            type: integer
-            example: 20
-          supervisor:
-            type: boolean
-            description: True if the supply voltage supervisor caused the most recent
-              reset
-            example: false
-          watchdog:
-            type: boolean
-            description: True if the MCU watchdog caused the most recent reset.
-            example: false
   securitySchemes:
     Bearer:
       type: apiKey
