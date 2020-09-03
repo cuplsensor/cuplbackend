@@ -5,9 +5,10 @@
     Token endpoints
 """
 
-from flask import Flask, Blueprint, request, current_app, jsonify
+from flask import Flask, Blueprint, request, current_app, jsonify, make_response
 from flask_restful import Resource, Api, abort, reqparse
 from wscodec.decoder.exceptions import *
+from sqlalchemy.exc import IntegrityError
 from ...services import captures, tags
 from ...captures.schemas import ConsumerCaptureSchema
 from ..baseresource import SingleResource, MultipleResource
@@ -66,20 +67,23 @@ class Captures(MultipleResource):
             return jsonify(result)
 
         except InvalidMajorVersionError as e:
-            return jsonify(ecode=101, description=str(e),
-                           encoderversion=e.encoderversion, decoderversion=e.decoderversion), 422
+            return make_response(jsonify(ecode=101, description=str(e),
+                                 encoderversion=e.encoderversion, decoderversion=e.decoderversion), 422)
 
         except InvalidFormatError as e:
-            return jsonify(ecode=102, description=str(e), circformat=e.circformat), 422
+            return make_response(jsonify(ecode=102, description=str(e), circformat=e.circformat), 422)
 
         except MessageIntegrityError as e:
-            return jsonify(ecode=103, description=str(e), urlhash=e.urlhash, calchash=e.calchash), 401
+            return make_response(jsonify(ecode=103, description=str(e), urlhash=e.urlhash, calchash=e.calchash), 401)
 
         except NoCircularBufferError as e:
-            return jsonify(ecode=104, description=str(e), status=e.status), 400
+            return make_response(jsonify(ecode=104, description=str(e), status=e.status), 400)
 
         except DelimiterNotFoundError as e:
-            return jsonify(ecode=105, description=str(e), status=e.status, circb64=e.circb64), 422
+            return make_response(jsonify(ecode=105, description=str(e), status=e.status, circb64=e.circb64), 422)
+
+        except IntegrityError as e:
+            return make_response(jsonify(ecode=106, description=str(e)), 409)
 
 
 api.add_resource(Capture, '/captures/<id>')

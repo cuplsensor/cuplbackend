@@ -209,22 +209,22 @@ stages:
 
   - name: Attempt to resubmit an identical capture to the one before.
 
-      # Define the request to be made
-      request:
-        url: "{baseurl}/api/consumer/v1/captures"
-        method: POST
-        json:
-          serial: "{serial}"
-          statusb64: "{statusb64}"
-          timeintb64: "{timeintb64}"
-          circbufb64: "{circbufb64}"
-          vfmtb64: "{vfmtb64}"
-        headers:
-          content-type: application/json
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
 
-      # Server should response with HTTP 409 conflict.
-      response:
-        status_code: 409
+    # Server should response with HTTP 409 conflict.
+    response:
+      status_code: 409
 
   - name: Delete the tag by ID.
 

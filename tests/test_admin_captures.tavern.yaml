@@ -115,7 +115,36 @@ stages:
         tag_id: !int "{test_tag_id:d}"
 
 
+  - name: Attempt to create a duplicate capture.
 
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/captures"
+      method: POST
+      json:
+        tag_id: !int "{test_tag_id:d}"
+        batvoltagemv: !int "{testcapture.batvoltagemv:d}"
+        timestamp: "{testcapture.timestamp}"
+        loopcount: "{testcapture.loopcount}"
+        version: "{testcapture.version}"
+        cursorpos: "{testcapture.cursorpos}"
+        timeintmins: "{testcapture.timeintmins}"
+        md5: "{testcapture.md5}"
+        status:
+          misc: "{testcapture.status.misc}"
+          supervisor: "{testcapture.status.supervisor}"
+          resetsalltime: !int "{testcapture.status.resetsalltime:d}"
+          clockfail: "{testcapture.status.supervisor}"
+          brownout: "{testcapture.status.supervisor}"
+          watchdog: "{testcapture.status.supervisor}"
+          lpm5wakeup: "{testcapture.status.supervisor}"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 409
 
   - name: Delete the tag by ID.
 
