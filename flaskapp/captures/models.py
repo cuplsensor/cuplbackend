@@ -10,6 +10,7 @@ from ..core import db
 from datetime import timezone, datetime
 from dateutil import parser
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.schema import UniqueConstraint
 from flask import current_app
 
 
@@ -35,6 +36,7 @@ class Capture(db.Model):
                               lazy='select',
                               backref=db.backref('parent_capture'),
                               cascade="all, delete-orphan")
+    __table_args__ = (UniqueConstraint('tag_id', 'md5', name='_tagid_md5_uc'),)
 
     @hybrid_property
     def tagserial(self):

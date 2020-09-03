@@ -1,5 +1,7 @@
 from datetime import timedelta
 import pytz
+import random
+from string import ascii_lowercase
 from ...wsapiwrapper.admin.capture import CaptureWrapper
 from ...wsapiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
 
@@ -26,7 +28,7 @@ class CaptureHelper:
             "tag_id": tag_id,
             "cursorpos": 10,
             "loopcount": 20,
-            "md5": "abcdefgh",
+            "md5": ''.join(random.choice(ascii_lowercase) for i in range(8)),
             "samples": samples,
             "status": {
                 "brownout": False,
