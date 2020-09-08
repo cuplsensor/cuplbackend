@@ -12,14 +12,14 @@ from ...models import CaptureSample
 from sqlalchemy import desc
 from ...services import tags, captures, capturesamples
 from ...captures.schemas import CaptureSampleSchema
-from ..baseresource import BaseResource, MultipleResource
+from ..baseresource import BaseResource, SingleResource
 from dateutil.parser import parse
 
 bp = Blueprint('consumersamples', __name__)
 api = Api(bp)
 
 
-class CaptureSamples(MultipleResource):
+class CaptureSamples(SingleResource):
     """Get, modify or delete one tag. """
 
     def __init__(self):
@@ -41,6 +41,9 @@ class CaptureSamples(MultipleResource):
         result = schema.dump(samples, many=True)
 
         return jsonify(result)
+
+    def delete(self, id):
+        abort(404)
 
 
 class Samples(BaseResource):

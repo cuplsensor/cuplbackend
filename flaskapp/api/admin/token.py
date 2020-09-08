@@ -14,6 +14,7 @@ import jwt
 bp = Blueprint('tokens', __name__)
 api = Api(bp)
 
+
 class Token(Resource):
     def createtoken(self):
         """ Inspired by https://h.readthedocs.io/en/latest/publishers/authorization-grant-tokens/#python """

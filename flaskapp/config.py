@@ -29,12 +29,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 # operations using the other.
 THREADS_PER_PAGE = 2
 
-# Set config values for Flask-Security.
-# We're using PBKDF2 with salt.
-SECURITY_PASSWORD_HASH = 'pbkdf2_sha512'
-# Replace this with your own salt.
-SECURITY_PASSWORD_SALT = 'asfea44fafaefu4gh398ognrveffi4onkn32fhrn2new'
-
 # Enable protection agains *Cross-site Request Forgery (CSRF)*
 CSRF_ENABLED = True
 
@@ -45,15 +39,14 @@ CSRF_SESSION_KEY = os.environ['CSRF_SESSION_KEY']
 # Secret key for signing cookies
 SECRET_KEY = os.environ['SECRET_KEY']
 
-DROP_ON_INIT = bool(os.getenv('DROP_ON_INIT', defaults.DROP_ON_INIT)) # Flag to drop tables on startup.
-IDP_PROTOCOL = os.getenv('IDP_PROTOCOL', defaults.IDP_PROTOCOL)
-IDP_HOST = os.getenv('IDP_HOST', defaults.IDP_HOST)
-IDP_PORT = os.getenv('IDP_PORT', defaults.IDP_PORT)
-IDP_ORIGIN = '{idp_protocol}{idp_host}:{idp_port}'.format(idp_protocol=IDP_PROTOCOL, idp_host=IDP_HOST, idp_port=str(IDP_PORT))
-IDP_JWKS = os.getenv('IDP_JWKS', defaults.IDP_JWKS)
+# HashIds Salt
+HASHIDS_SALT = os.environ['HAHSIDS_SALT']
+HASHIDS_OFFSET = int(os.getenv('HASHIDS_OFFSET', defaults.HASHIDS_OFFSET))
 
-API_ISSUER = os.getenv('API_ISSUER', defaults.API_ISSUER)
-API_AUDIENCE = os.getenv('API_AUDIENCE', defaults.API_AUDIENCE)
+DROP_ON_INIT = bool(os.getenv('DROP_ON_INIT', defaults.DROP_ON_INIT)) # Flag to drop tables on startup.
+
+TAGTOKEN_CLIENTID = os.getenv('TAGTOKEN_CLIENTID', defaults.TAGTOKEN_CLIENTID)
+TAGTOKEN_CLIENTSECRET = os.environ['TAGTOKEN_CLIENTSECRET']
 
 ADMINAPI_AUDIENCE = os.getenv('ADMINAPI_AUDIENCE', defaults.ADMINAPI_AUDIENCE)
 ADMINAPI_CLIENTID = os.getenv('ADMINAPI_CLIENTID', defaults.ADMINAPI_CLIENTID)

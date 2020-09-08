@@ -24,6 +24,7 @@ class Tag(db.Model):
     # See MAC_BLE_0 and MAC_BLE_1 to read this 48-bit (6 byte) address.
     serial = db.Column(db.String(SERIAL_LEN_BYTES), unique=True)
     secretkey = db.Column(db.String(SECKEY_LEN_BYTES))
+    usehmac = db.Column(db.Boolean, default=True)
     fwversion = db.Column(db.String(16))
     hwversion = db.Column(db.String(16))
     description = db.Column(db.String(280))
@@ -85,7 +86,7 @@ class Tag(db.Model):
     def __repr__(self):
         return '<Tag id=%s with serial=%s and secret key=%s>' % (self.id, self.serial, self.secretkey)
 
-    def __init__(self, serial: str = None, secretkey: str = None, fwversion: str = "", hwversion: str = "", description: str = "", **kwargs):
+    def __init__(self, serial: str = None, secretkey: str = None, usehmac: bool = True, fwversion: str = "", hwversion: str = "", description: str = "", **kwargs):
         # Initialise the tag object
         super(Tag, self).__init__(**kwargs)
         if isinstance(serial, str) and (len(serial) == SERIAL_LEN_BYTES):
@@ -98,6 +99,7 @@ class Tag(db.Model):
         else:
             self.secretkey = self.__class__.gen_secret_key()
 
+        self.usehmac = usehmac
         self.fwversion = fwversion
         self.hwversion = hwversion
         self.description = description

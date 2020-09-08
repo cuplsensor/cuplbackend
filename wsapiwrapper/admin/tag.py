@@ -7,6 +7,7 @@ class TagFormat(Enum):
     FORMAT_HDC2021_TRH = 1
     FORMAT_HDC2021_TEMPONLY = 2
 
+
 class TagWrapper(AdminApiWrapper):
     """Wraps calls to tag endpoints on the Admin API.
     """
@@ -84,6 +85,7 @@ class TagWrapper(AdminApiWrapper):
 
     def post(self, serial: str = None,
                 secretkey: str = None,
+                usehmac: bool = True,
                 fwversion: str = None,
                 hwversion: str = None,
                 description: str = None) -> dict:
@@ -92,6 +94,7 @@ class TagWrapper(AdminApiWrapper):
 
         :param serial: Tag serial string (8 characters).
         :param secretkey: Secret key (16 characters).
+        :param usehmac: Use HMAC-MD5 for the hash instead of MD5.
         :param fwversion: Tag firmware version.
         :param hwversion: Tag hardware version.
         :param description: Tag description.
@@ -107,6 +110,8 @@ class TagWrapper(AdminApiWrapper):
 
         if secretkey is not None:
             payload.update({'secretkey': secretkey})
+
+        payload.update({'usehmac': usehmac})
 
         if fwversion is not None:
             payload.update({'fwversion': fwversion})

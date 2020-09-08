@@ -26,16 +26,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: cd tests/oauth2-mock
-    - run: npm install
-    - run: npm install -g forever
-    - run: forever start tests/oauth2-mock/app.js
-    - run: cd ../../
-
     - name: Install postgres
       uses: harmon758/postgresql-action@v1
       with:
@@ -69,8 +59,6 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip install uwsgi
-
-
 
     - name: Run uwsgi server and daemonize
       run: uwsgi --protocol http --daemonize /tmp/uwsgi_daemonize.log -w -d --ini uwsgi.ini

@@ -18,7 +18,7 @@ from hashids import Hashids
 from .simsamples import trhsamples
 from wscodec.encoder.pyencoder.encoderfactory import encode
 from wscodec.decoder.status import BOR_BIT, SVSH_BIT, WDT_BIT, MISC_BIT, LPM5WU_BIT, CLOCKFAIL_BIT
-
+from ..config import HASHIDS_SALT, HASHIDS_OFFSET
 
 class TagDecodeFailedError(Exception):
     """ Tag Decode Failed Error
@@ -35,7 +35,7 @@ class TagDecodeFailedError(Exception):
 
 class TagService(Service):
     __model__ = Tag
-    hashids = Hashids(min_length=8, salt="this is my salt")
+    hashids = Hashids(min_length=8, salt=HASHIDS_SALT)
 
     def get_by_serial(self, serial):
         """Return the first instance of a tag in the database with
@@ -54,7 +54,7 @@ class TagService(Service):
 
         if tag.serial is None:
             # Generate a serial from the id.
-            serial = self.hashids.encode(tag.id)
+            serial = self.hashids.encode(HASHIDS_OFFSET + tag.id)
 
             # Assign serial to the tag and commit to the db.
             tag = super().update(tag, serial=serial)

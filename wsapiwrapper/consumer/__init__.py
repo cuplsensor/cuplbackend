@@ -2,13 +2,12 @@ from .. import ApiWrapper
 
 
 class ConsumerApiWrapper(ApiWrapper):
-    def __init__(self, baseurl: str, latesthash: str = None):
+    def __init__(self, baseurl: str, tokenstr: str = None):
         """Constructor for ConsumerApiWrapper
 
         Args:
             baseurl (str): Websensor backend base URL.
             tokenstr (str): OAuth access token.
-            latesthash (str): Hash of the most recent capture.
         """
         super().__init__(baseurl)
         self.apiurl = "{baseurl}/api/consumer/v1".format(baseurl=self.baseurl)

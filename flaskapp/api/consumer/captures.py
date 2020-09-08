@@ -12,6 +12,10 @@ from sqlalchemy.exc import IntegrityError
 from ...services import captures, tags
 from ...captures.schemas import ConsumerCaptureSchema
 from ..baseresource import SingleResource, MultipleResource
+import jwt
+from datetime import datetime, timedelta
+from secrets import token_hex
+from ...config import TAGTOKEN_CLIENTID, TAGTOKEN_CLIENTSECRET
 from json import loads
 
 bp = Blueprint('captures', __name__)
@@ -22,10 +26,27 @@ class Capture(SingleResource):
     def __init__(self):
         super().__init__(ConsumerCaptureSchema, captures)
 
+    def delete(self, id):
+        abort(404)
+
 
 class Captures(MultipleResource):
     def __init__(self):
         super().__init__(ConsumerCaptureSchema, captures)
+
+    def createtoken(self, tagserial:str):
+        """ Inspired by https://h.readthedocs.io/en/latest/publishers/authorization-grant-tokens/#python """
+        now = datetime.utcnow()
+
+        payload = {
+            'aud': tagserial,
+            'iss': TAGTOKEN_CLIENTID,
+            'sub': token_hex(32),
+            'nbf': now,
+            'exp': now + timedelta(minutes=10),
+        }
+
+        return jwt.encode(payload, TAGTOKEN_CLIENTSECRET, algorithm='HS256')
 
     def get(self):
         """
@@ -62,8 +83,13 @@ class Captures(MultipleResource):
                                                     circb64=parsedargs['circbufb64'],
                                                     vfmtb64=parsedargs['vfmtb64'])
 
+            tagtoken = self.createtoken(tagserial=tagobj.serial).decode('utf-8')
+            tagtoken_type = 'Bearer'
+
             schema = self.Schema()
             result = schema.dump(captureobj)
+            result.update({'tagtoken': tagtoken})
+            result.update({'tagtoken_type': tagtoken_type})
             return jsonify(result)
 
         except InvalidMajorVersionError as e:

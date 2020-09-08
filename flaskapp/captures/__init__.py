@@ -15,16 +15,16 @@ from wscodec.decoder.hdc2021 import Temp_URL, TempRH_URL
 class CaptureService(Service):
     __model__ = Capture
 
-    def decode_and_create(self, tagobj, statb64, timeintb64, circb64, vfmtb64, userobj=None):
+    def decode_and_create(self, tagobj, statb64, timeintb64, circb64, vfmtb64):
         """Returns a new, saved instance of the capture model class.
         :param **kwargs: instance parameters
         """
         decodedurl = decode(secretkey=tagobj.secretkey,
+                            usehmac=tagobj.usehmac,
                             statb64=statb64,
                             timeintb64=timeintb64,
                             circb64=circb64,
-                            vfmtb64=vfmtb64,
-                            usehmac=True)
+                            vfmtb64=vfmtb64)
 
         resetcause = decodedurl.status.resetcause
 

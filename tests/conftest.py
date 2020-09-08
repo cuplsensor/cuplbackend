@@ -16,14 +16,6 @@ from ..wsapiwrapper.consumer.sample import SampleWrapper
 sys.path.append(".")
 
 
-@pytest.fixture(scope="function")
-def token_fixture(idporigin):
-    payload = {'grant_type': 'authorization_code'}
-    r = requests.post('{idporigin}/token'.format(idporigin=idporigin), data=payload)
-    unverified_token = r.json().get('access_token')
-    return unverified_token
-
-
 def pytest_runtest_setup(item):
     """ called before ``pytest_runtest_call(item). """
     # do some stuff`
@@ -88,13 +80,6 @@ def baseurl():
     wsb_port = os.getenv("WSB_PORT", defaults.WSB_PORT)
     return '{wsb_protocol}{wsb_host}:{wsb_port}'.format(wsb_protocol=wsb_protocol, wsb_host=wsb_host, wsb_port=str(wsb_port))
 
-@pytest.fixture
-def idporigin():
-    idp_protocol = os.getenv("IDP_PROTOCOL", defaults.IDP_PROTOCOL)
-    idp_host = os.getenv("IDP_HOST", defaults.IDP_HOST)
-    idp_port = os.getenv("IDP_PORT", defaults.IDP_PORT)
-    return '{idp_protocol}{idp_host}:{idp_port}'.format(idp_protocol=idp_protocol, idp_host=idp_host, idp_port=str(idp_port))
-
 
 @pytest.fixture
 def clientid():
@@ -155,13 +140,13 @@ def tag_fixture_b(request, baseurl, admintoken):
 
 
 @pytest.fixture(scope="function")
-def capture_fixture(baseurl, token_fixture):
+def capture_fixture(baseurl):
     return ConsumerCaptureWrapper(baseurl)
 
 
 @pytest.fixture(scope="function")
-def sample_fixture(baseurl, token_fixture):
-    return SampleWrapper(baseurl, token_fixture)
+def sample_fixture(baseurl):
+    return SampleWrapper(baseurl)
 
 
 @pytest.fixture(scope="function")
