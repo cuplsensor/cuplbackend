@@ -408,6 +408,11 @@ components:
           type: string
           description: The secret key used to create an HMAC-SHA256 signature in the webhook header.
           example: 4490vasnl456q2l
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+          example: 2019-01-15T13:09:52.456Z
     Tag:
       title: Tag
       type: object
@@ -453,37 +458,50 @@ components:
       title: Capture
       type: object
       properties:
-        batvoltagemv:
-          type: integer
-          example: 3000
-        tagserial:
-          type: string
-          description: Serial of the tag that made the capture
-          example: YWJjZGVM
-        cursorpos:
-          type: integer
-          example: 20
         id:
           type: integer
           format: int32
           example: 232
+          readOnly: true
+        tagserial:
+          type: string
+          description: Serial of the tag that made the capture
+          example: YWJjZGVM
+          readOnly: true
+        batvoltagemv:
+          type: integer
+          description: Tag battery voltage in mV.
+          example: 3000
+          readOnly: true
+        cursorpos:
+          type: integer
+          description: Cursor position in the circular buffer.
+          example: 20
+          readOnly: true
         loopcount:
           type: integer
           description: Number of times the circularbuffer pointer has wrapped from
             the end to the beginning
           example: 2
-        status:
-          $ref: '#/components/schemas/CaptureStatus'
+          readOnly: true
         timeintmins:
           type: integer
+          description: The time interval between samples in minutes.
           example: 12
+          readOnly: true
         timestamp:
           type: string
           format: date-time
           example: 2019-01-15T13:09:52.456Z
-        version:
+          readOnly: true
+        format:
           type: integer
+          description: Indicates whether samples in this capture contain temperature and relative humidity readings
+           or just temperature.
           example: 1
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/CaptureStatus'
     CaptureSample:
       title: CaptureSample
       required:
@@ -522,51 +540,58 @@ components:
       title: CaptureStatus
       type: object
       properties:
-        brownout:
-          type: boolean
-          description: True if the cause of the most recentreset was a brown out condition.
-          example: false
-        clockfail:
-          type: boolean
-          description: True if the most recent reset was caused by an MCU clock failure.
-          example: false
         id:
           type: integer
           description: CaptureStatus ID
           format: int32
           example: 1
+        brownout:
+          type: boolean
+          description: True if the cause of the most recentreset was a brown out condition.
+          example: false
+          readOnly: true
+        clockfail:
+          type: boolean
+          description: True if the most recent reset was caused by an MCU clock failure.
+          example: false
+          readOnly: true
         lpm5wakeup:
           type: boolean
           description: True if the MCU has woken up from LPM (Low Power Mode) x.5
           example: false
+          readOnly: true
         misc:
           type: boolean
           description: True if a reset has occured for miscellaneous reasons
           example: false
+          readOnly: true
         resetsalltime:
           type: integer
           example: 20
+          readOnly: true
         supervisor:
           type: boolean
           description: True if the supply voltage supervisor caused the most recent
             reset
           example: false
+          readOnly: true
         watchdog:
           type: boolean
           description: True if the MCU watchdog caused the most recent reset.
           example: false
+          readOnly: true
     EncodedCapture:
       title: Base64 Encoded Capture
       type: object
       properties:
-        circbufb64:
-          type: string
-          description: Circular buffer including samples encoded as base64.
-          example: Add example here
         serial:
           type: string
           description: Serial of the tag that made the capture
           example: YWJjZGVM
+        circbufb64:
+          type: string
+          description: Circular buffer including samples encoded as base64.
+          example: Add example here
         statusb64:
           type: string
           description: 12 character status string
@@ -575,9 +600,10 @@ components:
           type: string
           description: Time interval in minutes in base64
           example: Awg=
-        versionStr:
+        vfmtb64:
           type: string
-          example: "0001"
+          description: Version and Format encoded in base64. This may be zero padded so remove all but 4 last characters before use.
+          example: "000000Ae3g"
   securitySchemes:
     TagToken: # arbitrary name for the security scheme
       type: http
