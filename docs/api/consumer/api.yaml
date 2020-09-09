@@ -35,6 +35,35 @@ paths:
         404:
           description: Tag not found.
           content: {}
+    put:
+      tags:
+        - Open
+      summary: Edit a tag description.
+      operationId: TagDescriptionPut
+      parameters:
+        - name: serial
+          in: query
+          description: Tag serial
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/schemas/Tag'
+      responses:
+        200:
+          description: A tag object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        400:
+          description: Bad input parameter.
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: Tag not found.
+          content: { }
   /captures:
     get:
       tags:
@@ -61,6 +90,14 @@ paths:
       responses:
         200:
           description: A capture object
+          headers:
+            Link:
+              type: string
+              description: |
+                Links to related resources, in the format defined by
+                [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
+                This will include a link with relation type `next` to the
+                next page, if there is a next page.
           content:
             application/json:
               schema:
@@ -167,6 +204,14 @@ paths:
       responses:
         200:
           description: A list of sample objects
+          headers:
+            Link:
+              type: string
+              description: |
+                Links to related resources, in the format defined by
+                [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
+                This will include a link with relation type `next` to the
+                next page, if there is a next page.
           content:
             application/json:
               schema:
@@ -246,19 +291,23 @@ components:
           type: string
           description: Version string for the cuplTag firmware.
           example: HT04_F1.1_C2
+          readOnly: true
         hwversion:
           type: string
           description: Version string for the cuplTag hardware.
           example: HT04
+          readOnly: true
         serial:
           type: string
           description: Serial of the tag that made the capture
           example: YWJjZGVM
+          readOnly: true
         timeregistered:
           type: string
           description: Time the tag was created
           format: date-time
           example: 2019-01-15T13:09:52.456
+          readOnly: true
     Capture:
       title: Capture
       type: object
