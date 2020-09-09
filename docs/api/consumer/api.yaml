@@ -186,11 +186,11 @@ paths:
         required: true
       responses:
         200:
-          description: A capture object
+          description: The newly created Capture with a TagToken.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Capture'
+                $ref: '#/components/schemas/CaptureWithTagToken'
         400:
           description: invalid input, object invalid
           content:
@@ -327,6 +327,17 @@ components:
           format: date-time
           example: 2019-01-15T13:09:52.456
           readOnly: true
+    CaptureWithTagToken:
+      allOf: # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Capture'
+        - type: object
+          properties:
+            token:
+              example: eyJz93a...k4laUWw
+              type: string
+            token_type:
+              example: Bearer
+              type: string
     Capture:
       title: Capture
       type: object
