@@ -373,6 +373,14 @@ paths:
               schema: { }
 components:
   schemas:
+    Webhook:
+      title: Webhook
+      type: object
+      properties:
+        address:
+          type: string
+        fields:
+          type: string
     Tag:
       title: Tag
       type: object
