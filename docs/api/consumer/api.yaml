@@ -171,6 +171,7 @@ paths:
             application/json:
               schema:
                 type: object
+  /captures:
     post:
       tags:
         - Captures
