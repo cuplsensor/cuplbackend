@@ -125,7 +125,7 @@ paths:
     get:
       tags:
       - Tags
-      summary: Get a list of captures for a tag
+      summary: List captures
       operationId: CapturesGet
       parameters:
       - name: serial
