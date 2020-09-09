@@ -358,6 +358,12 @@ paths:
             application/json:
               schema:
                 type: object
+        409:
+          description: Conflict. This tag already has a webhook and only one is allowed.
+          content:
+            application/json:
+              schema:
+                type: object
     delete:
       description: Delete a webhook
       summary: Delete a webhook
