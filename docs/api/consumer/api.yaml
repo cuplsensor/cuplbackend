@@ -472,9 +472,6 @@ components:
           description: Number of times the circularbuffer pointer has wrapped from
             the end to the beginning
           example: 2
-        md5:
-          type: string
-          example: 2f324022a223
         status:
           $ref: '#/components/schemas/CaptureStatus'
         timeintmins:
@@ -546,11 +543,6 @@ components:
           type: boolean
           description: True if a reset has occured for miscellaneous reasons
           example: false
-        parent_capture:
-          type: integer
-          description: Parent Capture ID
-          format: int32
-          example: 232
         resetsalltime:
           type: integer
           example: 20
