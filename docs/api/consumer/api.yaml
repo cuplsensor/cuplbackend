@@ -15,7 +15,7 @@ paths:
       operationId: TagGet
       parameters:
       - name: serial
-        in: query
+        in: path
         description: Tag serial
         schema:
           type: string
@@ -77,7 +77,7 @@ paths:
       operationId: UniqueSamplesGet
       parameters:
         - name: serial
-          in: query
+          in: path
           description: Tag serial
           required: true
           schema:
@@ -248,6 +248,11 @@ paths:
       summary: List samples.
       operationId: CaptureSamplesGet
       parameters:
+      - name: id
+        in: path
+        description: Capture database ID
+        schema:
+          type: integer
       - name: offset
         in: query
         description: Return samples starting from this index.
