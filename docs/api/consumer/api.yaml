@@ -391,8 +391,17 @@ components:
       properties:
         address:
           type: string
+          required: true
+          description: URL to send the POST request to when the tag is scanned. Data are encoded as JSON.
+          example: https://webhook.site/a1b658b6-6b23-4a49-959c-e9b33d20e034
         fields:
           type: string
+          description: A string containing a comma separated list of fields to include in the capture webhook.
+          example: samples, md5
+        wh_secretkey:
+          type: string
+          description: The secret key used to create an HMAC-SHA256 signature in the webhook header.
+          example: 4490vasnl456q2l
     Tag:
       title: Tag
       type: object
