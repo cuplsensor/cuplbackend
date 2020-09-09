@@ -41,7 +41,7 @@ paths:
       summary: Edit a tag description.
       operationId: TagDescriptionPut
       security:
-        - Bearer: [ ]
+        - TagToken: [ ]
       parameters:
         - name: serial
           in: query
@@ -451,7 +451,7 @@ components:
           type: string
           example: "0001"
   securitySchemes:
-    Bearer: # arbitrary name for the security scheme
+    TagToken: # arbitrary name for the security scheme
       type: http
       scheme: bearer
-      bearerFormat: TagToken JWT    # optional, arbitrary value for documentation purposes
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
