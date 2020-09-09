@@ -294,7 +294,83 @@ paths:
             application/json:
               schema:
                 type: object
-
+/tag/{serial}/webhook:
+    get:
+      tags:
+      - Webhook
+      summary: Get a webhook.
+      operationId: WebhookGet
+      security:
+        - TagToken: [ ]
+      parameters:
+      - name: serial
+        in: path
+        description: Tag serial
+        schema:
+          type: string
+      responses:
+        200:
+          description: A webhook for this tag
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+        400:
+          description: bad input parameter
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+        - Webhook
+        summary: Post a webhook.
+        operationId: WebhookPost
+        security:
+          - TagToken: [ ]
+        requestBody:
+          description: Capture creation fields
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Webhook'
+          required: true
+        responses:
+          200:
+            description: A webhook for this tag
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Webhook'
+          400:
+            description: bad input parameter
+            content:
+              application/json:
+                schema:
+                  type: object
+    delete:
+      description: Delete a webhook
+      summary: Delete a webhook
+      tags:
+        - Webhook
+      operationId: WebhookDelete
+      security:
+        - TagToken: [ ]
+      responses:
+        '204':
+          description: Webhook has been deleted
+          content:
+            application/json:
+              schema: { }
+        '404':
+          description: No tag found
+          content:
+            application/json:
+              schema: { }
 components:
   schemas:
     Tag:
