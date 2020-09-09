@@ -44,7 +44,7 @@ paths:
         - TagToken: [ ]
       parameters:
         - name: serial
-          in: query
+          in: path
           description: Tag serial
           schema:
             type: string
@@ -121,15 +121,15 @@ paths:
             application/json:
               schema:
                 type: object
-  /captures:
+  tag/{serial}/captures:
     get:
       tags:
-      - Captures
+      - Tags
       summary: Get a list of captures for a tag
       operationId: CapturesGet
       parameters:
       - name: serial
-        in: query
+        in: path
         description: Tag serial
         required: true
         schema:
@@ -173,7 +173,7 @@ paths:
                 type: object
     post:
       tags:
-      - Captures
+        - Captures
       summary: Create a capture
       operationId: CapturesPost
       requestBody:
@@ -216,12 +216,19 @@ paths:
               schema:
                 type: object
       x-codegen-request-body-name: body
-  /captures/{id}:
+  /capture/{id}:
     get:
       tags:
       - Captures
       summary: Get a capture by ID
       operationId: CaptureGet
+      parameters:
+        - name: id
+          in: path
+          description: Capture database ID
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: A capture object
@@ -241,7 +248,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /captures/{id}/samples:
+  /capture/{id}/samples:
     get:
       tags:
       - Captures
