@@ -337,6 +337,12 @@ paths:
             schema:
               $ref: '#/components/schemas/Webhook'
         required: true
+      parameters:
+        - name: serial
+          in: path
+          description: Tag serial
+          schema:
+            type: string
       responses:
         200:
           description: A webhook for this tag
@@ -360,6 +366,12 @@ paths:
       operationId: WebhookDelete
       security:
         - TagToken: [ ]
+      parameters:
+        - name: serial
+          in: path
+          description: Tag serial
+          schema:
+            type: string
       responses:
         '204':
           description: Webhook has been deleted
