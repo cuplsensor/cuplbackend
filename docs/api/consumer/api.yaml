@@ -121,7 +121,7 @@ paths:
             application/json:
               schema:
                 type: object
-  tag/{serial}/captures:
+  /tag/{serial}/captures:
     get:
       tags:
       - Tags
