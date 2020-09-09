@@ -294,7 +294,7 @@ paths:
             application/json:
               schema:
                 type: object
-/tag/{serial}/webhook:
+  /tag/{serial}/webhook:
     get:
       tags:
       - Webhook
