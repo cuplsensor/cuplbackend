@@ -47,7 +47,10 @@ paths:
           schema:
             type: string
       requestBody:
-        $ref: '#/components/schemas/Tag'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
       responses:
         200:
           description: A tag object
