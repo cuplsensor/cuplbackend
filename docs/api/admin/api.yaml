@@ -113,8 +113,8 @@ paths:
               schema: {}
   /captures:
     get:
-      summary: Get a list of captures
-      description: Get a list of captures ordered by ID.
+      summary: List all captures
+      description: Get a list of captures ordered by ID. Optional to filter on tag_id.
       tags:
         - Captures
       operationId: CapturesGet
@@ -190,7 +190,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CapturePost'
         description: Capture object
-  /tag:
+  /tag/{id}:
     get:
       description: Get a tag from an id.
       summary: Get a tag
@@ -201,8 +201,8 @@ paths:
         - Bearer: []
       parameters:
         - name: id
-          in: query
-          required: false
+          in: path
+          required: true
           description: Tag id
           schema:
             type: integer
@@ -230,8 +230,8 @@ paths:
         - Bearer: []
       parameters:
         - name: id
-          in: query
-          required: false
+          in: path
+          required: true
           description: Tag id
           schema:
             type: integer
@@ -254,7 +254,7 @@ paths:
   /tags:
     get:
       description: Get a list of tags ordered by ID
-      summary: Get a list of tags
+      summary: List all tags
       tags:
         - Tags
       operationId: TagsGet
@@ -322,10 +322,10 @@ paths:
         description: Tag id
   /tag/{id}/simulate:
     get:
-      summary: Get URL.
+      summary: Simulate a tag.
       description: Get URL from a simulated tag. This contains mock sensor data.
       tags:
-        - Simulate
+        - Tags
       operationId: TagSimGet
       security:
         - Bearer: []
@@ -455,6 +455,10 @@ components:
             secretKey:
               example: AAAAcCcC
               type: string
+            usehmac:
+              example: true
+              type: boolean
+              description: True if the tag is using the HMAC-MD5 algorithm to generate its hash. False if it is only using MD5.
     CapturePost:
       allOf:     # Combines the BasicErrorModel and the inline model
         - $ref: '../common.yaml#/components/schemas/Capture'
