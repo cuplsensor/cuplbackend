@@ -15,10 +15,6 @@ tags:
     description: Capture endpoints
     externalDocs:
       url: http://docs.my-api.com/store-orders.htm
-  - name: Simulate
-    description: Simulate endpoint
-    externalDocs:
-      url: http://docs.my-api.com/store-orders.htm
 paths:
   /token:
     post:
@@ -51,7 +47,7 @@ paths:
               $ref: '#/components/schemas/TokenRequest'
         description: Token Request Credentials
         required: true
-  /capture:
+  /capture/{id}:
     get:
       description: Get a capture by its ID.
       summary: Get a capture.
