@@ -10,7 +10,7 @@ paths:
   /tag/{serial}:
     get:
       tags:
-      - Open
+      - Tags
       summary: Get a tag by its serial.
       operationId: TagGet
       parameters:
@@ -37,7 +37,7 @@ paths:
           content: {}
     put:
       tags:
-        - Open
+        - Tags
       summary: Edit a tag description.
       operationId: TagDescriptionPut
       security:
@@ -72,7 +72,7 @@ paths:
   /captures:
     get:
       tags:
-      - Open
+      - Captures
       summary: Get a list of captures for a tag
       operationId: CapturesGet
       parameters:
@@ -121,7 +121,7 @@ paths:
                 type: object
     post:
       tags:
-      - Open
+      - Captures
       summary: Create a capture
       operationId: CapturesPost
       requestBody:
@@ -167,7 +167,7 @@ paths:
   /captures/{id}:
     get:
       tags:
-      - Open
+      - Captures
       summary: Get a capture by ID
       operationId: CaptureGet
       responses:
@@ -192,7 +192,7 @@ paths:
   /captures/{id}/samples:
     get:
       tags:
-      - Open
+      - Captures
       summary: Get samples for a capture.
       operationId: SamplesGet
       parameters:
@@ -232,7 +232,7 @@ paths:
   /samples:
     get:
       tags:
-      - Open
+      - Samples
       summary: Get unique samples for a tag in a given time range
       operationId: UniqueSamplesGet
       parameters:
