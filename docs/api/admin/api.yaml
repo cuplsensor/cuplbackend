@@ -484,7 +484,7 @@ components:
           example: nsfsaeASEFGSAE
           type: string
   securitySchemes:
-    Bearer:
-      type: apiKey
-      name: Authorization
-      in: header
+    Bearer: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: Admin JWT    # optional, arbitrary value for documentation purposes
