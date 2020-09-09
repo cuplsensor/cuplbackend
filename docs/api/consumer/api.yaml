@@ -69,6 +69,58 @@ paths:
         404:
           description: Tag not found.
           content: { }
+  /tag/{serial}/samples:
+    get:
+      tags:
+        - Tags
+      summary: List unique samples
+      operationId: UniqueSamplesGet
+      parameters:
+        - name: serial
+          in: query
+          description: Tag serial
+          required: true
+          schema:
+            type: string
+        - name: starttime
+          in: query
+          description: start timestamp as an ISO-8601 string.
+          required: true
+          schema:
+            type: string
+            format: datetime
+        - name: endtime
+          in: query
+          description: end timestamp as an ISO-8601 string.
+          required: true
+          schema:
+            type: string
+            format: datetime
+        - name: offset
+          in: query
+          description: Return samples starting from this index.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Limit the number of samples returned.
+          schema:
+            type: integer
+      responses:
+        200:
+          description: A list of samples from newest to oldest
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CaptureSample'
+        400:
+          description: bad input parameter
+          content:
+            application/json:
+              schema:
+                type: object
   /captures:
     get:
       tags:
@@ -193,8 +245,8 @@ paths:
     get:
       tags:
       - Captures
-      summary: Get samples for a capture.
-      operationId: SamplesGet
+      summary: List samples.
+      operationId: CaptureSamplesGet
       parameters:
       - name: offset
         in: query
@@ -229,58 +281,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /samples:
-    get:
-      tags:
-      - Samples
-      summary: Get unique samples for a tag in a given time range
-      operationId: UniqueSamplesGet
-      parameters:
-      - name: serial
-        in: query
-        description: Tag serial
-        required: true
-        schema:
-          type: string
-      - name: starttime
-        in: query
-        description: start timestamp as an ISO-8601 string.
-        required: true
-        schema:
-          type: string
-          format: datetime
-      - name: endtime
-        in: query
-        description: end timestamp as an ISO-8601 string.
-        required: true
-        schema:
-          type: string
-          format: datetime
-      - name: offset
-        in: query
-        description: Return samples starting from this index.
-        schema:
-          type: integer
-      - name: limit
-        in: query
-        description: Limit the number of samples returned.
-        schema:
-          type: integer
-      responses:
-        200:
-          description: A list of samples from newest to oldest
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CaptureSample'
-        400:
-          description: bad input parameter
-          content:
-            application/json:
-              schema:
-                type: object
+
 components:
   schemas:
     Tag:
