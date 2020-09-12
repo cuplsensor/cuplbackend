@@ -104,7 +104,6 @@ class Tag(db.Model):
         self.hwversion = hwversion
         self.description = description
         self.timeregistered = datetime.datetime.utcnow()
-        self.user_id = None
 
     @staticmethod
     def gen_secret_key():
