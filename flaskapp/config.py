@@ -40,7 +40,7 @@ CSRF_SESSION_KEY = os.environ['CSRF_SESSION_KEY']
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # HashIds Salt
-HASHIDS_SALT = os.environ['HAHSIDS_SALT']
+HASHIDS_SALT = os.environ['HASHIDS_SALT']
 HASHIDS_OFFSET = int(os.getenv('HASHIDS_OFFSET', defaults.HASHIDS_OFFSET))
 
 DROP_ON_INIT = bool(os.getenv('DROP_ON_INIT', defaults.DROP_ON_INIT)) # Flag to drop tables on startup.

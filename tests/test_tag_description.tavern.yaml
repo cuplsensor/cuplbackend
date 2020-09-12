@@ -1,0 +1,113 @@
+test_name: Create a tag with a token
+
+marks:
+  - usefixtures:
+      - baseurl
+      - clientid
+      - clientsecret
+
+stages:
+  - name: With a client_id and a client_secret a token is returned
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/token"
+      method: POST
+      json:
+        client_id: "{clientid}"
+        client_secret: "{clientsecret}"
+      headers:
+        content-type: application/json
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      save:
+        body:
+          admin_token: token
+
+  - name: Use the token to create a new tag
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tags"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        usehmac: !anybool
+        serial: !anystr
+      save:
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+        body:
+          test_tag_id: id
+
+  - name: Create a capture on the tag and save the tagtoken
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        batvoltagemv: !anyfloat
+        tagserial: !anystr
+        cursorpos: !anyint
+        id: !anyint
+        loopcount: !anyint
+        md5: !anystr
+        status:
+          brownout: !anybool
+          parent_capture: !anyint
+          clockfail: !anybool
+          id: !anyint
+          lpm5wakeup: !anybool
+          misc: !anybool
+          resetsalltime: !anyint
+          supervisor: !anybool
+          watchdog: !anybool
+        timeintmins: !anyint
+        timestamp: !anystr
+        tagtoken_type: "Bearer"
+        tagtoken: !anystr
+        version: !anyint
+      save:
+        body:
+          test_capture_id: id
+          test_tagtoken: tagtoken
+
+  - name: Delete the tag by ID.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 204
