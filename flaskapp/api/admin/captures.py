@@ -1,9 +1,9 @@
 # Inspired by overholt
 """
-    flaskapp.api.admin.tags
-    ~~~~~~~~~~~~~~
+    flaskapp.api.admin.captures
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Tag endpoints
+    Captures endpoints
 """
 
 from flask import Blueprint, request, jsonify, current_app

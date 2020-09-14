@@ -7,6 +7,7 @@ admintokenauth = TokenAuthSymmetric(issuer=ADMINAPI_CLIENTID,
                                     audience=ADMINAPI_AUDIENCE,
                                     secret=ADMINAPI_CLIENTSERET)
 
+
 def requires_admin_token(f):
     """Determines if the access token is valid
     """

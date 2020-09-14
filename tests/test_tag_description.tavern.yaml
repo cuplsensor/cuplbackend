@@ -98,8 +98,59 @@ stages:
           test_capture_id: id
           test_tagtoken: tagtoken
 
-  - name: Delete the tag by ID.
+  - name: Edit the tag description
 
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/tag/{serial}"
+      method: PUT
+      json:
+        description: "test_description"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+
+    response:
+      status_code: 204
+
+  - name: Use the token to create a 2nd new tag
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tags"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        usehmac: !anybool
+        serial: !anystr
+      save:
+        body:
+          test_tag2_id: id
+          test_tag2_serial: serial
+
+  - name: It should not be possible to edit the description of
+          tag2 with the token generated for tag1.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/tag/{test_tag2_serial}"
+      method: PUT
+      json:
+        description: "test_description"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+    response:
+      status_code: 401
+
+  - name: Delete the 1st tag by ID.
     # Define the request to be made
     request:
       url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
@@ -107,7 +158,18 @@ stages:
       headers:
         content-type: application/json
         Authorization: "bearer {admin_token:s}"
+    # and the expected response body
+    response:
+      status_code: 204
 
+  - name: Delete the 2nd tag by ID.
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tag/{test_tag2_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
     # and the expected response body
     response:
       status_code: 204

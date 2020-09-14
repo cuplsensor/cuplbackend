@@ -8,6 +8,7 @@
 
 from ..core import db
 from ..captures.models import Capture, CaptureSample
+from ..webhooks.models import Webhook
 from flask import current_app
 from secrets import token_urlsafe
 import datetime
@@ -35,6 +36,13 @@ class Tag(db.Model):
                                order_by="desc(Capture.timestamp)",
                                backref=db.backref('parent_tag'),
                                cascade="all, delete-orphan")
+
+    # Specify a one-to-one relationship with a webhook
+    webhook = db.relationship('Webhook',
+                              lazy="joined",
+                              uselist=False,
+                              backref=db.backref('parent_tag'),
+                              cascade="all, delete-orphan")
 
     def uniquesampleswindow(self, starttime, endtime, offset=0, limit=None):
         threshold_in_seconds = 120

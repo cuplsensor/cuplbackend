@@ -9,8 +9,8 @@
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, abort
 from ...services import tags
-from ...tags.schemas import ConsumerTagSchema, ConsumerTagDescriptionSchema
-from .tagtokenresource import TagTokenSingleResource
+from ...tags.schemas import ConsumerTagSchema
+from .tagtokenauth import requires_tagtoken
 from ..baseresource import SingleResource
 
 bp = Blueprint('consumertags', __name__)
@@ -33,18 +33,17 @@ class Tag(SingleResource):
 
         return jsonify(result)
 
+    @requires_tagtoken
+    def put(self, serial):
+        """Edit a tag description"""
+        parsedargs = super().parse_body_args(request.get_json(), requiredlist=['description'])
+        description = parsedargs['description']
+        tagobj = tags.get_by_serial(serial)
+        tags.update(tagobj, description=description)
+        return '', 204
+
     def delete(self, serial):
         abort(404)
 
 
-class TagDescription(TagTokenSingleResource):
-    """Edit a tag description. """
-    def __init__(self):
-        super().__init__(ConsumerTagDescriptionSchema, tags)
-
-    def put(self, serial):
-        return 400
-
-
 api.add_resource(Tag, '/tag/<serial>')
-api.add_resource(TagDescription, '/tag/<serial>/description')

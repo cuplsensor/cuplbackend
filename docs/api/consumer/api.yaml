@@ -66,6 +66,12 @@ paths:
             application/json:
               schema:
                 type: object
+        401:
+          description: Not authorised. TagToken is not valid for this tag.
+          content:
+            application/json:
+              schema:
+                type: object
         404:
           description: Tag not found.
           content: { }

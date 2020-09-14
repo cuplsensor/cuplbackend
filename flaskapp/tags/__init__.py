@@ -20,6 +20,7 @@ from wscodec.encoder.pyencoder.encoderfactory import encode
 from wscodec.decoder.status import BOR_BIT, SVSH_BIT, WDT_BIT, MISC_BIT, LPM5WU_BIT, CLOCKFAIL_BIT
 from ..config import HASHIDS_SALT, HASHIDS_OFFSET
 
+
 class TagDecodeFailedError(Exception):
     """ Tag Decode Failed Error
 
@@ -44,6 +45,9 @@ class TagService(Service):
         :param serial: 6 character base 32 serial number
         """
         return self.first_or_404(serial=serial)
+
+    def update_description(self, serial, description):
+        super().update()
 
     def create(self, **kwargs):
         """Returns a new, saved instance of the tag model class.

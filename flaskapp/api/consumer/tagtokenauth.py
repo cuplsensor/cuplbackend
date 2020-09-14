@@ -8,9 +8,8 @@ def requires_tagtoken(f):
     """
     @wraps(f)
     def decorated(*args, **kwargs):
-        tagserial = args[0]
         tagtokenauth = TokenAuthSymmetric(issuer=TAGTOKEN_CLIENTID,
-                                          audience=tagserial,
+                                          audience=kwargs['serial'],
                                           secret=TAGTOKEN_CLIENTSECRET)
         tagtokenauth.get_decoded_token()
         return f(*args, **kwargs)

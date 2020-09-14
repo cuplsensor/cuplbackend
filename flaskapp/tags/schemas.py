@@ -14,8 +14,4 @@ class ConsumerTagSchema(ma.ModelSchema):
     class Meta:
         model = Tag
         exclude = ('secretkey', 'captures', 'id',)
-
-
-class ConsumerTagDescriptionSchema(ConsumerTagSchema):
-    class Meta:
-        fields = ('description',)
+        dump_only = ('timeregistered', 'id', 'secretkey', 'usehmac', 'serial')
