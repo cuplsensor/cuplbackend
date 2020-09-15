@@ -46,12 +46,14 @@ stages:
         usehmac: !anybool
         serial: !anystr
       save:
+        body:
+          test_tag_id: id
+          test_tag_serial: serial
+          test_tag_secretkey: secretkey
         $ext:
           function: utils:create_capture_for_tag
           extra_kwargs:
             baseurl: "{baseurl}"
-        body:
-          test_tag_id: id
 
   - name: Create a capture on the tag and save the tagtoken
 
@@ -169,6 +171,30 @@ stages:
 
     response:
       status_code: 409
+      save:
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+            tagserial: "{test_tag_serial}"
+            tagsecretkey: "{test_tag_secretkey}"
+            nsamples: 11
+
+  - name: Create another capture on the tag. This should fire the newly created webhook.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+    delay_after: 3
 
   - name: Delete the webhook.
 

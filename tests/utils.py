@@ -5,14 +5,16 @@ import json
 from wscodec.encoder.pyencoder.instrumented import InstrumentedSampleTRH
 
 
-def create_capture_for_tag(response, baseurl):
-    tagserial = response.json()["serial"]
-    tagsecretkey = response.json()["secretkey"]
+def create_capture_for_tag(response, baseurl, tagserial=None, tagsecretkey=None, nsamples=10):
+    if tagserial is None:
+        tagserial = response.json()["serial"]
+    if tagsecretkey is None:
+        tagsecretkey = response.json()["secretkey"]
     capturetrh = InstrumentedSampleTRH(baseurl=baseurl,
                                        serial=tagserial,
                                        secretkey=tagsecretkey,
                                        smplintervalmins=10)
-    samplesin = capturetrh.pushsamples(10)
+    samplesin = capturetrh.pushsamples(nsamples)
     queries = capturetrh.geturlqs()
     serial = queries['s'][0]
     statusb64 = queries['x'][0]
@@ -29,14 +31,3 @@ def create_capture_for_tag(response, baseurl):
             }
     print(outlist)
     return outlist
-
-
-def check_samples(response):
-    print(response)
-
-if __name__ == "__main__":
-    tagresponse = Mock(spec=Response)
-    tagresponse.json.return_value = {'serial': 'ABCDEFGH'}
-    tagresponse.status_code = 200
-    test = create_capture_for_tag(tagresponse)
-    print(test)

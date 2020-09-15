@@ -9,14 +9,15 @@ from flask import Flask, Blueprint, request, current_app, jsonify, make_response
 from flask_restful import Resource, Api, abort, reqparse
 from wscodec.decoder.exceptions import *
 from sqlalchemy.exc import IntegrityError
+import requests
 from ...services import captures, tags
-from ...captures.schemas import ConsumerCaptureSchema
+from ...captures.schemas import ConsumerCaptureSchema, ConsumerCaptureSchemaWithSamples
 from ..baseresource import SingleResource, MultipleResource
 import jwt
 from datetime import datetime, timedelta
 from secrets import token_hex
 from ...config import TAGTOKEN_CLIENTID, TAGTOKEN_CLIENTSECRET
-from json import loads
+from json import dumps
 
 bp = Blueprint('captures', __name__)
 api = Api(bp)
@@ -47,6 +48,25 @@ class Captures(MultipleResource):
         }
 
         return jwt.encode(payload, TAGTOKEN_CLIENTSECRET, algorithm='HS256')
+
+    def webhooktx(self, tagobj, captureobj):
+        """
+        Transmit JSON dictionary to a webhook
+        :param tagobj: Tag object
+        :param captureobj: A capture object
+        :return: None
+        """
+        webhook = tagobj.webhook
+        if webhook is None:
+            return
+
+        schema = ConsumerCaptureSchemaWithSamples()
+        capturedict = schema.dump(captureobj)
+
+        #https://webhook.site/a1b658b6-6b23-4a49-959c-e9b33d20e074
+        print(webhook.address)
+        req = requests.post(webhook.address, json=capturedict, timeout=10)
+
 
     def get(self):
         """
@@ -87,10 +107,14 @@ class Captures(MultipleResource):
             tagtoken_type = 'Bearer'
 
             schema = self.Schema()
-            result = schema.dump(captureobj)
-            result.update({'tagtoken': tagtoken})
-            result.update({'tagtoken_type': tagtoken_type})
-            return jsonify(result)
+            capturedict = schema.dump(captureobj)
+
+            # If the tag has a webhook post to this.
+            self.webhooktx(tagobj, captureobj)
+
+            capturedict.update({'tagtoken': tagtoken})
+            capturedict.update({'tagtoken_type': tagtoken_type})
+            return jsonify(capturedict)
 
         except InvalidMajorVersionError as e:
             return make_response(jsonify(ecode=101, description=str(e),

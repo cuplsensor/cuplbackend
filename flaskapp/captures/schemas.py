@@ -35,6 +35,14 @@ class CaptureSchema(ModelSchema):
     samples = fields.Nested(CaptureSampleSchema, many=True, load_only=True)
 
 
+class ConsumerCaptureSchemaWithSamples(CaptureSchema):
+    class Meta(CaptureSchema.Meta):
+        exclude = ('tag_id', 'parent_tag')
+    tagserial = fields.String()
+    status = fields.Nested(CaptureStatusSchema)
+    samples = fields.Nested(CaptureSampleSchema, many=True)
+
+
 class ConsumerCaptureSchema(CaptureSchema):
     class Meta(CaptureSchema.Meta):
         exclude = ('samples', 'tag_id', 'parent_tag')
