@@ -170,6 +170,19 @@ stages:
     response:
       status_code: 409
 
+  - name: Delete the webhook.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+
+    response:
+      status_code: 204
+
   - name: Delete the 1st tag by ID.
     # Define the request to be made
     request:
