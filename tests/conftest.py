@@ -80,7 +80,6 @@ def baseurl():
     wsb_port = os.getenv("WSB_PORT", defaults.WSB_PORT)
     return '{wsb_protocol}{wsb_host}:{wsb_port}'.format(wsb_protocol=wsb_protocol, wsb_host=wsb_host, wsb_port=str(wsb_port))
 
-
 @pytest.fixture
 def clientid():
     """ Return client id environment variable. """
@@ -91,7 +90,6 @@ def clientid():
 def clientsecret():
     """ Return client secret environment variable. """
     return os.getenv("ADMINAPI_CLIENTSECRET", defaults.ADMINAPI_CLIENTSECRET)
-
 
 @pytest.fixture
 def admintoken(baseurl, clientid, clientsecret):

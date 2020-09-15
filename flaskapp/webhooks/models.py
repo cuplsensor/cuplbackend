@@ -14,8 +14,9 @@ from secrets import token_urlsafe
 
 class Webhook(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # ID of the owning tag object.
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
+    # ID of the owning tag object. By setting unique to True, an IntegrityError will be raised
+    # when 2 webhooks with the same parent_tag are inserted.
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), unique=True)
     address = db.Column(db.String(2048), nullable=False)
     fields = db.Column(db.String(100))
     wh_secretkey = db.Column(db.String(256))

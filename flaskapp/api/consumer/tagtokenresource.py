@@ -8,16 +8,17 @@ def lookup_webhook_id(f):
     """Get id of the webhook attached to this tag.
     """
     @wraps(f)
-    def decorated(serial, *args, **kwargs):
-        tagobj = tags.get_by_serial(serial)
+    def decorated(*args, **kwargs):
+        tagobj = tags.get_by_serial(kwargs['serial'])
+        del kwargs['serial']
         webhook_id = tagobj.webhook.id
-        return f(webhook_id, *args, **kwargs)
+        return f(*args, id=webhook_id, **kwargs)
 
     return decorated
 
 
 class TagTokenSingleResource(SingleResource):
-    method_decorators = [requires_tagtoken, lookup_webhook_id]
+    method_decorators = [requires_tagtoken]
 
 
 class TagTokenMultipleResource(MultipleResource):

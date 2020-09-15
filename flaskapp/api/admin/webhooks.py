@@ -19,7 +19,7 @@ api = Api(bp)
 
 
 class Webhook(SingleAdminResource):
-    """Get or delete one webhook. """
+    """Get or delete one webhook by ID """
     def __init__(self):
         super().__init__(WebhookSchema, webhooks)
 
@@ -29,7 +29,12 @@ class Webhooks(MultipleAdminResource):
         super().__init__(WebhookSchema, webhooks)
 
     def get(self):
-        abort(404)
+        """
+        Get a list of all webhooks.
+        Returns:
+
+        """
+        return super().get_filtered()
 
     def post(self):
         """

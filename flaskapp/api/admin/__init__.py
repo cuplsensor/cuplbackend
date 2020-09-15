@@ -12,6 +12,8 @@ from ... import factory
 from .token import bp as tokenbp
 from .tags import bp as tagsbp
 from .captures import bp as capturesbp
+from .webhooks import bp as webhooksbp
+
 
 def create_app(settings_override=None):
     """Returns the Web API application instance"""
@@ -19,6 +21,7 @@ def create_app(settings_override=None):
     app.register_blueprint(tokenbp)
     app.register_blueprint(tagsbp)
     app.register_blueprint(capturesbp)
+    app.register_blueprint(webhooksbp)
 
     return app
 

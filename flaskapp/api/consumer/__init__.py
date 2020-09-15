@@ -13,6 +13,7 @@ from .version import bp as versionbp
 from .tags import bp as tagsbp
 from .captures import bp as capturesbp
 from .samples import bp as samplesbp
+from .webhooks import bp as webhooksbp
 
 
 def create_app(settings_override=None):
@@ -23,5 +24,6 @@ def create_app(settings_override=None):
     app.register_blueprint(tagsbp)
     app.register_blueprint(capturesbp)
     app.register_blueprint(samplesbp)
+    app.register_blueprint(webhooksbp)
 
     return app
