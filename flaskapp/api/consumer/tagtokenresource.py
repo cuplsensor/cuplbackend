@@ -1,4 +1,5 @@
 from functools import wraps
+from flask import abort
 from ..baseresource import SingleResource, MultipleResource
 from .tagtokenauth import requires_tagtoken
 from ...services import tags
@@ -11,7 +12,10 @@ def lookup_webhook_id(f):
     def decorated(*args, **kwargs):
         tagobj = tags.get_by_serial(kwargs['serial'])
         del kwargs['serial']
-        webhook_id = tagobj.webhook.id
+        try:
+            webhook_id = tagobj.webhook.id
+        except AttributeError:
+            abort(404)
         return f(*args, id=webhook_id, **kwargs)
 
     return decorated
