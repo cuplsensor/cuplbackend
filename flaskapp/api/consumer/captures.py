@@ -79,10 +79,11 @@ class Captures(MultipleResource):
             schema = ConsumerCaptureSchemaWithSamples(only=fieldslist)
             capturedict = schema.dump(captureobj)
         except ValueError:
+            # Should not reach here if the API is doing its job and returning an error if an invalid field is submitted.
             capturedict = {'webhook_error': 'Field does not exist. Create a new webhook and check the fields parameter'}
 
 
-        webhook.address = 'https://webhook.site/672d3cf8-828b-4908-b57c-16e47ecb1727'
+        #webhook.address = 'https://webhook.site/672d3cf8-828b-4908-b57c-16e47ecb1727'
         print(webhook.address)
 
         capturejson = json.dumps(capturedict)

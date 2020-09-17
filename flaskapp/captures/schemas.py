@@ -7,7 +7,7 @@ from marshmallow import Schema, fields
 
 # http://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html
 
-__all__ = ['CaptureSchema', 'ConsumerCaptureSchema', 'CaptureStatusSchema', 'CaptureSampleSchema']
+__all__ = ['CaptureSchema', 'ConsumerCaptureSchema', 'ConsumerCaptureSchemaWithSamples', 'CaptureStatusSchema', 'CaptureSampleSchema']
 
 
 class CaptureStatusSchema(ModelSchema):

@@ -99,7 +99,7 @@ stages:
     response:
       status_code: 200
       body:
-        batvoltagemv: !anyfloat
+        batvoltagemv: !anyint
         tagserial: !anystr
         cursorpos: !anyint
         id: !anyint
@@ -137,7 +137,7 @@ stages:
     response:
       status_code: 200
       body:
-        - batvoltagemv: !anyfloat
+        - batvoltagemv: !anyint
           tagserial: !anystr
           cursorpos: !anyint
           id: !int "{test_capture_id:d}"
@@ -171,7 +171,7 @@ stages:
     response:
       status_code: 200
       body:
-        batvoltagemv: !anyfloat
+        batvoltagemv: !anyint
         tagserial: !anystr
         cursorpos: !anyint
         id: !int "{test_capture_id:d}"

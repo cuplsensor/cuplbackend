@@ -74,7 +74,7 @@ stages:
     response:
       status_code: 200
       body:
-        batvoltagemv: !anyfloat
+        batvoltagemv: !anyint
         tagserial: !anystr
         cursorpos: !anyint
         id: !anyint
@@ -156,6 +156,9 @@ stages:
         address: "https://postb.in/{test_postbin_id:s}"
         wh_secretkey: !anystr
         created_on: !anystr
+      save:
+        body:
+          test_wh_secretkey: wh_secretkey
 
   - name: Post a 2nd webhook to the same tag. This should fail with a 409 conflict.
 
@@ -198,7 +201,36 @@ stages:
     response:
       status_code: 200
 
-    delay_after: 3
+    delay_after: 1
+
+  - name: GET and verify the webhook contents from the postb.in API.
+
+    request:
+      url: "https://postb.in/api/bin/{test_postbin_id:s}/req/shift"
+      method: GET
+      headers:
+        content-type: application/json
+
+    response:
+      status_code: 200
+      body:
+        method: POST
+        headers:
+          x-cuplbackend-hmac-sha256: !anystr
+          content-type: !anystr
+        body:
+          samples: !anylist
+          batvoltagemv: !anyint
+          id: !anyint
+          timestamp: !anystr
+          loopcount: !anyint
+          tagserial: !anystr
+          timeintmins: !anyint
+          cursorpos: !anyint
+      verify_response_with:
+        function: utils:verifyhmac
+        extra_kwargs:
+          wh_secretkey: "{test_wh_secretkey:s}"
 
   - name: Delete the webhook.
 
@@ -221,7 +253,7 @@ stages:
       method: POST
       json:
         address: "https://postb.in/{test_postbin_id:s}"
-        fields: '["timeintmins", "batvoltagemv", "gnlnk"]'
+        fields: '["timeintmins", "batvoltagemv"]'
       headers:
         content-type: application/json
         Authorization: "bearer {test_tagtoken:s}"
@@ -235,6 +267,8 @@ stages:
             tagserial: "{test_tag_serial}"
             tagsecretkey: "{test_tag_secretkey}"
             nsamples: 12
+        body:
+          test_wh3_secretkey: wh_secretkey
 
   - name: Create another capture on the tag. This should fire the newly created webhook.
 
@@ -254,6 +288,61 @@ stages:
       status_code: 200
     delay_after: 3
 
+  - name: GET and verify the webhook contains only the fields configured.
+
+    request:
+      url: "https://postb.in/api/bin/{test_postbin_id:s}/req/shift"
+      method: GET
+      headers:
+        content-type: application/json
+
+    response:
+      status_code: 200
+      body:
+        method: POST
+        headers:
+          x-cuplbackend-hmac-sha256: !anystr
+          content-type: !anystr
+        body:
+          timeintmins: !anyint
+          batvoltagemv: !anyint
+      verify_response_with:
+        function: utils:verifyhmac
+        extra_kwargs:
+          wh_secretkey: "{test_wh3_secretkey:s}"
+        function: utils:strictkeyscheck
+        extra_kwargs:
+          bodykeys:
+            - timeintmins
+            - batvoltagemv
+
+  - name: Delete the webhook.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+
+    response:
+      status_code: 204
+
+  - name: Attempt to post a 4th webhook to the tag. This will contain an invalid field.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      method: POST
+      json:
+        address: "https://postb.in/{test_postbin_id:s}"
+        fields: '["timeintmins", "batvoltagemv", "invalid field"]'
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+    response:
+      status_code: 400
 
   - name: Delete the 1st tag by ID.
     # Define the request to be made

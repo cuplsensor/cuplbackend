@@ -20,7 +20,7 @@ class Capture(db.Model):
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
 
     timestamp = db.Column(db.DateTime, nullable=False)
-    batvoltagemv = db.Column(db.Float)
+    batvoltagemv = db.Column(db.Integer)
     loopcount = db.Column(db.Integer)
     cursorpos = db.Column(db.Integer)
     status = db.Column(db.Integer)

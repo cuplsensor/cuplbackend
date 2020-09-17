@@ -10,8 +10,10 @@ from flask import Blueprint, request, jsonify, make_response
 from flask_restful import Api, abort
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
+import json
 from ...services import tags, webhooks
 from ...webhooks.schemas import ConsumerWebhookSchema
+from ...captures.schemas import ConsumerCaptureSchemaWithSamples
 from ..baseresource import SingleResource
 from .tagtokenresource import TagTokenSingleResource, lookup_webhook_id, requires_tagtoken
 
@@ -50,6 +52,15 @@ class Webhook(SingleResource):
             schemaobj = schema.load(jsondata)
         except ValidationError as err:
             return err.messages, 422
+
+        # If fields have been specified check that these are all valid.
+        # We
+        if schemaobj.fields is not None:
+            try:
+                wh_fields = json.loads(schemaobj.fields)
+                ConsumerCaptureSchemaWithSamples(only=wh_fields)
+            except ValueError:
+                return make_response(jsonify(ecode=108, description="Invalid field"), 400)
 
         try:
             schemaobj = self.service.save(schemaobj)

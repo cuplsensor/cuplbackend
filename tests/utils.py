@@ -2,6 +2,9 @@
 from unittest.mock import Mock
 from requests.models import Response
 import json
+import hmac
+import hashlib
+import base64
 from wscodec.encoder.pyencoder.instrumented import InstrumentedSampleTRH
 
 
@@ -31,3 +34,26 @@ def create_capture_for_tag(response, baseurl, tagserial=None, tagsecretkey=None,
             }
     print(outlist)
     return outlist
+
+
+def verifyhmac(response, wh_secretkey):
+    content = json.loads(response.content)
+    url_hmac_str = content['headers'].get('x-cuplbackend-hmac-sha256')
+    url_data_str = json.dumps(content['body'])
+
+    url_hmac_bytes = url_hmac_str.encode('utf-8')
+    url_data_bytes = url_data_str.encode('utf-8')
+    wh_secretkey_bytes = wh_secretkey.encode('utf-8')
+
+    digest = hmac.new(wh_secretkey_bytes, url_data_bytes, hashlib.sha256).digest()
+    computed_hmac_bytes = base64.b64encode(digest)
+    assert url_hmac_bytes == computed_hmac_bytes
+
+
+def strictkeyscheck(response, bodykeys):
+    content = json.loads(response.content)
+    url_data_dict = content['body']
+    # A set comparison is done instead of a list comparison, because item order is irrelevant.
+    bodykeys = set(bodykeys)
+    urldictkeys = set(url_data_dict.keys())
+    assert urldictkeys == bodykeys
