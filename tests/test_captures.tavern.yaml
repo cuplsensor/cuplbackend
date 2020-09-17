@@ -203,9 +203,6 @@ stages:
     # and the expected response body
     response:
       status_code: 200
-      body:
-        $ext:
-          function: utils:check_samples
 
   - name: Attempt to resubmit an identical capture to the one before.
 

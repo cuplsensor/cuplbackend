@@ -10,6 +10,10 @@ from flask_restful import Resource, Api, abort, reqparse
 from wscodec.decoder.exceptions import *
 from sqlalchemy.exc import IntegrityError
 import requests
+import hmac
+import json
+from hashlib import sha256
+from base64 import b64encode
 from ...services import captures, tags
 from ...captures.schemas import ConsumerCaptureSchema, ConsumerCaptureSchemaWithSamples
 from ..baseresource import SingleResource, MultipleResource
@@ -49,6 +53,11 @@ class Captures(MultipleResource):
 
         return jwt.encode(payload, TAGTOKEN_CLIENTSECRET, algorithm='HS256')
 
+    def generatehmac(self, jsonstr: str, secretkey: str):
+        digest = hmac.new(secretkey.encode('utf-8'), jsonstr.encode('utf-8'), sha256).digest()
+        computed_hmac = b64encode(digest)
+        return computed_hmac
+
     def webhooktx(self, tagobj, captureobj):
         """
         Transmit JSON dictionary to a webhook
@@ -60,12 +69,26 @@ class Captures(MultipleResource):
         if webhook is None:
             return
 
-        schema = ConsumerCaptureSchemaWithSamples()
-        capturedict = schema.dump(captureobj)
+        fieldsjson = webhook.fields
+        if fieldsjson is not None:
+            fieldslist = json.loads(fieldsjson)
+        else:
+            fieldslist = None
 
-        #https://webhook.site/a1b658b6-6b23-4a49-959c-e9b33d20e074
+        try:
+            schema = ConsumerCaptureSchemaWithSamples(only=fieldslist)
+            capturedict = schema.dump(captureobj)
+        except ValueError:
+            capturedict = {'webhook_error': 'Field does not exist. Create a new webhook and check the fields parameter'}
+
+
+        webhook.address = 'https://webhook.site/672d3cf8-828b-4908-b57c-16e47ecb1727'
         print(webhook.address)
-        req = requests.post(webhook.address, json=capturedict, timeout=10)
+
+        capturejson = json.dumps(capturedict)
+        hmacstr = self.generatehmac(jsonstr=capturejson, secretkey=webhook.wh_secretkey)
+        headers = {'X-CuplBackend-Hmac-SHA256': hmacstr}
+        requests.post(webhook.address, json=capturedict, headers=headers, timeout=10)
 
 
     def get(self):

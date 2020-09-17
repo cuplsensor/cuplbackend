@@ -3,7 +3,6 @@ from .models import Webhook
 
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
-from marshmallow_sqlalchemy import auto_field
 
 # http://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html
 
@@ -24,8 +23,6 @@ class ConsumerWebhookSchema(WebhookSchema):
     tagserial = fields.String()
     created_on = fields.DateTime(dump_only=True)
     load_only = ('tag_id',)
-
-
 
 
 
