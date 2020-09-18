@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.1
 info:
   title: cupl Consumer API
   description: API endpoints that do not require token based authentication.
@@ -622,7 +622,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT    # optional, arbitrary value for documentation purposes
-x-webhooks:
+webhooks:
   captureDecoded:
     post:
       summary: Capture Decoded
