@@ -417,7 +417,7 @@ x-webhooks:
           application/json:
             schema:
               allOf: # Combines the BasicErrorModel and the inline model
-              - $ref: '#/components/schemas/Capture'
+                - $ref: '#/components/schemas/Capture'
       responses:
         "200":
           description: Return a 200 status to indicate that the data was received successfully
