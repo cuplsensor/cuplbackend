@@ -411,12 +411,12 @@ x-webhooks:
       description: A capture has been read from a tag and decoded successfully.
       operationId: captureHook
       tags:
-        - Webhook
+        - Captures
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Webhook"
+              $ref: "#/components/schemas/Capture"
       responses:
         "200":
           description: Return a 200 status to indicate that the data was received successfully
