@@ -403,22 +403,7 @@ paths:
           content:
             application/json:
               schema: { }
-webhooks:
-  captureDecoded:
-    post:
-      summary: Capture Decoded
-      description: A capture has been read from a tag and decoded successfully.
-      operationId: captureHook
-      tags:
-        - Webhook
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CaptureSample"
-      responses:
-        "200":
-          description: Return a 200 status to indicate that the data was received successfully
+
 components:
   schemas:
     Webhook:
@@ -639,3 +624,19 @@ components:
       scheme: bearer
       bearerFormat: JWT    # optional, arbitrary value for documentation purposes
 
+webhooks:
+  captureDecoded:
+    post:
+      summary: Capture Decoded
+      description: A capture has been read from a tag and decoded successfully.
+      operationId: captureHook
+      tags:
+        - Webhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CaptureSample"
+      responses:
+        "200":
+          description: Return a 200 status to indicate that the data was received successfully
