@@ -182,7 +182,7 @@ paths:
                 type: object
   /version:
     get:
-      summary: Version
+      summary: Get Version
       description: Get cuplbackend version information.
       operationId: VersionGet
       responses:
