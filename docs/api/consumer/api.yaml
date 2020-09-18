@@ -399,7 +399,7 @@ paths:
           content:
             application/json:
               schema: { }
-              
+
   /version:
     get:
       summary: Get Version
@@ -408,17 +408,19 @@ paths:
       responses:
         200:
           description: A capture object
-          schema:
-            type: object
-            properties:
-              cuplcodec:
-                type: string
-                description: cuplcodec version number. This is a dependency of cuplbackend.
-                example: "2.0.6"
-              cuplbackend:
-                type: string
-                description: cuplbackend version number.
-                example: "0.1.4"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cuplcodec:
+                    type: string
+                    description: cuplcodec version number. This is a dependency of cuplbackend.
+                    example: "2.0.6"
+                  cuplbackend:
+                    type: string
+                    description: cuplbackend version number.
+                    example: "0.1.4"
 
 x-webhooks:
   captureDecoded:
