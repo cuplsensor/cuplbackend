@@ -416,8 +416,7 @@ x-webhooks:
         content:
           application/json:
             schema:
-              allOf: # Combines the BasicErrorModel and the inline model
-                - $ref: '#/components/schemas/Capture'
+              $ref: '#/components/schemas/Capture'
       responses:
         "200":
           description: Return a 200 status to indicate that the data was received successfully
@@ -494,46 +493,38 @@ components:
           type: integer
           format: int32
           example: 232
-          readOnly: true
         tagserial:
           type: string
           description: Serial of the tag that made the capture
           example: YWJjZGVM
-          readOnly: true
         batvoltagemv:
           type: integer
           description: Tag battery voltage in mV.
           example: 3000
-          readOnly: true
         cursorpos:
           type: integer
           description: Cursor position in the circular buffer.
           example: 20
-          readOnly: true
         loopcount:
           type: integer
           description: Number of times the circularbuffer pointer has wrapped from
             the end to the beginning
           example: 2
-          readOnly: true
         timeintmins:
           type: integer
           description: The time interval between samples in minutes.
           example: 12
-          readOnly: true
         timestamp:
           type: string
           format: date-time
           example: 2019-01-15T13:09:52.456Z
-          readOnly: true
         format:
           type: integer
           description: Indicates whether samples in this capture contain temperature and relative humidity readings
            or just temperature.
           example: 1
-          readOnly: true
-        #status:
-        #  $ref: '#/components/schemas/CaptureStatus'
+        status:
+          $ref: '#/components/schemas/CaptureStatus'
     CaptureSample:
       title: CaptureSample
       required:
@@ -581,37 +572,30 @@ components:
           type: boolean
           description: True if the cause of the most recentreset was a brown out condition.
           example: false
-          readOnly: true
         clockfail:
           type: boolean
           description: True if the most recent reset was caused by an MCU clock failure.
           example: false
-          readOnly: true
         lpm5wakeup:
           type: boolean
           description: True if the MCU has woken up from LPM (Low Power Mode) x.5
           example: false
-          readOnly: true
         misc:
           type: boolean
           description: True if a reset has occured for miscellaneous reasons
           example: false
-          readOnly: true
         resetsalltime:
           type: integer
           example: 20
-          readOnly: true
         supervisor:
           type: boolean
           description: True if the supply voltage supervisor caused the most recent
             reset
           example: false
-          readOnly: true
         watchdog:
           type: boolean
           description: True if the MCU watchdog caused the most recent reset.
           example: false
-          readOnly: true
     EncodedCapture:
       title: Base64 Encoded Capture
       type: object
