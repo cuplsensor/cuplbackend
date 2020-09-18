@@ -1,4 +1,4 @@
-openapi: 3.1
+openapi: 3.1.0
 info:
   title: cupl Consumer API
   description: API endpoints that do not require token based authentication.
@@ -403,6 +403,24 @@ paths:
           content:
             application/json:
               schema: { }
+
+webhooks:
+  captureDecoded:
+    post:
+      summary: Capture Decoded
+      description: A capture has been read from a tag and decoded successfully.
+      operationId: captureHook
+      tags:
+        - Webhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Webhook"
+      responses:
+        "200":
+          description: Return a 200 status to indicate that the data was received successfully
+
 components:
   schemas:
     Webhook:
@@ -622,19 +640,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT    # optional, arbitrary value for documentation purposes
-webhooks:
-  captureDecoded:
-    post:
-      summary: Capture Decoded
-      description: A capture has been read from a tag and decoded successfully.
-      operationId: captureHook
-      tags:
-        - Webhook
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Capture"
-      responses:
-        "200":
-          description: Return a 200 status to indicate that the data was received successfully
