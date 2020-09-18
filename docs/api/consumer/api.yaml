@@ -474,6 +474,15 @@ components:
           format: date-time
           example: 2019-01-15T13:09:52.456
           readOnly: true
+    CaptureWithSamples:
+      allOf: # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Capture'
+        - type: object
+          properties:
+            samples:
+              type: array
+                items:
+                  $ref: '#/components/schemas/CaptureSample'
     CaptureWithTagToken:
       allOf: # Combines the BasicErrorModel and the inline model
         - $ref: '#/components/schemas/Capture'
