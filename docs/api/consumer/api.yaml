@@ -377,20 +377,6 @@ paths:
             application/json:
               schema:
                 type: object
-      callbacks:   # Callback definition
-        CaptureEvent:   # Event name
-          '{$request.body#/address}':   # The callback URL,
-                                            # Refers to the passed URL
-            post:
-              requestBody:   # Contents of the callback message
-                required: true
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/Capture'
-              responses:   # Expected responses to the callback message
-                '200':
-                  description: Your server returns this code if it accepts the callback
     delete:
       description: Delete a webhook
       summary: Delete a webhook
@@ -636,3 +622,19 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+x-webhooks:
+  captureDecoded:
+    post:
+      summary: Capture Decoded
+      description: A capture has been read from a tag and decoded successfully.
+      operationId: captureHook
+      tags:
+        - Webhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Capture"
+      responses:
+        "200":
+          description: Return a 200 status to indicate that the data was received successfully
