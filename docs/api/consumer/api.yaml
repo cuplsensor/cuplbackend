@@ -481,8 +481,8 @@ components:
           properties:
             samples:
               type: array
-                items:
-                  $ref: '#/components/schemas/CaptureSample'
+              items:
+                $ref: '#/components/schemas/CaptureSample'
     CaptureWithTagToken:
       allOf: # Combines the BasicErrorModel and the inline model
         - $ref: '#/components/schemas/Capture'
