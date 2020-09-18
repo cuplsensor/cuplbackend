@@ -326,9 +326,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Webhook'
+                $ref: '#/components/schemas/Webhook'
         400:
           description: bad input parameter
           content:
@@ -362,9 +360,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Webhook'
+                $ref: '#/components/schemas/Webhook'
         400:
           description: bad input parameter
           content:
@@ -482,7 +478,7 @@ components:
             samples:
               type: array
               items:
-                $ref: '#/components/schemas/CaptureSample'
+                type: integer
     CaptureWithTagToken:
       allOf: # Combines the BasicErrorModel and the inline model
         - $ref: '#/components/schemas/Capture'
