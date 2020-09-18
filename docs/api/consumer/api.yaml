@@ -15,6 +15,7 @@ paths:
       operationId: TagGet
       parameters:
       - name: serial
+        required: True
         in: path
         description: Tag serial
         schema:
@@ -44,6 +45,7 @@ paths:
         - TagToken: [ ]
       parameters:
         - name: serial
+          required: True
           in: path
           description: Tag serial
           schema:
@@ -155,7 +157,8 @@ paths:
           description: A capture object
           headers:
             Link:
-              type: string
+              schema:
+                type: string
               description: |
                 Links to related resources, in the format defined by
                 [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
@@ -264,6 +267,7 @@ paths:
       parameters:
       - name: id
         in: path
+        required: True
         description: Capture database ID
         schema:
           type: integer
@@ -282,7 +286,8 @@ paths:
           description: A list of sample objects
           headers:
             Link:
-              type: string
+              schema:
+                type: string
               description: |
                 Links to related resources, in the format defined by
                 [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
@@ -310,6 +315,7 @@ paths:
         - TagToken: [ ]
       parameters:
       - name: serial
+        required: True
         in: path
         description: Tag serial
         schema:
@@ -337,7 +343,7 @@ paths:
       security:
         - TagToken: [ ]
       requestBody:
-        description: Capture creation fields
+        description: Webhook creation fields
         content:
           '*/*':
             schema:
@@ -345,6 +351,7 @@ paths:
         required: true
       parameters:
         - name: serial
+          required: True
           in: path
           description: Tag serial
           schema:
@@ -370,6 +377,20 @@ paths:
             application/json:
               schema:
                 type: object
+      callbacks:   # Callback definition
+        CaptureEvent:   # Event name
+          '{$request.body#/address}':   # The callback URL,
+                                            # Refers to the passed URL
+            post:
+              requestBody:   # Contents of the callback message
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Capture'
+              responses:   # Expected responses to the callback message
+                '200':
+                  description: Your server returns this code if it accepts the callback
     delete:
       description: Delete a webhook
       summary: Delete a webhook
@@ -380,6 +401,7 @@ paths:
         - TagToken: [ ]
       parameters:
         - name: serial
+          required: True
           in: path
           description: Tag serial
           schema:
@@ -403,7 +425,6 @@ components:
       properties:
         address:
           type: string
-          required: true
           description: URL to send the POST request to when the tag is scanned. Data are encoded as JSON.
           example: https://webhook.site/a1b658b6-6b23-4a49-959c-e9b33d20e034
         fields:
