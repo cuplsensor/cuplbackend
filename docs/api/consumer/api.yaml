@@ -531,8 +531,8 @@ components:
            or just temperature.
           example: 1
           readOnly: true
-        status:
-          $ref: '#/components/schemas/CaptureStatus'
+        #status:
+        #  $ref: '#/components/schemas/CaptureStatus'
     CaptureSample:
       title: CaptureSample
       required:
