@@ -412,7 +412,7 @@ x-webhooks:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Capture'
+              $ref: '#/components/schemas/CaptureWithSamples'
       responses:
         "200":
           description: Return a 200 status to indicate that the data was received successfully
@@ -476,7 +476,9 @@ components:
         - type: object
           properties:
             samples:
-              type: integer
+              type: array
+              items:
+                $ref: '#/components/schemas/CaptureSample'
     CaptureWithTagToken:
       allOf: # Combines the BasicErrorModel and the inline model
         - $ref: '#/components/schemas/Capture'
