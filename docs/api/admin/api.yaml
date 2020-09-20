@@ -438,8 +438,164 @@ paths:
             application/json:
               schema: {}
 
+  /webhook/{id}:
+    get:
+      description: Get a webhook from an id.
+      summary: Get a webhook
+      tags:
+        - Webhooks
+      operationId: WebhookGet
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Webhook id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A webhook object
+          headers: { }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminWebhook'
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema: { }
+
+    delete:
+      description: Delete a webhook
+      summary: Delete a webhook
+      tags:
+        - Webhooks
+      operationId: WebhookDelete
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Webhook id
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Webhook has been deleted
+          content:
+            application/json:
+              schema: { }
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema: { }
+        '404':
+          description: No tag found
+          content:
+            application/json:
+              schema: { }
+  /webhooks:
+    get:
+      description: Get a list of webhooks ordered by ID
+      summary: List all webhooks
+      tags:
+        - Webhooks
+      operationId: WebhooksGet
+      parameters:
+        - name: offset
+          in: query
+          description: Return webhooks starting from this index.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Limit the number of webhooks returned.
+          schema:
+            type: integer
+      security:
+        - Bearer: [ ]
+      responses:
+        200:
+          description: List of webhooks
+          headers:
+            Link:
+              type: string
+              description: |
+                Links to related resources, in the format defined by
+                [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
+                This will include a link with relation type `next` to the
+                next page, if there is a next page.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminWebhook'
+        400:
+          description: bad input parameter
+          content:
+            application/json:
+              schema: { }
+    post:
+      description: Create a webhook
+      summary: Create a webhook
+      tags:
+        - Webhooks
+      operationId: WebhookPost
+      security:
+        - Bearer: [ ]
+      responses:
+        201:
+          description: Webhook created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminWebhook'
+          headers: { }
+        400:
+          description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema: { }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminWebhook'
+        description: Webhook id
+
 components:
   schemas:
+    AdminWebhook:
+      title: Webhook
+      type: object
+      properties:
+        tag_id:
+          type: integer
+          description: Id of the parent tag.
+          example: 1
+        address:
+          type: string
+          description: URL to send the POST request to when the tag is scanned. Data are encoded as JSON.
+          example: https://webhook.site/a1b658b6-6b23-4a49-959c-e9b33d20e034
+        fields:
+          type: string
+          description: A string containing a comma separated list of fields to include in the capture webhook.
+          example: samples, md5
+        wh_secretkey:
+          type: string
+          description: The secret key used to create an HMAC-SHA256 signature in the webhook header.
+          example: 4490vasnl456q2l
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+          example: 2019-01-15T13:09:52.456Z
     AdminTag:
       allOf:     # Combines the BasicErrorModel and the inline model
         - $ref: '../common.yaml#/components/schemas/Tag'
