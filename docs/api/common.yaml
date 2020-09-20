@@ -18,10 +18,12 @@ components:
           description: Version string for the cuplTag hardware.
           example: HT04
         serial:
+          readOnly: true
           type: string
           description: Serial of the tag that made the capture
           example: YWJjZGVM
         timeregistered:
+          readOnly: true
           type: string
           description: Time the tag was created
           format: date-time

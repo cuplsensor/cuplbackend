@@ -645,6 +645,7 @@ components:
         - type: object
           properties:
             id:
+              readOnly: true
               type: integer
               format: int32
             secretKey:
