@@ -402,12 +402,12 @@ paths:
 
   /version:
     get:
-      summary: Get Version
+      summary: Get version
       description: Get cuplbackend version information.
       operationId: VersionGet
       responses:
         '200':
-          description: A capture object
+          description: Version information
           content:
             application/json:
               schema:
