@@ -216,6 +216,49 @@ paths:
             application/json:
               schema: {}
 
+    put:
+      tags:
+        - Tags
+      description: Edit a tag
+      summary: Edit a tag
+      operationId: TagPut
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tag id
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminTag'
+      responses:
+        200:
+          description: A tag object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminTag'
+        400:
+          description: Bad input parameter.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Not authorised. TagToken is not valid for this tag.
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: Tag not found.
+          content: { }
+
     delete:
       description: Delete a tag
       summary: Delete a tag
