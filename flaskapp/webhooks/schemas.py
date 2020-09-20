@@ -15,6 +15,7 @@ class WebhookSchema(ModelSchema):
         sqla_session = db.session
         strict = True
     tag_id = fields.Integer()
+    created_on = fields.DateTime(dump_only=True)
 
 
 class ConsumerWebhookSchema(WebhookSchema):
