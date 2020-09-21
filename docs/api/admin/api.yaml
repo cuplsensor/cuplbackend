@@ -629,7 +629,7 @@ components:
         fields:
           type: string
           description: A string containing a comma separated list of fields to include in the capture webhook.
-          example: '["samples", "batvoltagemv"]'
+          example: ["samples", "batvoltagemv"]
         wh_secretkey:
           type: string
           description: The secret key used to create an HMAC-SHA256 signature in the webhook header.
