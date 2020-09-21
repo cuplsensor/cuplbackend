@@ -22,6 +22,17 @@ class Tag(SingleAdminResource):
     def __init__(self):
         super().__init__(TagSchema, tags)
 
+    def put(self, id):
+        """Edit a tag description"""
+        parsedargs = super().parse_body_args(request.get_json(), optlist=['description',
+                                                                          'fwversion',
+                                                                          'hwversion',
+                                                                          'usehmac',
+                                                                          'secretkey'])
+        tagobj = tags.get(id)
+        tags.update(tagobj, **parsedargs)
+        return '', 204
+
 
 class TagSimulate(SingleAdminResource):
     """Get a URL created by the encoder in wscodec. Similar to what the tag will produce. """
