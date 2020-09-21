@@ -28,6 +28,11 @@ components:
           description: Time the tag was created
           format: date-time
           example: 2019-01-15T13:09:52.456
+        webhook:
+          type: integer
+          description: Webhook Id or null if no webhook has been set.
+          example: 3
+          readOnly: true
     Capture:
       title: Capture
       type: object

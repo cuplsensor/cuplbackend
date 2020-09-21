@@ -492,6 +492,11 @@ components:
           format: date-time
           example: 2019-01-15T13:09:52.456
           readOnly: true
+        webhook:
+          type: integer
+          description: Webhook Id or null if no webhook has been set.
+          example: 3
+          readOnly: true
     CaptureWithSamples:
       allOf: # Combines the BasicErrorModel and the inline model
         - $ref: '#/components/schemas/Capture'

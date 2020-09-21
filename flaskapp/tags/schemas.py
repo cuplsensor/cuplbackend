@@ -1,7 +1,9 @@
 from ..core import ma
 from .models import Tag
+from marshmallow import fields
+from ..webhooks.schemas import WebhookSchema
 
-__all__ = ['TagSchema', 'ConsumerTagSchema', 'ConsumerTagDescriptionSchema']
+__all__ = ['TagSchema', 'ConsumerTagSchema']
 
 
 class TagSchema(ma.ModelSchema):

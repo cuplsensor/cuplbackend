@@ -45,6 +45,7 @@ stages:
         secretkey: !anystr
         usehmac: !anybool
         serial: !anystr
+        webhook: null
       save:
         body:
           test_tag_id: id
@@ -159,6 +160,21 @@ stages:
       save:
         body:
           test_wh_secretkey: wh_secretkey
+
+  - name: GET the tag and check the webhook has changed
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/v1/tag/{serial}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+
+    response:
+      status_code: 200
+      body:
+        webhook: !anyint
 
   - name: Post a 2nd webhook to the same tag. This should fail with a 409 conflict.
 

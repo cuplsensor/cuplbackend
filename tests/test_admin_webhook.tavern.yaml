@@ -149,6 +149,30 @@ stages:
         fields: null
         wh_secretkey: !anystr
 
+  - name: Verify that the tag can be retrieved by running a GET request
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        id: !int '{test_tag_id}'
+        serial: !anystr
+        secretkey: !anystr
+        fwversion: !anystr
+        hwversion: !anystr
+        description: !anystr
+        usehmac: !anybool
+        timeregistered: !anything
+        webhook: !anyint
+
   - name: Delete the webhook.
 
     # Define the request to be made
