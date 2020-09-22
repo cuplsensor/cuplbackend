@@ -11,7 +11,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -30,7 +30,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       headers:
         content-type: application/json
@@ -57,7 +57,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
       json:
         serial: "{serial}"
@@ -77,7 +77,7 @@ stages:
         cursorpos: !anyint
         id: !anyint
         loopcount: !anyint
-        md5: !anystr
+        hash: !anystr
         status:
           brownout: !anybool
           parent_capture: !anyint
@@ -92,7 +92,7 @@ stages:
         timestamp: !anystr
         tagtoken_type: "Bearer"
         tagtoken: !anystr
-        version: !anyint
+        format: !anystr
       save:
         body:
           test_capture_id: id
@@ -102,7 +102,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}"
+      url: "{baseurl}/api/consumer/tag/{serial}"
       method: PUT
       json:
         description: "test_description"
@@ -117,7 +117,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}"
+      url: "{baseurl}/api/consumer/tag/{serial}"
       method: GET
       headers:
         content-type: application/json
@@ -131,7 +131,7 @@ stages:
   - name: Use the token to create a 2nd new tag
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       headers:
         content-type: application/json
@@ -155,7 +155,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{test_tag2_serial}"
+      url: "{baseurl}/api/consumer/tag/{test_tag2_serial}"
       method: PUT
       json:
         description: "test_description"
@@ -168,7 +168,7 @@ stages:
   - name: Delete the 1st tag by ID.
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json
@@ -180,7 +180,7 @@ stages:
   - name: Delete the 2nd tag by ID.
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag2_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag2_id}"
       method: DELETE
       headers:
         content-type: application/json

@@ -15,7 +15,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
 
     # and the expected response code and body
@@ -42,7 +42,7 @@ stages:
 
     # Define the request to \be made
     request:
-      url: "{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -61,7 +61,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       headers:
         content-type: application/json
@@ -85,17 +85,17 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/captures"
+      url: "{baseurl}/api/admin/captures"
       method: POST
       json:
         tag_id: !int "{test_tag_id:d}"
         batvoltagemv: !int "{testcapture.batvoltagemv:d}"
         timestamp: "{testcapture.timestamp}"
         loopcount: "{testcapture.loopcount}"
-        version: "{testcapture.version}"
+        format: "{testcapture.format}"
         cursorpos: "{testcapture.cursorpos}"
         timeintmins: "{testcapture.timeintmins}"
-        md5: "{testcapture.md5}"
+        hash: "{testcapture.hash}"
         status:
           misc: "{testcapture.status.misc}"
           supervisor: "{testcapture.status.supervisor}"
@@ -119,17 +119,17 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/captures"
+      url: "{baseurl}/api/admin/captures"
       method: POST
       json:
         tag_id: !int "{test_tag_id:d}"
         batvoltagemv: !int "{testcapture.batvoltagemv:d}"
         timestamp: "{testcapture.timestamp}"
         loopcount: "{testcapture.loopcount}"
-        version: "{testcapture.version}"
+        format: "{testcapture.format}"
         cursorpos: "{testcapture.cursorpos}"
         timeintmins: "{testcapture.timeintmins}"
-        md5: "{testcapture.md5}"
+        hash: "{testcapture.hash}"
         status:
           misc: "{testcapture.status.misc}"
           supervisor: "{testcapture.status.supervisor}"
@@ -150,7 +150,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json

@@ -10,7 +10,7 @@ class ConsumerApiWrapper(ApiWrapper):
             tokenstr (str): OAuth access token.
         """
         super().__init__(baseurl)
-        self.apiurl = "{baseurl}/api/consumer/v1".format(baseurl=self.baseurl)
+        self.apiurl = "{baseurl}/api/consumer".format(baseurl=self.baseurl)
 
 
     @staticmethod

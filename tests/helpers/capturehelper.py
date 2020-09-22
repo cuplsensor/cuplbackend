@@ -28,7 +28,7 @@ class CaptureHelper:
             "tag_id": tag_id,
             "cursorpos": 10,
             "loopcount": 20,
-            "md5": ''.join(random.choice(ascii_lowercase) for i in range(8)),
+            "hash": ''.join(random.choice(ascii_lowercase) for i in range(8)),
             "samples": samples,
             "status": {
                 "brownout": False,
@@ -41,7 +41,7 @@ class CaptureHelper:
             },
             "timeintmins": timeintmins,
             "timestamp": samples[-1]['timestamp'],
-            "version": 1
+            "format": "TempRH_URL"
         }
         return capture
 

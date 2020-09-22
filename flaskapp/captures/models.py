@@ -24,9 +24,9 @@ class Capture(db.Model):
     loopcount = db.Column(db.Integer)
     cursorpos = db.Column(db.Integer)
     status = db.Column(db.Integer)
-    version = db.Column(db.Integer)
+    format = db.Column(db.String(30))
     timeintmins = db.Column(db.Integer)
-    md5 = db.Column(db.String(20))
+    hash = db.Column(db.String(20))
     status = db.relationship('CaptureStatus',
                              uselist=False,
                              backref=db.backref('parent_capture'),
@@ -36,7 +36,7 @@ class Capture(db.Model):
                               lazy='select',
                               backref=db.backref('parent_capture'),
                               cascade="all, delete-orphan")
-    __table_args__ = (UniqueConstraint('tag_id', 'md5', name='_tagid_md5_uc'),)
+    __table_args__ = (UniqueConstraint('tag_id', 'hash', name='_tagid_md5_uc'),)
 
     @hybrid_property
     def tagserial(self):
@@ -46,11 +46,11 @@ class Capture(db.Model):
                  tag_id,
                  timestamp,
                  loopcount,
-                 version,
+                 format,
                  batvoltagemv,
                  cursorpos,
                  timeintmins,
-                 md5,
+                 hash,
                  status,
                  samples=[],
                  id=None):
@@ -59,11 +59,11 @@ class Capture(db.Model):
         self.id = id
         self.timestamp = timestamp
         self.loopcount = loopcount
-        self.version = version
+        self.format = format
         self.batvoltagemv = batvoltagemv
         self.cursorpos = cursorpos
         self.timeintmins = timeintmins
-        self.md5 = md5
+        self.hash = hash
         self.status = status
         self.samples = samples
 

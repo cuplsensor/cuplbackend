@@ -3,7 +3,7 @@ from .. import ApiWrapper
 
 
 def api_url(baseurl: str) -> str:
-    return "{baseurl}/api/admin/v1".format(baseurl=baseurl)
+    return "{baseurl}/api/admin/".format(baseurl=baseurl)
 
 
 def request_admin_token(baseurl: str, adminapi_client_id: str, adminapi_client_secret: str) -> str:

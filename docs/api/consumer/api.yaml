@@ -345,7 +345,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/Webhook'
+              $ref: '#/components/schemas/WebhookWithSecretkey'
         required: true
       parameters:
         - name: serial
@@ -360,7 +360,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Webhook'
+                $ref: '#/components/schemas/WebhookWithSecretkey'
         400:
           description: bad input parameter
           content:
@@ -441,6 +441,15 @@ x-webhooks:
 
 components:
   schemas:
+    WebhookWithSecretkey:
+      allOf: # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Webhook'
+        - type: object
+          properties:
+            wh_secretkey:
+              type: string
+              description: The secret key used to create an HMAC-SHA256 signature in the webhook header. Only returned once by a POST request.
+              example: 4490vasnl456q2l
     Webhook:
       title: Webhook
       type: object
@@ -453,10 +462,6 @@ components:
           type: string
           description: A string containing a comma separated list of fields to include in the capture webhook.
           example: '["samples", "batvoltagemv"]'
-        wh_secretkey:
-          type: string
-          description: The secret key used to create an HMAC-SHA256 signature in the webhook header.
-          example: 4490vasnl456q2l
         created_on:
           type: string
           format: date-time

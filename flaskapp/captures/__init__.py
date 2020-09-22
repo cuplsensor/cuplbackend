@@ -28,10 +28,15 @@ class CaptureService(Service):
 
         resetcause = decodedurl.status.resetcause
 
-        if type(decodedurl) == TempRH_URL:
+        typestr = decodedurl.__class__.__name__
+        typestrsplit = [a for a in typestr.split('.') if a]
+        format = '.'.join(typestrsplit[-2:])
+        if format is "TempRH_URL":
             samples = [CaptureSample(sample.timestamp, sample.temp, sample.rh) for sample in decodedurl.samples]
-        else:
+        elif format is "Temp_URL":
             samples = [CaptureSample(sample.timestamp, sample.temp) for sample in decodedurl.samples]
+        else:
+            raise ValueError(format)
 
         status = CaptureStatus(resetsalltime=decodedurl.status.resetsalltime,
                                brownout=resetcause['brownout'],
@@ -47,9 +52,9 @@ class CaptureService(Service):
                                  status=status,
                                  batvoltagemv=decodedurl.status.get_batvoltagemv(),
                                  cursorpos=decodedurl.endmarkerpos,
-                                 version=0,
+                                 format=format,
                                  timeintmins=decodedurl.timeintmins_int,
-                                 md5=decodedurl.hash,
+                                 hash=decodedurl.hash,
                                  samples=samples)
 
         # Assign serial to the tag and commit to the db.
@@ -62,9 +67,9 @@ class CaptureService(Service):
                status,
                batvoltagemv,
                cursorpos,
-               version,
+               format,
                timeintmins,
-               md5,
+               hash,
                samples):
 
 
@@ -76,9 +81,9 @@ class CaptureService(Service):
                                  status=status,
                                  batvoltagemv=batvoltagemv,
                                  cursorpos=cursorpos,
-                                 version=version,
+                                 format=format,
                                  timeintmins=timeintmins,
-                                 md5=md5,
+                                 hash=hash,
                                  samples=samples)
 
         return capture

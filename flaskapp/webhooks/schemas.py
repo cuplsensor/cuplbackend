@@ -6,7 +6,7 @@ from marshmallow import fields
 
 # http://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html
 
-__all__ = ['WebhookSchema', 'ConsumerWebhookSchema']
+__all__ = ['WebhookSchema', 'ConsumerWebhookSchemaWithKey', 'ConsumerWebhookSchema']
 
 
 class WebhookSchema(ModelSchema):
@@ -18,12 +18,17 @@ class WebhookSchema(ModelSchema):
     created_on = fields.DateTime(dump_only=True)
 
 
-class ConsumerWebhookSchema(WebhookSchema):
+class ConsumerWebhookSchemaWithKey(WebhookSchema):
     class Meta(WebhookSchema.Meta):
         exclude = ('parent_tag',)
     tagserial = fields.String()
     created_on = fields.DateTime(dump_only=True)
     load_only = ('tag_id',)
+
+
+class ConsumerWebhookSchema(ConsumerWebhookSchemaWithKey):
+    class Meta(WebhookSchema.Meta):
+        exclude = ('parent_tag', 'wh_secretkey',)
 
 
 

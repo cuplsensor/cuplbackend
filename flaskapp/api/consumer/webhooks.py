@@ -12,7 +12,7 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 import json
 from ...services import tags, webhooks
-from ...webhooks.schemas import ConsumerWebhookSchema
+from ...webhooks.schemas import ConsumerWebhookSchema, ConsumerWebhookSchemaWithKey
 from ...captures.schemas import ConsumerCaptureSchemaWithSamples
 from ..baseresource import SingleResource
 from .tagtokenresource import TagTokenSingleResource, lookup_webhook_id, requires_tagtoken
@@ -46,7 +46,7 @@ class Webhook(SingleResource):
         # Append tag_id from the path
         jsondata['tag_id'] = tag_id
         # Create a schema for one model instance.
-        schema = self.Schema()
+        schema = ConsumerWebhookSchemaWithKey()
         # Load schema with the JSON data
         try:
             schemaobj = schema.load(jsondata)

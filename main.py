@@ -16,8 +16,8 @@ def simple(env, resp):
 
 
 app = DispatcherMiddleware(simple, {
-        '/api/admin/v1': admin.create_app(),
-        '/api/consumer/v1': consumer.create_app()
+        '/api/admin': admin.create_app(),
+        '/api/consumer': consumer.create_app()
     })
 
 if __name__ == "__main__":

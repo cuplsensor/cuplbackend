@@ -11,7 +11,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -30,7 +30,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       headers:
         content-type: application/json
@@ -60,7 +60,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
       json:
         serial: "{serial}"
@@ -80,7 +80,7 @@ stages:
         cursorpos: !anyint
         id: !anyint
         loopcount: !anyint
-        md5: !anystr
+        hash: !anystr
         status:
           brownout: !anybool
           parent_capture: !anyint
@@ -95,7 +95,7 @@ stages:
         timestamp: !anystr
         tagtoken_type: "Bearer"
         tagtoken: !anystr
-        version: !anyint
+        format: !anystr
       save:
         body:
           test_capture_id: id
@@ -105,7 +105,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: GET
       headers:
         content-type: application/json
@@ -129,7 +129,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
         address: "https://postb.in/{test_postbin_id:s}"
@@ -139,12 +139,19 @@ stages:
 
     response:
       status_code: 200
+      body:
+        address: "https://postb.in/{test_postbin_id:s}"
+        wh_secretkey: !anystr
+        created_on: !anystr
+      save:
+        body:
+          test_wh_secretkey: wh_secretkey
 
   - name: Get the webhook
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: GET
       headers:
         content-type: application/json
@@ -155,17 +162,15 @@ stages:
         content-type: application/json
       body:
         address: "https://postb.in/{test_postbin_id:s}"
-        wh_secretkey: !anystr
+        fields: null
         created_on: !anystr
-      save:
-        body:
-          test_wh_secretkey: wh_secretkey
+
 
   - name: GET the tag and check the webhook has changed
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}"
+      url: "{baseurl}/api/consumer/tag/{serial}"
       method: GET
       headers:
         content-type: application/json
@@ -180,7 +185,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
         address: "test_address"
@@ -203,7 +208,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
       json:
         serial: "{serial}"
@@ -252,7 +257,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: DELETE
       headers:
         content-type: application/json
@@ -265,7 +270,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
         address: "https://postb.in/{test_postbin_id:s}"
@@ -290,7 +295,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
       json:
         serial: "{serial}"
@@ -336,7 +341,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: DELETE
       headers:
         content-type: application/json
@@ -349,7 +354,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/tag/{serial}/webhook"
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
         address: "https://postb.in/{test_postbin_id:s}"
@@ -363,7 +368,7 @@ stages:
   - name: Delete the 1st tag by ID.
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json

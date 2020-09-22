@@ -15,7 +15,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
 
     # and the expected response code and body
@@ -37,7 +37,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -56,7 +56,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       headers:
         content-type: application/json
@@ -84,7 +84,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
       json:
         serial: "{serial}"
@@ -104,7 +104,7 @@ stages:
         cursorpos: !anyint
         id: !anyint
         loopcount: !anyint
-        md5: !anystr
+        hash: !anystr
         status:
           brownout: !anybool
           parent_capture: !anyint
@@ -117,7 +117,7 @@ stages:
           watchdog: !anybool
         timeintmins: !anyint
         timestamp: !anystr
-        version: !anyint
+        format: !anystr
       save:
         body:
           test_capture_id: id
@@ -126,7 +126,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: GET
       params:
         serial: "{serial}"
@@ -142,7 +142,7 @@ stages:
           cursorpos: !anyint
           id: !int "{test_capture_id:d}"
           loopcount: !anyint
-          md5: !anystr
+          hash: !anystr
           status:
             brownout: !anybool
             parent_capture: !anyint
@@ -155,14 +155,14 @@ stages:
             watchdog: !anybool
           timeintmins: !anyint
           timestamp: !anystr
-          version: !anyint
+          format: !anystr
 
 
   - name: GET the capture for this tag and verify that it contains the correct fields
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures/{test_capture_id}"
+      url: "{baseurl}/api/consumer/captures/{test_capture_id}"
       method: GET
       headers:
         content-type: application/json
@@ -176,7 +176,7 @@ stages:
         cursorpos: !anyint
         id: !int "{test_capture_id:d}"
         loopcount: !anyint
-        md5: !anystr
+        hash: !anystr
         status:
           brownout: !anybool
           parent_capture: !anyint
@@ -189,13 +189,13 @@ stages:
           watchdog: !anybool
         timeintmins: !anyint
         timestamp: !anystr
-        version: !anyint
+        format: !anystr
 
   - name: GET samples from the capture
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures/{test_capture_id}/samples"
+      url: "{baseurl}/api/consumer/captures/{test_capture_id}/samples"
       method: GET
       headers:
         content-type: application/json
@@ -208,7 +208,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
       json:
         serial: "{serial}"
@@ -227,7 +227,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json

@@ -18,7 +18,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/webhooks"
+      url: "{baseurl}/api/admin/webhooks"
       method: POST
 
     # and the expected response code and body
@@ -45,7 +45,7 @@ stages:
 
     # Define the request to \be made
     request:
-      url: "{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -68,7 +68,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       headers:
         content-type: application/json
@@ -92,7 +92,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/webhooks"
+      url: "{baseurl}/api/admin/webhooks"
       method: POST
       json:
         tag_id: !int "{test_tag_id:d}"
@@ -118,7 +118,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/webhooks"
+      url: "{baseurl}/api/admin/webhooks"
       method: POST
       json:
         tag_id: !int "{test_tag_id:d}"
@@ -134,7 +134,7 @@ stages:
   - name: Get the webhook
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/webhook/{test_webhook_id}"
+      url: "{baseurl}/api/admin/webhook/{test_webhook_id}"
       method: GET
       headers:
         content-type: application/json
@@ -153,7 +153,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: GET
       headers:
         content-type: application/json
@@ -177,7 +177,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/webhook/{test_webhook_id}"
+      url: "{baseurl}/api/admin/webhook/{test_webhook_id}"
       method: DELETE
       headers:
         content-type: application/json
@@ -191,7 +191,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json
