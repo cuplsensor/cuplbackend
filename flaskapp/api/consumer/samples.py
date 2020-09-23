@@ -31,14 +31,16 @@ class CaptureSamples(SingleResource):
         """
         capt = captures.get_or_404(id)
         parsedargs = CaptureSamples.parse_body_args(request.args.to_dict(),
-                                                    optlist=['offset', 'limit'])
+                                                    optlist=['page', 'per_page'])
 
-        offset = parsedargs.get('offset', 0)
-        limit = parsedargs.get('limit', None)
-        samples = capturesamples.find(capture_id=capt.id).order_by(desc(CaptureSample.timestamp)).offset(offset).limit(limit)
+        page = int(parsedargs.get('page', 1))
+        per_page = int(parsedargs.get('per_page', 100))
+        samplesquery = capturesamples.find(capture_id=capt.id).order_by(desc(CaptureSample.timestamp))
+        samplespages = samplesquery.paginate(page=page, per_page=per_page, max_per_page=3000)
+        sampleslist = samplespages.items
 
         schema = self.Schema()
-        result = schema.dump(samples, many=True)
+        result = schema.dump(sampleslist, many=True)
 
         return jsonify(result)
 
@@ -52,36 +54,32 @@ class Samples(BaseResource):
     def __init__(self):
         super().__init__(CaptureSampleSchema, None)
 
-    def get(self):
+    def get(self, serial):
         """
         Get unique samples for a tag in a given time range
         """
         parsedargs = Samples.parse_body_args(request.args.to_dict(),
-                                             requiredlist=['serial', 'starttimestr', 'endtimestr'],
-                                             optlist=['offset', 'limit'])
+                                             requiredlist=['starttimestr', 'endtimestr'],
+                                             optlist=['page', 'per_page'])
 
-        serial = parsedargs['serial']
         starttimestr = parsedargs['starttimestr']
         endtimestr = parsedargs['endtimestr']
-        offset = parsedargs.get('offset', 0)
-        limit = parsedargs.get('limit', None)
-
-        if offset is None:
-            offset = 0
+        page = int(parsedargs.get('page', 1))
+        per_page = int(parsedargs.get('per_page', 100))
 
         tagobj = tags.get_by_serial(serial)
         starttime = parse(starttimestr)
         endtime = parse(endtimestr)
 
-        samples = tagobj.uniquesampleswindow(starttime, endtime, offset, limit)
-
-        current_app.logger.info(samples)
+        samplesquery = tagobj.uniquesampleswindow(starttime, endtime)
+        samplespages = samplesquery.paginate(page=page, per_page=per_page, max_per_page=20000)
+        sampleslist = samplespages.items
 
         schema = self.Schema()
-        result = schema.dump(samples, many=True)
+        result = schema.dump(sampleslist, many=True)
 
         return jsonify(result)
 
 
 api.add_resource(CaptureSamples, '/captures/<id>/samples')
-api.add_resource(Samples, '/samples')
+api.add_resource(Samples, '/tag/<serial>/samples')

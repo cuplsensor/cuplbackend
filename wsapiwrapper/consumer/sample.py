@@ -9,8 +9,8 @@ class SampleWrapper(ConsumerApiWrapper):
                     serial: str,
                     starttime: str,
                     endtime: str,
-                    offset: int = 0,
-                    limit: int = None) -> list:
+                    page: int = 1,
+                    per_page: int = 10000) -> list:
         """Get a list of temperature/humidity samples collected by a tag.
 
         A time window can be specified so that only samples that fall between starttime and endtime are returned.
@@ -28,17 +28,15 @@ class SampleWrapper(ConsumerApiWrapper):
             list: A list of samples. Each is a dictionary.
 
         """
-        samplesurl = "{apiurl}/samples".format(apiurl=self.apiurl)
+        samplesurl = "{apiurl}/tag/{serial}/samples".format(apiurl=self.apiurl,
+                                                            serial=serial)
 
         payload = {
-            'serial': serial,
             'starttimestr': starttime,
             'endtimestr': endtime,
-            'offset': offset
+            'page': page,
+            'per_page': per_page
         }
-
-        if limit is not None:
-            payload['limit'] = limit
 
         # Using urlencode is important to remove the '+' and convert it to %2B. Date decode does
         # not work without it.

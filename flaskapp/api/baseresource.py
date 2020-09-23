@@ -7,7 +7,7 @@
 """
 
 from flask_restful import Resource, abort
-from flask import jsonify, current_app, request
+from flask import jsonify, current_app, request, url_for
 from marshmallow import ValidationError
 
 
@@ -44,6 +44,26 @@ class BaseResource(Resource):
 
         return parsed
 
+    def make_relative_link(self, pageno: int, per_page: int, relstr: str, reqargs: dict):
+        reqargs.update(page=pageno)
+        reqargs.update(per_page=per_page)
+        return '<{}>; rel="{}"'.format(url_for(request.endpoint, **dict(reqargs), _external=True), relstr)
+
+    def make_link_header(self, resourcepages):
+        reqargs = dict(request.view_args)
+        linkheader = str()
+        # First page link
+        linkheader += self.make_relative_link(1, resourcepages.per_page, "first", reqargs) + ","
+        # Previous page link
+        if resourcepages.has_prev:
+            linkheader += self.make_relative_link(resourcepages.prev_num, resourcepages.per_page, "prev", reqargs) + ","
+        # Next page link
+        if resourcepages.has_next:
+            linkheader += self.make_relative_link(resourcepages.next_num, resourcepages.per_page, "next", reqargs) + ","
+        # Last page link
+        linkheader += self.make_relative_link(resourcepages.pages, resourcepages.per_page, "last", reqargs)
+        return linkheader
+
 
 class SingleResource(BaseResource):
     """Get, delete or modify one model instance. """
@@ -58,12 +78,8 @@ class SingleResource(BaseResource):
 
         """
         schema = self.Schema()
-        current_app.logger.info(id)
         modelobj = self.service.get_or_404(id)
         result = schema.dump(modelobj)
-        current_app.logger.info(id)
-        current_app.logger.info(modelobj)
-        current_app.logger.info(result)
         return jsonify(result)
 
     def delete(self, id):
@@ -86,32 +102,19 @@ class MultipleResource(BaseResource):
     def __init__(self, Schema, service):
         super().__init__(Schema, service)
 
-    def get(self):
-        """Returns a list of all model instances."""
-        # Instantiate a schema for many model instances.
-        schema = self.Schema(many=True)
-        # Obtain a list of all model instances from the service.
-        modelobjs = self.service.all()
-        # Populate schema with the list.
-        result = schema.dump(modelobjs)
-        current_app.logger.info(modelobjs)
-        current_app.logger.info(result)
-        # Jsonify the dictionary.
-        return jsonify(results=result)
-
     def get_filtered(self, reqfilterlist=[], optfilterlist=[]):
         """
         Get a list of resources filtered by requiredlist and optionally by optlist.
         Returns:
 
         """
-        optlist = ['offset', 'limit']
+        optlist = ['page', 'per_page']
         optlist.extend(optfilterlist)
 
         parsedargs = super().parse_body_args(request.args.to_dict(), requiredlist=reqfilterlist, optlist=optlist)
 
-        offset = parsedargs.get('offset', 0)
-        limit = parsedargs.get('limit', None)
+        page = int(parsedargs.get('page', 1))
+        per_page = int(parsedargs.get('per_page', 25))
 
         filters = dict()
 
@@ -125,12 +128,19 @@ class MultipleResource(BaseResource):
             if reqval is not None:
                 filters.update({reqfilter: reqval})
 
-        resourcelist = self.service.find(**filters).order_by(self.service.__model__.id.desc()).offset(offset).limit(
-            limit)
+        resourcepages = self.service.find(**filters).order_by(self.service.__model__.id.desc()).paginate(page=page,
+                                                                                                         per_page=per_page,
+                                                                                                         max_per_page=100)
+        resourcelist = resourcepages.items
 
         schema = self.Schema()
         result = schema.dump(resourcelist, many=True)
-        return jsonify(result)
+        response = jsonify(result)
+        # https://github.com/pallets/flask/issues/2111
+        linkheader = self.make_link_header(resourcepages)
+
+        response.headers.add('Link', linkheader)
+        return response
 
     def post(self):
         """Instantiate a model instance and return it."""

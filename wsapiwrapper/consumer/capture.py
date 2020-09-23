@@ -56,8 +56,8 @@ class CaptureWrapper(ConsumerApiWrapper):
 
     def get_samples(self,
                     capture_id: int,
-                    offset: int = 0,
-                    limit: int = None) -> list:
+                    page: int = 1,
+                    per_page: int = 1000) -> list:
         """Get a list of samples from a capture.
 
         Makes a GET request to the :ref:`CaptureSamples <CaptureSamplesConsumerAPI>` endpoint.
@@ -76,8 +76,8 @@ class CaptureWrapper(ConsumerApiWrapper):
         capturesamplesurl = "{apiurl}/captures/{capture_id}/samples".format(apiurl=self.apiurl,
                                                                             capture_id=capture_id)
 
-        queryparams = {'offset': offset,
-                       'limit': limit}
+        queryparams = {'page': page,
+                       'per_page': per_page}
 
         r = requests.get(capturesamplesurl, params=queryparams)
         r.raise_for_status()

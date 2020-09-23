@@ -44,7 +44,7 @@ class Tag(db.Model):
                               backref=db.backref('parent_tag'),
                               cascade="all, delete-orphan")
 
-    def uniquesampleswindow(self, starttime, endtime, offset=0, limit=None):
+    def uniquesampleswindow(self, starttime, endtime):
         threshold_in_seconds = 120
         # Select all capture samples belonging to this tag, between the start time and the end time.
         # Crucially all samples must be ordered by timestamp for the grouping to work.
@@ -80,16 +80,9 @@ class Tag(db.Model):
                                                      ((stmt3.c.id == CaptureSample.id) &
                                                       (stmt3.c.capture_id == stmt3.c.mincaptid))).order_by(
             CaptureSample.timestamp.desc()
-        ).offset(offset).limit(limit)
-        capturesamplelist = stmt4.all()
-        current_app.logger.info(stmt4)
-        current_app.logger.info("statement 2a")
-        current_app.logger.info(db.session.query(stmt2a).all())
-        current_app.logger.info("statement 3")
-        current_app.logger.info(db.session.query(stmt3).all())
-        current_app.logger.info("---")
-        current_app.logger.info(stmt4.all())
-        return capturesamplelist
+        )
+
+        return stmt4
 
     def __repr__(self):
         return '<Tag id=%s with serial=%s and secret key=%s>' % (self.id, self.serial, self.secretkey)

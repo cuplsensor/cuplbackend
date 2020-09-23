@@ -52,4 +52,10 @@ ADMINAPI_AUDIENCE = os.getenv('ADMINAPI_AUDIENCE', defaults.ADMINAPI_AUDIENCE)
 ADMINAPI_CLIENTID = os.getenv('ADMINAPI_CLIENTID', defaults.ADMINAPI_CLIENTID)
 ADMINAPI_CLIENTSERET = os.environ['ADMINAPI_CLIENTSECRET']
 
+WSB_PORT = os.getenv('WSB_PORT', defaults.WSB_PORT)
+WSB_HOST = os.getenv('WSB_HOST', defaults.WSB_HOST)
+WSB_PROTOCOL = os.getenv('WSB_PROTOCOL', defaults.WSB_PROTOCOL)
+
+SERVER_NAME = "{host}:{port}".format(host=WSB_HOST, port=WSB_PORT)
+PREFERRED_URL_SCHEME = WSB_PORT.replace("://", "")
 
