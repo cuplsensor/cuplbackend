@@ -5,9 +5,10 @@
     Token endpoints
 """
 
-from flask import Flask, Blueprint, request, current_app, jsonify, make_response
+from flask import Flask, Blueprint, request, current_app, jsonify, make_response, url_for
 from flask_restful import Resource, Api, abort, reqparse
 from wscodec.decoder.exceptions import *
+from sqlalchemy.orm import noload
 from sqlalchemy.exc import IntegrityError
 import requests
 import hmac
@@ -97,18 +98,22 @@ class Captures(MultipleResource):
         """
         parsedargs = Captures.parse_body_args(request.args.to_dict(),
                                               requiredlist=['serial'],
-                                              optlist=['offset', 'limit'])
+                                              optlist=['page', 'per_page'])
 
         serial = parsedargs['serial']
-        offset = parsedargs.get('offset', 0)
-        limit = parsedargs.get('limit', None)
+        page = parsedargs.get('page', 1)
+        per_page = parsedargs.get('per_page', 10)
 
         tagobj = tags.get_by_serial(serial)
-        capturelist = captures.find(parent_tag=tagobj).order_by(captures.__model__.timestamp.desc()).offset(offset).limit(limit)
+        capturepages = tagobj.captures.options(noload('samples')).paginate(page=page, per_page=per_page, max_per_page=25)
+        capturelist = capturepages.items
 
         schema = self.Schema()
         result = schema.dump(capturelist, many=True)
-        return jsonify(result)
+        response = jsonify(result)
+        linkheader = self.make_link_header(capturepages)
+        response.headers.add('Link', linkheader)
+        return response
 
     def post(self):
         """

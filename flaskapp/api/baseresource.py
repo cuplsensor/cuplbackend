@@ -138,7 +138,6 @@ class MultipleResource(BaseResource):
         response = jsonify(result)
         # https://github.com/pallets/flask/issues/2111
         linkheader = self.make_link_header(resourcepages)
-
         response.headers.add('Link', linkheader)
         return response
 

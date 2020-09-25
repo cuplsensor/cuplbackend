@@ -94,7 +94,7 @@ paths:
         - name: starttime
           in: query
           description: start timestamp as an ISO-8601 string. Defaults
-          to the time the tag was registered (i.e. this returns all unique samples ever taken).
+            to the time the tag was registered (i.e. this returns all unique samples ever taken).
           schema:
             type: string
             format: datetime

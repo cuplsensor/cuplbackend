@@ -171,7 +171,7 @@ stages:
         description: !anystr
         usehmac: !anybool
         timeregistered: !anything
-        webhook: !anyint
+        webhook: !anydict
 
   - name: Delete the webhook.
 

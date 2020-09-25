@@ -37,13 +37,15 @@ class CaptureSamples(SingleResource):
         page = int(parsedargs.get('page', 1))
         per_page = int(parsedargs.get('per_page', 100))
         samplesquery = capturesamples.find(capture_id=capt.id).order_by(desc(CaptureSample.timestamp))
-        samplespages = samplesquery.paginate(page=page, per_page=per_page, max_per_page=3000)
+        samplespages = samplesquery.paginate(page=page, per_page=per_page, max_per_page=100)
         sampleslist = samplespages.items
 
         schema = self.Schema()
         result = schema.dump(sampleslist, many=True)
-
-        return jsonify(result)
+        response = jsonify(result)
+        linkheader = self.make_link_header(samplespages)
+        response.headers.add('Link', linkheader)
+        return response
 
     def delete(self, id):
         abort(404)
@@ -88,8 +90,10 @@ class Samples(BaseResource):
 
         schema = self.Schema()
         result = schema.dump(sampleslist, many=True)
-
-        return jsonify(result)
+        response = jsonify(result)
+        linkheader = self.make_link_header(samplespages)
+        response.headers.add('Link', linkheader)
+        return response
 
 
 api.add_resource(CaptureSamples, '/captures/<id>/samples')

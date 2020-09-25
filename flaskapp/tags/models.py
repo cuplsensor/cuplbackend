@@ -33,6 +33,7 @@ class Tag(db.Model):
 
     # ID of the owning user object
     captures = db.relationship('Capture',
+                               lazy="dynamic",
                                order_by="desc(Capture.timestamp)",
                                backref=db.backref('parent_tag'),
                                cascade="all, delete-orphan")

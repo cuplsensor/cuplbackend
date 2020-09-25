@@ -33,7 +33,7 @@ class Capture(db.Model):
                              cascade="all, delete-orphan")
     samples = db.relationship('CaptureSample',
                               order_by="desc(CaptureSample.timestamp)",
-                              lazy='select',
+                              lazy='dynamic',
                               backref=db.backref('parent_capture'),
                               cascade="all, delete-orphan")
     __table_args__ = (UniqueConstraint('tag_id', 'hash', name='_tagid_md5_uc'),)

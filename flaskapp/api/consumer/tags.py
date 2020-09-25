@@ -13,7 +13,7 @@ from ...tags.schemas import ConsumerTagSchema
 from .tagtokenauth import requires_tagtoken
 from ..baseresource import SingleResource
 
-bp = Blueprint('consumertags', __name__)
+bp = Blueprint('tags', __name__)
 api = Api(bp)
 
 
@@ -27,16 +27,8 @@ class Tag(SingleResource):
         Get a tag by its serial.
         """
         tagobj = tags.get_by_serial(serial)
-
         schema = self.Schema()
         result = schema.dump(tagobj)
-
-        capturesurl = url_for('captures.captures', serial=serial, _external=True)
-        samplesurl = url_for('samples.samples', serial=serial, _external=True)
-        webhookurl = url_for('webhooks.webhook', serial=serial, _external=True)
-        result.update({'captures': capturesurl,
-                       'samples': samplesurl,
-                       'webhook': webhookurl})
         return jsonify(result)
 
     @requires_tagtoken
