@@ -21,7 +21,7 @@ class TagWrapper(AdminApiWrapper):
             endpoint_one (str): Endpoint for returning one resource instance.
             endpoint_many (str): Endpoint for returning a list of resource instances.
         """
-        endpoint_one = "/tag"
+        endpoint_one = "/tag/"
         endpoint_many = "/tags"
         super().__init__(baseurl, adminapi_token, endpoint_one, endpoint_many)
 

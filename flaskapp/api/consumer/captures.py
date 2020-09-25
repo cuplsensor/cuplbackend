@@ -91,7 +91,6 @@ class Captures(MultipleResource):
         headers = {'X-CuplBackend-Hmac-SHA256': hmacstr}
         requests.post(webhook.address, json=capturedict, headers=headers, timeout=10)
 
-
     def get(self):
         """
         Get a list of captures for a tag

@@ -78,9 +78,7 @@ class Samples(BaseResource):
             endtime = parse(endtimestr)
 
         if starttimestr is None:
-            mrcapture = tagobj.captures[0]  # Get the most recent capture
-            mrsample = mrcapture.samples[-1] # Get the oldest sample in that capture
-            starttime = mrsample.timestamp
+            starttime = tagobj.timeregistered
         else:
             starttime = parse(starttimestr)
 

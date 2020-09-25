@@ -32,9 +32,11 @@ class Tag(SingleResource):
         result = schema.dump(tagobj)
 
         capturesurl = url_for('captures.captures', serial=serial, _external=True)
-        samplesurl = url_for('samples.samples', _external=True)
+        samplesurl = url_for('samples.samples', serial=serial, _external=True)
+        webhookurl = url_for('webhooks.webhook', serial=serial, _external=True)
         result.update({'captures': capturesurl,
-                       'samples': samplesurl})
+                       'samples': samplesurl,
+                       'webhook': webhookurl})
         return jsonify(result)
 
     @requires_tagtoken

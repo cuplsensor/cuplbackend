@@ -18,7 +18,7 @@ from ..baseresource import SingleResource
 from .tagtokenresource import TagTokenSingleResource, lookup_webhook_id, requires_tagtoken
 
 
-bp = Blueprint('consumerwebhooks', __name__)
+bp = Blueprint('webhooks', __name__)
 api = Api(bp)
 
 
