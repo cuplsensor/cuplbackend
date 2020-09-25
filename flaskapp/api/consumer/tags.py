@@ -6,7 +6,7 @@
     Tag endpoints
 """
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, url_for
 from flask_restful import Api, abort
 from ...services import tags
 from ...tags.schemas import ConsumerTagSchema
@@ -31,6 +31,10 @@ class Tag(SingleResource):
         schema = self.Schema()
         result = schema.dump(tagobj)
 
+        capturesurl = url_for('captures.captures', serial=serial, _external=True)
+        samplesurl = url_for('samples.samples', _external=True)
+        result.update({'captures': capturesurl,
+                       'samples': samplesurl})
         return jsonify(result)
 
     @requires_tagtoken

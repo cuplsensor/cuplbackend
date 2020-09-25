@@ -14,8 +14,9 @@ from ...services import tags, captures, capturesamples
 from ...captures.schemas import CaptureSampleSchema
 from ..baseresource import BaseResource, SingleResource
 from dateutil.parser import parse
+from datetime import datetime
 
-bp = Blueprint('consumersamples', __name__)
+bp = Blueprint('samples', __name__)
 api = Api(bp)
 
 
@@ -58,21 +59,33 @@ class Samples(BaseResource):
         """
         Get unique samples for a tag in a given time range
         """
-        parsedargs = Samples.parse_body_args(request.args.to_dict(),
-                                             requiredlist=['starttimestr', 'endtimestr'],
-                                             optlist=['page', 'per_page'])
+        tagobj = tags.get_by_serial(serial)
 
-        starttimestr = parsedargs['starttimestr']
-        endtimestr = parsedargs['endtimestr']
+        parsedargs = Samples.parse_body_args(request.args.to_dict(),
+                                             optlist=['starttimestr',
+                                                      'endtimestr',
+                                                      'page',
+                                                      'per_page'])
+
+        endtimestr = parsedargs.get('endtimestr', None)
+        starttimestr = parsedargs.get('starttimestr', None)
         page = int(parsedargs.get('page', 1))
         per_page = int(parsedargs.get('per_page', 100))
 
-        tagobj = tags.get_by_serial(serial)
-        starttime = parse(starttimestr)
-        endtime = parse(endtimestr)
+        if endtimestr is None:
+            endtime = datetime.now()
+        else:
+            endtime = parse(endtimestr)
+
+        if starttimestr is None:
+            mrcapture = tagobj.captures[0]  # Get the most recent capture
+            mrsample = mrcapture.samples[-1] # Get the oldest sample in that capture
+            starttime = mrsample.timestamp
+        else:
+            starttime = parse(starttimestr)
 
         samplesquery = tagobj.uniquesampleswindow(starttime, endtime)
-        samplespages = samplesquery.paginate(page=page, per_page=per_page, max_per_page=20000)
+        samplespages = samplesquery.paginate(page=page, per_page=per_page, max_per_page=100)
         sampleslist = samplespages.items
 
         schema = self.Schema()

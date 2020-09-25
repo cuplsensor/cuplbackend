@@ -82,6 +82,7 @@ paths:
       tags:
         - Tags
       summary: List unique samples
+      description: List unique samples from a tag, newest first.
       operationId: UniqueSamplesGet
       parameters:
         - name: serial
@@ -92,26 +93,25 @@ paths:
             type: string
         - name: starttime
           in: query
-          description: start timestamp as an ISO-8601 string.
-          required: true
+          description: start timestamp as an ISO-8601 string. Defaults
+          to the timestamp of the oldest sample in the most recent capture.
           schema:
             type: string
             format: datetime
         - name: endtime
           in: query
-          description: end timestamp as an ISO-8601 string.
-          required: true
+          description: end timestamp as an ISO-8601 string. Defaults to now.
           schema:
             type: string
             format: datetime
-        - name: offset
+        - name: page
           in: query
-          description: Return samples starting from this index.
+          description: Page of samples to return.
           schema:
             type: integer
-        - name: limit
+        - name: per_page
           in: query
-          description: Limit the number of samples returned.
+          description: The number of samples per page.
           schema:
             type: integer
       responses:
