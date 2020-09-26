@@ -73,7 +73,7 @@ stages:
       save:
         body:
           test_tag_id: id
-
+          test_tag_serial: serial
 
   - name: Verify that the tag can be retrieved by running a GET request
 
@@ -109,6 +109,43 @@ stages:
       status_code: 200
       body:
         !anylist
+
+  - name: Verify that the tag can be retrieved by running a GET request from the consumer API.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{test_tag_serial}"
+      method: GET
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        serial: "{test_tag_serial:s}"
+        timeregistered: !anything
+        url: !anystr
+        samples_url: !anystr
+
+  - name: Verify that the tag can be retrieved by running a GET request from the random endpoint consumer API.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/random/tag"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        serial: !anystr
+        timeregistered: !anything
+        url: !anystr
+        samples_url: !anystr
 
   - name: Delete the tag by ID.
 

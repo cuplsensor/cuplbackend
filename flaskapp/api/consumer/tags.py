@@ -11,7 +11,7 @@ from flask_restful import Api, abort
 from ...services import tags
 from ...tags.schemas import ConsumerTagSchema
 from .tagtokenauth import requires_tagtoken
-from ..baseresource import SingleResource
+from ..baseresource import SingleResource, BaseResource
 
 bp = Blueprint('tags', __name__)
 api = Api(bp)
@@ -44,4 +44,21 @@ class Tag(SingleResource):
         abort(404)
 
 
+class RandomTag(BaseResource):
+    """ Get a random tag. """
+
+    def __init__(self):
+        super().__init__(ConsumerTagSchema, tags)
+
+    def get(self):
+        """
+        Get a tag by its serial.
+        """
+        tagobj = tags.random()
+        schema = self.Schema()
+        result = schema.dump(tagobj)
+        return jsonify(result)
+
+
 api.add_resource(Tag, '/tag/<serial>')
+api.add_resource(RandomTag, '/random/tag')

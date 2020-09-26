@@ -6,6 +6,7 @@
 """
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql.expression import func
 import marshmallow_sqlalchemy as ma
 
 from flask import current_app, abort
@@ -88,6 +89,12 @@ class Service(object):
         :param **kwargs: filter parameters
         """
         return self.__model__.query.filter_by(**kwargs)
+
+    def random(self, **kwargs):
+        """Returns one random instance of the service's model. There is an optional filter.
+        :param **kwargs: filter parameters
+        """
+        return self.find(**kwargs).order_by(func.random()).first()
 
     def first(self, **kwargs):
         """Returns the first instance found of the service's model filtered by
