@@ -15,6 +15,18 @@ bp = Blueprint('version', __name__)
 api = Api(bp)
 
 
+def versioninfo():
+    basepath = path.dirname(__file__)
+    versionfilepath = path.abspath(path.join(basepath, "..", "..", "VERSION"))
+    with open(versionfilepath) as version_file:
+        cuplbackendversion = version_file.read().strip()
+
+    cuplcodecversion = pkg_resources.get_distribution("cuplcodec").version
+
+    versiondict = {'cuplcodec': cuplcodecversion,
+                   'cuplbackend': cuplbackendversion}
+
+    return versiondict
 
 
 class Version(Resource):
@@ -22,16 +34,7 @@ class Version(Resource):
         """
         Get version information about wsbackend.
         """
-        basepath = path.dirname(__file__)
-        versionfilepath = path.abspath(path.join(basepath, "..", "..", "VERSION"))
-        with open(versionfilepath) as version_file:
-            cuplbackendversion = version_file.read().strip()
-
-        cuplcodecversion = pkg_resources.get_distribution("cuplcodec").version
-
-        versiondict = {'cuplcodec': cuplcodecversion,
-                       'cuplbackend': cuplbackendversion}
-        response = jsonify(versiondict)
+        response = jsonify(versioninfo())
         response.status_code = 200
         return response
 
