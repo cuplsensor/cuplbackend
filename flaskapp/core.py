@@ -94,7 +94,12 @@ class Service(object):
         """Returns one random instance of the service's model. There is an optional filter.
         :param **kwargs: filter parameters
         """
-        return self.find(**kwargs).order_by(func.random()).first()
+        modelname = self.__class__.__model__.__name__
+
+        rv = self.find(**kwargs).order_by(func.random()).first()
+        if rv is None:
+            abort(404, 'Error 404: {modelname} not found'.format(modelname=modelname))
+        return rv
 
     def first(self, **kwargs):
         """Returns the first instance found of the service's model filtered by

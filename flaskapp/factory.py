@@ -7,6 +7,9 @@
 """
 
 from flask import Flask
+from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from .core import db
 
 
@@ -21,10 +24,17 @@ def create_api_app(package_name, package_path, settings_override=None):
         if app.config.get('DROP_ON_INIT') is True:
             db.drop_all()
         db.create_all()
-    # Register all blueprints to the application
-    # register_blueprints(app, package_name, package_path.api)
 
-    return app
+    # Enable CORS. An API is unlikely to work without this.
+    CORS(app)
+
+    # Enable rate limiting.
+    limiter = Limiter(
+        app,
+        key_func=get_remote_address
+    )
+
+    return app, limiter
 
 
 def create_app(package_name, package_path, settings_override=None):
@@ -37,15 +47,7 @@ def create_app(package_name, package_path, settings_override=None):
     """
     app = Flask(package_name, instance_relative_config=True)
 
-    #app.config.from_pyfile('settings.cfg', silent=True)
     app.config.from_object('flaskapp.config')
     app.config.from_object(settings_override)
-
-    # Drop all uses a tip from http://piotr.banaszkiewicz.org/blog/2012/06/29/flask-sqlalchemy-init_app/
-    #with app.test_request_context():
-    #    db.drop_all()
-    #    db.create_all()
-    # Register all blueprints to the application
-    #register_blueprints(app, package_name, package_path.api)
 
     return app
