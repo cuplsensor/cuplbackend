@@ -1,10 +1,20 @@
-openapi: 3.0.0
+openapi: 3.0.1
 info:
-  version: "1.0.0-oas3"
-  title: Administrator API
-  description: Administrator-only API for provisioning tags.
+  title: cupl Administrator API
+  description: API endpoints that require administrator access.
   contact:
-    email: you@your-company.com
+    url: www.plotsensor.com
+    email: malcolm@plotsensor.com
+  version: 0.0.2
+tags:
+  - name: Tags
+    description: Tag endpoints
+    externalDocs:
+      url: http://docs.my-api.com/pet-operations.htm
+  - name: Captures
+    description: Capture endpoints
+    externalDocs:
+      url: http://docs.my-api.com/store-orders.htm
 paths:
   /token:
     post:
@@ -37,10 +47,12 @@ paths:
               $ref: '#/components/schemas/TokenRequest'
         description: Token Request Credentials
         required: true
-  /capture:
+  /capture/{id}:
     get:
       description: Get a capture by its ID.
-      summary: get a capture.
+      summary: Get a capture.
+      tags:
+        - Captures
       operationId: AdminCaptureGet
       security:
         - Bearer: []
@@ -65,8 +77,10 @@ paths:
             application/json:
               schema: {}
     delete:
-      description: delete a capture
-      summary: delete a capture
+      description: Delete a capture
+      summary: Delete a capture
+      tags:
+        - Captures
       operationId: AdminCaptureDelete
       security:
         - Bearer: []
@@ -95,8 +109,10 @@ paths:
               schema: {}
   /captures:
     get:
-      description: Get a list of captures
-      summary: Get a list of captures ordered by ID.
+      summary: List all captures
+      description: Get a list of captures ordered by ID. Optional to filter on tag_id.
+      tags:
+        - Captures
       operationId: CapturesGet
       parameters:
         - name: offset
@@ -119,6 +135,14 @@ paths:
       responses:
         200:
           description: List of captures
+          headers:
+            Link:
+              type: string
+              description: |
+                Links to related resources, in the format defined by
+                [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
+                This will include a link with relation type `next` to the
+                next page, if there is a next page.
           content:
             application/json:
               schema:
@@ -132,7 +156,9 @@ paths:
               schema: {}
     post:
       description: Create a capture
-      summary: create a capture
+      summary: Create a capture
+      tags:
+        - Captures
       operationId: AdminCapturePost
       security:
         - Bearer: []
@@ -158,19 +184,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Capture'
+              $ref: '#/components/schemas/CapturePost'
         description: Capture object
-  /tag:
+  /tag/{id}:
     get:
       description: Get a tag from an id.
-      summary: get a tag
+      summary: Get a tag
+      tags:
+        - Tags
       operationId: TagGet
       security:
         - Bearer: []
       parameters:
         - name: id
-          in: query
-          required: false
+          in: path
+          required: true
           description: Tag id
           schema:
             type: integer
@@ -181,23 +209,68 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tag'
+                $ref: '#/components/schemas/AdminTag'
         '400':
           description: bad input parameter
           content:
             application/json:
               schema: {}
 
+    put:
+      tags:
+        - Tags
+      description: Edit a tag
+      summary: Edit a tag
+      operationId: TagPut
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tag id
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminTag'
+      responses:
+        200:
+          description: A tag object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminTag'
+        400:
+          description: Bad input parameter.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Not authorised. TagToken is not valid for this tag.
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: Tag not found.
+          content: { }
+
     delete:
-      description: delete a tag
-      summary: delete a tag
+      description: Delete a tag
+      summary: Delete a tag
+      tags:
+        - Tags
       operationId: TagDelete
       security:
         - Bearer: []
       parameters:
         - name: id
-          in: query
-          required: false
+          in: path
+          required: true
           description: Tag id
           schema:
             type: integer
@@ -217,11 +290,81 @@ paths:
           content:
             application/json:
               schema: {}
-
+  /tags:
+    get:
+      description: Get a list of tags ordered by ID
+      summary: List all tags
+      tags:
+        - Tags
+      operationId: TagsGet
+      parameters:
+        - name: offset
+          in: query
+          description: Return samples starting from this index.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Limit the number of samples returned.
+          schema:
+            type: integer
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of tags
+          headers:
+            Link:
+              type: string
+              description: |
+                Links to related resources, in the format defined by
+                [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
+                This will include a link with relation type `next` to the
+                next page, if there is a next page.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminTag'
+        400:
+          description: bad input parameter
+          content:
+            application/json:
+              schema: {}
+    post:
+      description: Create a tag
+      summary: Create a tag
+      tags:
+        - Tags
+      operationId: TagPost
+      security:
+        - Bearer: []
+      responses:
+        201:
+          description: Tag created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminTag'
+          headers: {}
+        400:
+          description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminTag'
+        description: Tag id
   /tag/{id}/simulate:
     get:
-      description: Obtain a simulated URL from the tag. This will contain mock sensor data.
-      summary: Simulate URL.
+      summary: Simulate a tag.
+      description: Get URL from a simulated tag. This contains mock sensor data.
+      tags:
+        - Tags
       operationId: TagSimGet
       security:
         - Bearer: []
@@ -242,7 +385,7 @@ paths:
           in: query
           required: false
           description: Number of temperature and humidity samples to include in the wscodec URL.
-                       0 samples is valid and should raise an error.
+            0 samples is valid and should raise an error.
           schema:
             type: integer
             default: 100
@@ -338,229 +481,188 @@ paths:
             application/json:
               schema: {}
 
-  /tags:
+  /webhook/{id}:
     get:
-      description: Get a list of tags
-      summary: Get a list of tags ordered by ID.
-      operationId: TagsGet
+      description: Get a webhook from an id.
+      summary: Get a webhook
+      tags:
+        - Webhooks
+      operationId: WebhookGet
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Webhook id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A webhook object
+          headers: { }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminWebhook'
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema: { }
+
+    delete:
+      description: Delete a webhook
+      summary: Delete a webhook
+      tags:
+        - Webhooks
+      operationId: WebhookDelete
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Webhook id
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Webhook has been deleted
+          content:
+            application/json:
+              schema: { }
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema: { }
+        '404':
+          description: No tag found
+          content:
+            application/json:
+              schema: { }
+  /webhooks:
+    get:
+      description: Get a list of webhooks ordered by ID
+      summary: List all webhooks
+      tags:
+        - Webhooks
+      operationId: WebhooksGet
       parameters:
         - name: offset
           in: query
-          description: Return samples starting from this index.
+          description: Return webhooks starting from this index.
           schema:
             type: integer
         - name: limit
           in: query
-          description: Limit the number of samples returned.
+          description: Limit the number of webhooks returned.
           schema:
             type: integer
       security:
-        - Bearer: []
+        - Bearer: [ ]
       responses:
         200:
-          description: List of tags
+          description: List of webhooks
+          headers:
+            Link:
+              type: string
+              description: |
+                Links to related resources, in the format defined by
+                [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
+                This will include a link with relation type `next` to the
+                next page, if there is a next page.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Tag'
+                  $ref: '#/components/schemas/AdminWebhook'
         400:
           description: bad input parameter
           content:
             application/json:
-              schema: {}
+              schema: { }
     post:
-      description: Create a tag
-      summary: create a tag
-      operationId: TagPost
+      description: Create a webhook
+      summary: Create a webhook
+      tags:
+        - Webhooks
+      operationId: WebhookPost
       security:
-        - Bearer: []
+        - Bearer: [ ]
       responses:
         201:
-          description: Tag created
+          description: Webhook created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tag'
-          headers: {}
+                $ref: '#/components/schemas/AdminWebhook'
+          headers: { }
         400:
           description: 'invalid input, object invalid'
           content:
             application/json:
-              schema: {}
-        409:
-          description: a user with the same oauth_id already exists
-          content:
-            application/json:
-              schema: {}
+              schema: { }
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TagsPost'
-        description: Tag id
+              $ref: '#/components/schemas/AdminWebhook'
+        description: Webhook id
 
-  /tagviews:
-    get:
-      summary: Get a list of TagViews.
-      description: Get a list of TagViews.
-      operationId: TagViewsGet
-      parameters:
-        - name: distinctOnTag
-          in: query
-          description: Return only the latest TagView for each scanned tag.
-          schema:
-            type: boolean
-        - name: tag_id
-          in: query
-          description: Filter TagViews by tag_id.
-          schema:
-            type: integer
-      responses:
-        200:
-          description: A list of tagview objects ordered from newest to oldest.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TagView'
-
-  /tagviews/{id}:
-    get:
-      summary: Get a tagview
-      description: Get a tagview
-      operationId: TagViewGet
-      parameters:
-        - name: id
-          in: path
-          required: True
-          description: Tag view ID
-          schema:
-            type: integer
-      responses:
-        200:
-          description: A tagview object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TagView'
-        404:
-          description: TagView not found.
-          content:
-            application/json:
-              schema:
-                type: object
-    delete:
-      summary: Delete a tag view
-      operationId: TagViewDelete
-      parameters:
-        - name: id
-          in: path
-          required: True
-          description: Tag view ID
-          schema:
-            type: integer
-      responses:
-        204:
-          description: TagView deleted
-          content:
-            application/json:
-              schema:
-                type: object
-        400:
-          description: Bad input.
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: TagView not found
-          content:
-            application/json:
-              schema:
-                type: object
-tags: []
-servers:
-  - url: 'https://virtserver.swaggerhub.com/plots/UserAPI/1.0.0'
 components:
   schemas:
-    TagsPost:
-      title: TagPost
+    AdminWebhook:
+      title: Webhook
       type: object
       properties:
-        id:
+        tag_id:
           type: integer
-          format: int32
-    Tag:
-      title: Tag
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        serial:
-          example: YWJjZGVM
+          description: Id of the parent tag.
+          example: 1
+        address:
           type: string
-        secretKey:
-          example: AAAAcCcC
+          description: URL to send the POST request to when the tag is scanned. Data are encoded as JSON.
+          example: https://webhook.site/a1b658b6-6b23-4a49-959c-e9b33d20e034
+        fields:
           type: string
-        timeregistered:
+          description: A string containing a comma separated list of fields to include in the capture webhook.
+          example: '["samples", "batvoltagemv"]'
+        wh_secretkey:
+          type: string
+          description: The secret key used to create an HMAC-SHA256 signature in the webhook header.
+          example: 4490vasnl456q2l
+        created_on:
           type: string
           format: date-time
-    TagView:
-      title: Tag View
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique ID of the Tagview item
-          example: 20
-        tagserial:
-          type: string
-          description: Serial of tag that was viewed
-          example: YWJjZGVM
-        timestamp:
-          type: string
-          description: Timestamp the tag was viewed in seconds since January 1st 1970
-          format: date-time
+          readOnly: true
           example: 2019-01-15T13:09:52.456Z
-    Capture:
-      title: Capture
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        serial:
-          description: Serial of the tag that made the capture
-          example: YWJjZGVM
-          type: string
-        statusb64:
-          description: 12 character status string
-          example: AAAAAAAA
-          type: string
-        timeintb64:
-          description: Time interval in minutes in base64
-          example: Awg=
-          type: string
-        circbufb64:
-          description: Circular buffer including samples encoded as base64.
-          example: Add example here
-          type: string
-        hmac:
-          description: >-
-            valid HMAC. Possession of this proves that to the server that the
-            client has scanned a tag.
-          example: afnslh94hfala
-          type: string
-        start-timestamp:
-          type: string
-          format: date-time
-        end-timestamp:
-          type: string
-          format: date-time
+    AdminTag:
+      allOf:     # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Tag'
+        - type: object
+          properties:
+            id:
+              readOnly: true
+              type: integer
+              format: int32
+            secretKey:
+              example: AAAAcCcC
+              type: string
+            usehmac:
+              example: true
+              type: boolean
+              description: True if the tag is using the HMAC-MD5 algorithm to generate its hash. False if it is only using MD5.
+    CapturePost:
+      allOf:     # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Capture'
+        - type: object
+          samples:
+            type: array
+            items:
+              $ref: '#/components/schemas/CaptureSample'
     Token:
       title: Token
       type: object
@@ -581,3 +683,168 @@ components:
         client_secret:
           example: nsfsaeASEFGSAE
           type: string
+    Tag:
+      title: Tag
+      type: object
+      properties:
+        description:
+          type: string
+          description: A free text field that a user can modify. It may be a description of the tag location.
+            Alternatively, this may be the URL of a linked frontend web application.
+          example: In the kitchen.
+        fwversion:
+          type: string
+          description: Version string for the cuplTag firmware.
+          example: HT04_F1.1_C2
+        hwversion:
+          type: string
+          description: Version string for the cuplTag hardware.
+          example: HT04
+        serial:
+          readOnly: true
+          type: string
+          description: Serial of the tag that made the capture
+          example: YWJjZGVM
+        timeregistered:
+          readOnly: true
+          type: string
+          description: Time the tag was created
+          format: date-time
+          example: 2019-01-15T13:09:52.456
+        webhook:
+          type: integer
+          description: Webhook Id or null if no webhook has been set.
+          example: 3
+          readOnly: true
+    Capture:
+      title: Capture
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+          readOnly: true
+          description: Database ID of the capture.
+        tag_id:
+          type: integer
+          format: int32
+          example: 1
+          description: Database ID of a tag the capture was taken from.
+        batvoltagemv:
+          type: integer
+          format: int32
+          example: 2900
+          description: Tag battery voltage in mV.
+        timestamp:
+          type: string
+          example: 2020-09-01T05:27:06Z
+          description: Time the capture was taken in the ISO 8601 format.
+        loopcount:
+          type: integer
+          format: int32
+          example: 10
+          description: The number of times the tag circular buffer has looped around. This indicates how long the
+            tag has been running for.
+        format:
+          type: integer
+          format: int32
+          example: 2
+          description: Major version of cuplCodec running on the tag.
+        cursorpos:
+          type: integer
+          format: int32
+          example: 24
+          description: Position of cursor in the circular buffer. The newest environmental sensor data are to the left of this cursor and the oldest to the right.
+        timeintmins:
+          type: integer
+          format: int32
+          example: 10
+          description: Time interval between samples in minutes.
+        hash:
+          type: string
+          example: d673aafc976e85
+          description: Hash of the capture. This may be either HMAC or MD5.
+        status:
+          $ref: '#/components/schemas/CaptureStatus'
+    CaptureSample:
+      title: CaptureSample
+      required:
+        - capture_id
+        - id
+        - temp
+        - timestamp
+      type: object
+      properties:
+        capture_id:
+          type: integer
+          description: ID of the parent Capture object
+          format: int32
+          example: 1
+        id:
+          type: integer
+          description: CaptureSample ID
+          format: int32
+          example: 1
+        rh:
+          type: number
+          description: Relative Humidity in percent
+          format: double
+          example: 55.0
+        temp:
+          type: number
+          description: Temperature in degrees Celsius
+          format: double
+          example: 21.0
+        timestamp:
+          type: string
+          description: Unix timestamp in seconds since January 1st 1970
+          format: date-time
+          example: 2019-01-15T13:09:52.456Z
+    CaptureStatus:
+      title: CaptureStatus
+      type: object
+      properties:
+        brownout:
+          type: boolean
+          description: True if the cause of the most recentreset was a brown out condition.
+          example: false
+        clockfail:
+          type: boolean
+          description: True if the most recent reset was caused by an MCU clock failure.
+          example: false
+        id:
+          type: integer
+          description: CaptureStatus ID
+          format: int32
+          example: 1
+        lpm5wakeup:
+          type: boolean
+          description: True if the MCU has woken up from LPM (Low Power Mode) x.5
+          example: false
+        misc:
+          type: boolean
+          description: True if a reset has occured for miscellaneous reasons
+          example: false
+        parent_capture:
+          type: integer
+          description: Parent Capture ID
+          format: int32
+          example: 232
+        resetsalltime:
+          type: integer
+          example: 20
+        supervisor:
+          type: boolean
+          description: True if the supply voltage supervisor caused the most recent
+            reset
+          example: false
+        watchdog:
+          type: boolean
+          description: True if the MCU watchdog caused the most recent reset.
+          example: false
+  securitySchemes:
+    Bearer: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: Admin JWT    # optional, arbitrary value for documentation purposes

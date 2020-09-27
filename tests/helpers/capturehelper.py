@@ -1,7 +1,9 @@
 from datetime import timedelta
 import pytz
-from ...wsapiwrapper.admin.capture import CaptureWrapper
-from ...wsapiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
+import random
+from string import ascii_lowercase
+from tests.apiwrapper.admin.capture import CaptureWrapper
+from tests.apiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
 
 tz = pytz.timezone("Europe/London")
 
@@ -20,14 +22,13 @@ class CaptureHelper:
             smpltime += timedelta(minutes=timeintmins)
         return samplelist
 
-    def makecapture(self, samples, timeintmins, tag_id, user_id=None):
+    def makecapture(self, samples, timeintmins, tag_id):
         capture = {
             "batvoltagemv": 3000,
             "tag_id": tag_id,
-            "user_id": user_id,
             "cursorpos": 10,
             "loopcount": 20,
-            "md5": "abcdefgh",
+            "hash": ''.join(random.choice(ascii_lowercase) for i in range(8)),
             "samples": samples,
             "status": {
                 "brownout": False,
@@ -40,15 +41,15 @@ class CaptureHelper:
             },
             "timeintmins": timeintmins,
             "timestamp": samples[-1]['timestamp'],
-            "version": 1
+            "format": "TempRH_URL"
         }
         return capture
 
 
 
-    def make_capture_with_samples(self, starttime, tag_id, user_id=None, timeintmins=12, nsamples=4):
+    def make_capture_with_samples(self, starttime, tag_id, timeintmins=12, nsamples=4):
         samples = self.makesamples(starttime, timeintmins, nsamples)
-        return self.makecapture(samples, timeintmins, tag_id, user_id)
+        return self.makecapture(samples, timeintmins, tag_id)
 
     def __init__(self):
         super().__init__()
@@ -68,8 +69,7 @@ class CaptureListHelper(CaptureHelper):
             capture = self.make_capture_with_samples(starttime=capturespec['starttime'],
                                                      tag_id=tagid,
                                                      timeintmins=timeintmins,
-                                                     nsamples=capturespec['nsamples'],
-                                                     user_id=capturespec.get('user_id'))
+                                                     nsamples=capturespec['nsamples'])
 
             writtencapture = capturewrapper.post(capture)
 

@@ -18,9 +18,9 @@ variables:
     batvoltagemv: 3000
     loopcount: 1
     cursorpos: 20
-    version: 1
+    format: "TempRH_URL"
     timeintmins: 11
-    md5: "abcdefghi"
+    hash: "abcdefghi"
     status:
       misc: false
       supervisor: false

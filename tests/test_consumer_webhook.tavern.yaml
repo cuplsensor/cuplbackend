@@ -1,0 +1,378 @@
+test_name: Create a webhook with the consumer API
+
+marks:
+  - usefixtures:
+      - baseurl
+      - clientid
+      - clientsecret
+
+stages:
+  - name: With a client_id and a client_secret a token is returned
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/token"
+      method: POST
+      json:
+        client_id: "{clientid}"
+        client_secret: "{clientsecret}"
+      headers:
+        content-type: application/json
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      save:
+        body:
+          admin_token: token
+
+  - name: Use the token to create a new tag
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tags"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        usehmac: !anybool
+        serial: !anystr
+        webhook: null
+      save:
+        body:
+          test_tag_id: id
+          test_tag_serial: serial
+          test_tag_secretkey: secretkey
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+
+  - name: Create a capture on the tag and save the tagtoken
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        batvoltagemv: !anyint
+        tagserial: !anystr
+        cursorpos: !anyint
+        id: !anyint
+        loopcount: !anyint
+        hash: !anystr
+        status:
+          brownout: !anybool
+          parent_capture: !anyint
+          clockfail: !anybool
+          id: !anyint
+          lpm5wakeup: !anybool
+          misc: !anybool
+          resetsalltime: !anyint
+          supervisor: !anybool
+          watchdog: !anybool
+        timeintmins: !anyint
+        timestamp: !anystr
+        tagtoken_type: "Bearer"
+        tagtoken: !anystr
+        format: !anystr
+      save:
+        body:
+          test_capture_id: id
+          test_tagtoken: tagtoken
+
+  - name: Try to GET a webhook before one is created. This should return a 404 error.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+    response:
+      status_code: 404
+
+  - name: Create a postbin for testing the webhook
+
+    request:
+      url: "https://postb.in/api/bin"
+      method: POST
+
+    response:
+      status_code: 201
+      save:
+        body:
+          test_postbin_id: binId
+
+  - name: Post a new webhook
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: POST
+      json:
+        address: "https://postb.in/{test_postbin_id:s}"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+
+    response:
+      status_code: 200
+      body:
+        address: "https://postb.in/{test_postbin_id:s}"
+        wh_secretkey: !anystr
+        created_on: !anystr
+      save:
+        body:
+          test_wh_secretkey: wh_secretkey
+
+  - name: Get the webhook
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+    response:
+      status_code: 200
+      headers:
+        content-type: application/json
+      body:
+        address: "https://postb.in/{test_postbin_id:s}"
+        fields: null
+        created_on: !anystr
+
+
+  - name: GET the tag and check the webhook has changed
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+
+    response:
+      status_code: 200
+      body:
+        webhook: !anyint
+
+  - name: Post a 2nd webhook to the same tag. This should fail with a 409 conflict.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: POST
+      json:
+        address: "test_address"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+
+    response:
+      status_code: 409
+      save:
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+            tagserial: "{test_tag_serial}"
+            tagsecretkey: "{test_tag_secretkey}"
+            nsamples: 11
+
+  - name: Create another capture on the tag. This should fire the newly created webhook.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+
+    response:
+      status_code: 200
+
+    delay_after: 1
+
+  - name: GET and verify the webhook contents from the postb.in API.
+
+    request:
+      url: "https://postb.in/api/bin/{test_postbin_id:s}/req/shift"
+      method: GET
+      headers:
+        content-type: application/json
+
+    response:
+      status_code: 200
+      body:
+        method: POST
+        headers:
+          x-cuplbackend-hmac-sha256: !anystr
+          content-type: !anystr
+        body:
+          samples: !anylist
+          batvoltagemv: !anyint
+          id: !anyint
+          timestamp: !anystr
+          loopcount: !anyint
+          tagserial: !anystr
+          timeintmins: !anyint
+          cursorpos: !anyint
+      verify_response_with:
+        function: utils:verifyhmac
+        extra_kwargs:
+          wh_secretkey: "{test_wh_secretkey:s}"
+
+  - name: Delete the webhook.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+
+    response:
+      status_code: 204
+
+  - name: Post a 3rd webhook to the tag. This will have the fields parameter set.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: POST
+      json:
+        address: "https://postb.in/{test_postbin_id:s}"
+        fields: '["timeintmins", "batvoltagemv"]'
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+    response:
+      status_code: 200
+      save:
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+            tagserial: "{test_tag_serial}"
+            tagsecretkey: "{test_tag_secretkey}"
+            nsamples: 12
+        body:
+          test_wh3_secretkey: wh_secretkey
+
+  - name: Create another capture on the tag. This should fire the newly created webhook.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+    delay_after: 3
+
+  - name: GET and verify the webhook contains only the fields configured.
+
+    request:
+      url: "https://postb.in/api/bin/{test_postbin_id:s}/req/shift"
+      method: GET
+      headers:
+        content-type: application/json
+
+    response:
+      status_code: 200
+      body:
+        method: POST
+        headers:
+          x-cuplbackend-hmac-sha256: !anystr
+          content-type: !anystr
+        body:
+          timeintmins: !anyint
+          batvoltagemv: !anyint
+      verify_response_with:
+        function: utils:verifyhmac
+        extra_kwargs:
+          wh_secretkey: "{test_wh3_secretkey:s}"
+        function: utils:strictkeyscheck
+        extra_kwargs:
+          bodykeys:
+            - timeintmins
+            - batvoltagemv
+
+  - name: Delete the webhook.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+
+    response:
+      status_code: 204
+
+  - name: Attempt to post a 4th webhook to the tag. This will contain an invalid field.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: POST
+      json:
+        address: "https://postb.in/{test_postbin_id:s}"
+        fields: '["timeintmins", "batvoltagemv", "invalid field"]'
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+    response:
+      status_code: 400
+
+  - name: Delete the 1st tag by ID.
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+    # and the expected response body
+    response:
+      status_code: 204

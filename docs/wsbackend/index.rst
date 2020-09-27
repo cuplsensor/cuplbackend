@@ -9,8 +9,3 @@ wsbackend
    reference/index
    :caption: Contents
 
-.. automodule:: wsapiwrapper
-   :members:
-   :undoc-members:
-   :special-members:
-

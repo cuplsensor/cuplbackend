@@ -1,24 +1,22 @@
 openapi: 3.0.1
 info:
-  title: Plotsensor consumer API
-  description: API for my data
-  termsOfService: http://me.com/terms
+  title: cupl Consumer API
+  description: API endpoints that do not require token based authentication.
   contact:
     url: www.plotsensor.com
     email: malcolm@plotsensor.com
-  version: 0.0.1
-servers:
-- url: https://websensor.io/api/consumer/v1
+  version: 0.0.2
 paths:
   /tag/{serial}:
     get:
       tags:
-      - Open
+      - Tags
       summary: Get a tag by its serial.
       operationId: TagGet
       parameters:
       - name: serial
-        in: query
+        required: True
+        in: path
         description: Tag serial
         schema:
           type: string
@@ -38,46 +36,108 @@ paths:
         404:
           description: Tag not found.
           content: {}
-  /tag/{serial}/scanned:
-    get:
+    put:
       tags:
-      - Access Token Required
-      summary: Has a tag with a given serial been scanned by the current user?
-      operationId: HasScannedTag
+        - Tags
+      summary: Edit a tag description.
+      operationId: TagDescriptionPut
+      security:
+        - TagToken: [ ]
       parameters:
-      - name: serial
-        in: query
-        description: Tag serial
-        required: true
-        schema:
-          type: string
+        - name: serial
+          required: True
+          in: path
+          description: Tag serial
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
       responses:
         200:
-          description: True if the tag has a capture taken by the current user.
-          content: {}
+          description: A tag object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
         400:
-          description: Bad input parameter
+          description: Bad input parameter.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Not authorised. TagToken is not valid for this tag.
           content:
             application/json:
               schema:
                 type: object
         404:
-          description: Tag or user not found.
+          description: Tag not found.
+          content: { }
+  /tag/{serial}/samples:
+    get:
+      tags:
+        - Tags
+      summary: List unique samples
+      description: List unique samples from a tag, newest first.
+      operationId: UniqueSamplesGet
+      parameters:
+        - name: serial
+          in: path
+          description: Tag serial
+          required: true
+          schema:
+            type: string
+        - name: starttime
+          in: query
+          description: start timestamp as an ISO-8601 string. Defaults
+            to the time the tag was registered (i.e. this returns all unique samples ever taken).
+          schema:
+            type: string
+            format: datetime
+        - name: endtime
+          in: query
+          description: end timestamp as an ISO-8601 string. Defaults to now.
+          schema:
+            type: string
+            format: datetime
+        - name: page
+          in: query
+          description: Page of samples to return.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: The number of samples per page.
+          schema:
+            type: integer
+      responses:
+        200:
+          description: A list of samples from newest to oldest
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CaptureSample'
+        400:
+          description: bad input parameter
           content:
             application/json:
               schema:
                 type: object
-      security:
-      - Bearer: []
-  /captures:
+  /tag/{serial}/captures:
     get:
       tags:
-      - Open
-      summary: Get a list of captures for a tag
+      - Tags
+      summary: List captures
       operationId: CapturesGet
       parameters:
       - name: serial
-        in: query
+        in: path
         description: Tag serial
         required: true
         schema:
@@ -95,6 +155,15 @@ paths:
       responses:
         200:
           description: A capture object
+          headers:
+            Link:
+              schema:
+                type: string
+              description: |
+                Links to related resources, in the format defined by
+                [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
+                This will include a link with relation type `next` to the
+                next page, if there is a next page.
           content:
             application/json:
               schema:
@@ -111,9 +180,10 @@ paths:
             application/json:
               schema:
                 type: object
+  /captures:
     post:
       tags:
-      - Open
+        - Captures
       summary: Create a capture
       operationId: CapturesPost
       requestBody:
@@ -125,11 +195,11 @@ paths:
         required: true
       responses:
         200:
-          description: A capture object
+          description: The newly created Capture with a TagToken.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Capture'
+                $ref: '#/components/schemas/CaptureWithTagToken'
         400:
           description: invalid input, object invalid
           content:
@@ -156,12 +226,19 @@ paths:
               schema:
                 type: object
       x-codegen-request-body-name: body
-  /captures/{id}:
+  /capture/{id}:
     get:
       tags:
-      - Open
+      - Captures
       summary: Get a capture by ID
       operationId: CaptureGet
+      parameters:
+        - name: id
+          in: path
+          description: Capture database ID
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: A capture object
@@ -181,13 +258,19 @@ paths:
             application/json:
               schema:
                 type: object
-  /captures/{id}/samples:
+  /capture/{id}/samples:
     get:
       tags:
-      - Open
-      summary: Get samples for a capture.
-      operationId: SamplesGet
+      - Captures
+      summary: List samples.
+      operationId: CaptureSamplesGet
       parameters:
+      - name: id
+        in: path
+        required: True
+        description: Capture database ID
+        schema:
+          type: integer
       - name: offset
         in: query
         description: Return samples starting from this index.
@@ -201,6 +284,15 @@ paths:
       responses:
         200:
           description: A list of sample objects
+          headers:
+            Link:
+              schema:
+                type: string
+              description: |
+                Links to related resources, in the format defined by
+                [RFC 5988](https://tools.ietf.org/html/rfc5988#section-5).
+                This will include a link with relation type `next` to the
+                next page, if there is a next page.
           content:
             application/json:
               schema:
@@ -213,643 +305,263 @@ paths:
             application/json:
               schema:
                 type: object
-  /locations:
+  /tag/{serial}/webhook:
     get:
       tags:
-      - Open
-      summary: Get a list of locations for a tag ordered by most recent
+      - Webhook
+      summary: Get a webhook.
+      operationId: WebhookGet
       security:
-        - oAuthSample:
-            - read_pets
-      operationId: LocationGetList
+        - TagToken: [ ]
       parameters:
       - name: serial
-        in: query
-        description: Tag serial
-        required: true
-        schema:
-          type: string
-      - name: starttime
-        in: query
-        description: start timestamp as an ISO-8601 string.
-        schema:
-          type: string
-          format: datetime
-      - name: endtime
-        in: query
-        description: end timestamp as an ISO-8601 string.
-        schema:
-          type: string
-          format: datetime
-      responses:
-        200:
-          description: A list of locations ordered from newest to oldest.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Location'
-        400:
-          description: invalid input, object invalid
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: Location not found.
-          content:
-            application/json:
-              schema:
-                type: object
-    post:
-      tags:
-      - Capture by User Required
-      summary: Add location information to a tag
-      operationId: LocationPost
-      requestBody:
-        description: Location fields
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/Location'
-        required: true
-      responses:
-        200:
-          description: A capture object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Location'
-        400:
-          description: invalid input, object invalid
-          content:
-            application/json:
-              schema:
-                type: object
-        401:
-          description: Not authorised. The user has no scanned this tag.
-          content:
-            application/json:
-              schema:
-                type: object
-        403:
-          description: Not authorised. Invalid JWT.
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: Parent resource not found.
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-      x-codegen-request-body-name: body
-  /locations/{id}:
-    get:
-      tags:
-      - Open
-      summary: Get a list of locations for a tag ordered by most recent
-      operationId: LocationGet
-      parameters:
-      - name: id
+        required: True
         in: path
-        description: Location ID
-        schema:
-          type: integer
-      responses:
-        200:
-          description: A list of locations ordered from newest to oldest.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Location'
-        400:
-          description: invalid input, object invalid
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: Location not found.
-          content:
-            application/json:
-              schema:
-                type: object
-    delete:
-      tags:
-      - Capture by User Required
-      summary: Delete a location
-      operationId: LocationDelete
-      responses:
-        204:
-          description: Location deleted
-          content:
-            application/json:
-              schema:
-                type: object
-        400:
-          description: Bad input parameter
-          content:
-            application/json:
-              schema:
-                type: object
-        401:
-          description: Not authorised. The user has no scanned this tag.
-          content:
-            application/json:
-              schema:
-                type: object
-        403:
-          description: Not authorised. Invalid JWT.
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: Location not found.
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-    patch:
-      tags:
-      - Capture by User Required
-      summary: Edit location information for a tag
-      operationId: LocationPut
-      requestBody:
-        description: Location fields
-        content:
-          '*/*':
-            schema:
-              type: string
-              description: description
-        required: true
-      responses:
-        200:
-          description: A capture object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Location'
-        400:
-          description: invalid input, object invalid
-          content:
-            application/json:
-              schema:
-                type: object
-        401:
-          description: Not authorised. The user has no scanned this tag.
-          content:
-            application/json:
-              schema:
-                type: object
-        403:
-          description: Not authorised. Invalid JWT.
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: Parent resource not found.
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-      x-codegen-request-body-name: body
-  /me:
-    get:
-      tags:
-      - Access Token Required
-      summary: Get current user from the Auth0 access token.
-      description: Auth0 ID of the user.
-      operationId: UserGet
-      responses:
-        200:
-          description: A user object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        403:
-          description: invalid JWT
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-    delete:
-      tags:
-      - Access Token Required
-      summary: Delete current user.
-      operationId: TagDelete
-      responses:
-        204:
-          description: User deleted
-          content:
-            application/json:
-              schema:
-                type: object
-        400:
-          description: Bad input parameter
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-  /me/tagviews:
-    get:
-      tags:
-      - Access Token Required
-      summary: Get a list of TagViews for the current user.
-      description: Auth0 ID of the user.
-      operationId: TagViewsGet
-      parameters:
-      - name: distinctOnTag
-        in: query
-        description: Return only the latest TagView for each scanned tag.
-        schema:
-          type: boolean
-      responses:
-        200:
-          description: A list of tagview objects ordered from newest to oldest.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TagView'
-        403:
-          description: Invalid JWT
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-    post:
-      tags:
-      - Access Token Required
-      summary: Post a tag view
-      operationId: TagViewsPost
-      requestBody:
-        description: Tag view object
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/TagView'
-        required: true
-      responses:
-        201:
-          description: TagView created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TagView'
-        400:
-          description: Invalid input, object invalid
-          content:
-            application/json:
-              schema:
-                type: object
-        403:
-          description: Invalid JWT
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: Parent resource not found.
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-      x-codegen-request-body-name: body
-  /me/tagviews/{id}:
-    get:
-      tags:
-      - Access Token Required
-      summary: Get a tagview for the current user
-      description: Auth0 ID of the user.
-      operationId: TagViewGet
-      parameters:
-      - name: id
-        in: path
-        description: Tag view ID
-        schema:
-          type: integer
-      responses:
-        200:
-          description: A tagview object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TagView'
-        403:
-          description: Invalid JWT
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: TagView not found.
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-    delete:
-      tags:
-      - Access Token Required
-      summary: Delete tag view from the current user.
-      operationId: TagViewDelete
-      responses:
-        204:
-          description: TagView deleted
-          content:
-            application/json:
-              schema:
-                type: object
-        400:
-          description: Bad input.
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: TagView not found
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-  /me/captures:
-    get:
-      tags:
-      - Access Token Required
-      summary: Get a list of captures taken by the current user ordered by most recent
-        first.
-      operationId: MeCapturesGet
-      parameters:
-      - name: distinctOnTag
-        in: query
-        description: Return only the latest capture for each scanned tag.
-        schema:
-          type: boolean
-      responses:
-        200:
-          description: A list of capture objects ordered from newest to oldest
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Capture'
-        400:
-          description: invalid input, object invalid
-          content:
-            application/json:
-              schema:
-                type: object
-        401:
-          description: Not authorised. HMAC does not correspond to input data or invalid
-            JWT.
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: Tag not found.
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-    post:
-      tags:
-      - Access Token Required
-      summary: Create a capture for a user
-      operationId: MeCapturesPost
-      requestBody:
-        description: Capture creation fields
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/EncodedCapture'
-        required: true
-      responses:
-        200:
-          description: A capture object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Capture'
-        400:
-          description: Invalid input, object invalid
-          content:
-            application/json:
-              schema:
-                type: object
-        401:
-          description: Not authorised. HMAC does not correspond to input data.
-          content:
-            application/json:
-              schema:
-                type: object
-        403:
-          description: Not authorised. Invalid JWT.
-          content:
-            application/json:
-              schema:
-                type: object
-        404:
-          description: Parent tag or user not found.
-          content:
-            application/json:
-              schema:
-                type: object
-        409:
-          description: Conflict. A capture with this HMAC already exists. Dead battery
-            or replay attack.
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - Bearer: []
-      x-codegen-request-body-name: body
-  /samples:
-    get:
-      tags:
-      - Open
-      summary: Get unique samples for a tag in a given time range
-      operationId: UniqueSamplesGet
-      parameters:
-      - name: serial
-        in: query
         description: Tag serial
-        required: true
         schema:
           type: string
-      - name: starttime
-        in: query
-        description: start timestamp as an ISO-8601 string.
-        required: true
-        schema:
-          type: string
-          format: datetime
-      - name: endtime
-        in: query
-        description: end timestamp as an ISO-8601 string.
-        required: true
-        schema:
-          type: string
-          format: datetime
-      - name: offset
-        in: query
-        description: Return samples starting from this index.
-        schema:
-          type: integer
-      - name: limit
-        in: query
-        description: Limit the number of samples returned.
-        schema:
-          type: integer
       responses:
         200:
-          description: A list of samples from newest to oldest
+          description: A webhook for this tag
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CaptureSample'
+                $ref: '#/components/schemas/Webhook'
         400:
           description: bad input parameter
           content:
             application/json:
               schema:
                 type: object
-  /users:
     post:
       tags:
-      - Access Token Required
-      summary: Create a new user from the Auth0 access token.
-      operationId: UserPost
+        - Webhook
+      summary: Post a webhook.
+      operationId: WebhookPost
+      security:
+        - TagToken: [ ]
+      requestBody:
+        description: Webhook creation fields
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/WebhookWithSecretkey'
+        required: true
+      parameters:
+        - name: serial
+          required: True
+          in: path
+          description: Tag serial
+          schema:
+            type: string
       responses:
-        201:
-          description: User created
-          content: {}
-        400:
-          description: Invalid input, object invalid
+        200:
+          description: A webhook for this tag
           content:
             application/json:
               schema:
-                type: object
-        403:
-          description: Invalid JWT
+                $ref: '#/components/schemas/WebhookWithSecretkey'
+        400:
+          description: bad input parameter
           content:
             application/json:
               schema:
                 type: object
         409:
-          description: Conflict. User already exists.
+          description: Conflict. This tag already has a webhook and only one is allowed.
           content:
             application/json:
               schema:
                 type: object
+    delete:
+      description: Delete a webhook
+      summary: Delete a webhook
+      tags:
+        - Webhook
+      operationId: WebhookDelete
       security:
-      - Bearer: []
+        - TagToken: [ ]
+      parameters:
+        - name: serial
+          required: True
+          in: path
+          description: Tag serial
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Webhook has been deleted
+          content:
+            application/json:
+              schema: { }
+        '404':
+          description: No tag found
+          content:
+            application/json:
+              schema: { }
+
+  /version:
+    get:
+      summary: Get version
+      description: Get cuplbackend version information.
+      operationId: VersionGet
+      responses:
+        '200':
+          description: Version information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cuplcodec:
+                    type: string
+                    description: cuplcodec version number. This is a dependency of cuplbackend.
+                    example: "2.0.6"
+                  cuplbackend:
+                    type: string
+                    description: cuplbackend version number.
+                    example: "0.1.4"
+
+x-webhooks:
+  captureDecoded:
+    post:
+      summary: Capture Decoded
+      description: A capture has been read from a tag and decoded successfully.
+      operationId: captureHook
+      tags:
+        - Captures
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaptureWithSamples'
+      responses:
+        "200":
+          description: Return a 200 status to indicate that the data was received successfully
+
 components:
   schemas:
+    WebhookWithSecretkey:
+      allOf: # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Webhook'
+        - type: object
+          properties:
+            wh_secretkey:
+              type: string
+              description: The secret key used to create an HMAC-SHA256 signature in the webhook header. Only returned once by a POST request.
+              example: 4490vasnl456q2l
+    Webhook:
+      title: Webhook
+      type: object
+      properties:
+        address:
+          type: string
+          description: URL to send the POST request to when the tag is scanned. Data are encoded as JSON.
+          example: https://webhook.site/a1b658b6-6b23-4a49-959c-e9b33d20e034
+        fields:
+          type: string
+          description: A string containing a comma separated list of fields to include in the capture webhook.
+          example: '["samples", "batvoltagemv"]'
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+          example: 2019-01-15T13:09:52.456Z
     Tag:
       title: Tag
       type: object
       properties:
+        description:
+          type: string
+          description: A free text field that a user can modify. It may be a description of the tag location.
+                       Alternatively, this may be the URL of a linked frontend web application.
+          example: In the kitchen.
+        fwversion:
+          type: string
+          description: Version string for the cuplTag firmware.
+          example: HT04_F1.1_C2
+          readOnly: true
+        hwversion:
+          type: string
+          description: Version string for the cuplTag hardware.
+          example: HT04
+          readOnly: true
         serial:
           type: string
           description: Serial of the tag that made the capture
           example: YWJjZGVM
+          readOnly: true
         timeregistered:
           type: string
           description: Time the tag was created
           format: date-time
-          example: 2019-01-15T13:09:52.456Z
-    TagView:
-      title: Tag View
-      type: object
-      properties:
-        tagserial:
-          type: string
-          description: Serial of tag that was viewed
-          example: YWJjZGVM
-        id:
+          example: 2019-01-15T13:09:52.456
+          readOnly: true
+        webhook:
           type: integer
-          description: Unique ID of the Tagview item
-          example: 20
-        timestamp:
-          type: string
-          description: Timestamp the tag was viewed in seconds since January 1st 1970
-          format: date-time
-          example: 2019-01-15T13:09:52.456Z
+          description: Webhook Id or null if no webhook has been set.
+          example: 3
+          readOnly: true
+    CaptureWithSamples:
+      allOf: # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Capture'
+        - type: object
+          properties:
+            samples:
+              type: array
+              items:
+                $ref: '#/components/schemas/CaptureSample'
+    CaptureWithTagToken:
+      allOf: # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Capture'
+        - type: object
+          properties:
+            token:
+              example: eyJz93a...k4laUWw
+              type: string
+            token_type:
+              example: Bearer
+              type: string
     Capture:
       title: Capture
       type: object
       properties:
-        batvoltagemv:
-          type: integer
-          example: 3000
-        tagserial:
-          type: string
-          description: Serial of the tag that made the capture
-          example: YWJjZGVM
-        cursorpos:
-          type: integer
-          example: 20
         id:
           type: integer
           format: int32
           example: 232
+        tagserial:
+          type: string
+          description: Serial of the tag that made the capture
+          example: YWJjZGVM
+        batvoltagemv:
+          type: integer
+          description: Tag battery voltage in mV.
+          example: 3000
+        cursorpos:
+          type: integer
+          description: Cursor position in the circular buffer.
+          example: 20
         loopcount:
           type: integer
           description: Number of times the circularbuffer pointer has wrapped from
             the end to the beginning
           example: 2
-        md5:
-          type: string
-          example: 2f324022a223
-        status:
-          $ref: '#/components/schemas/CaptureStatus'
         timeintmins:
           type: integer
+          description: The time interval between samples in minutes.
           example: 12
         timestamp:
           type: string
           format: date-time
           example: 2019-01-15T13:09:52.456Z
-        version:
+        format:
           type: integer
+          description: Indicates whether samples in this capture contain temperature and relative humidity readings
+           or just temperature.
           example: 1
+        status:
+          $ref: '#/components/schemas/CaptureStatus'
     CaptureSample:
       title: CaptureSample
       required:
@@ -869,8 +581,6 @@ components:
           description: CaptureSample ID
           format: int32
           example: 1
-        location:
-          $ref: '#/components/schemas/Location'
         rh:
           type: number
           description: Relative Humidity in percent
@@ -890,6 +600,11 @@ components:
       title: CaptureStatus
       type: object
       properties:
+        id:
+          type: integer
+          description: CaptureStatus ID
+          format: int32
+          example: 1
         brownout:
           type: boolean
           description: True if the cause of the most recentreset was a brown out condition.
@@ -898,11 +613,6 @@ components:
           type: boolean
           description: True if the most recent reset was caused by an MCU clock failure.
           example: false
-        id:
-          type: integer
-          description: CaptureStatus ID
-          format: int32
-          example: 1
         lpm5wakeup:
           type: boolean
           description: True if the MCU has woken up from LPM (Low Power Mode) x.5
@@ -911,11 +621,6 @@ components:
           type: boolean
           description: True if a reset has occured for miscellaneous reasons
           example: false
-        parent_capture:
-          type: integer
-          description: Parent Capture ID
-          format: int32
-          example: 232
         resetsalltime:
           type: integer
           example: 20
@@ -932,14 +637,14 @@ components:
       title: Base64 Encoded Capture
       type: object
       properties:
-        circbufb64:
-          type: string
-          description: Circular buffer including samples encoded as base64.
-          example: Add example here
         serial:
           type: string
           description: Serial of the tag that made the capture
           example: YWJjZGVM
+        circbufb64:
+          type: string
+          description: Circular buffer including samples encoded as base64.
+          example: Add example here
         statusb64:
           type: string
           description: 12 character status string
@@ -948,90 +653,12 @@ components:
           type: string
           description: Time interval in minutes in base64
           example: Awg=
-        versionStr:
+        vfmtb64:
           type: string
-          example: "0001"
-    Location:
-      title: Location
-      type: object
-      properties:
-        capturesample_id:
-          type: integer
-          description: ID of the parent CaptureSample object
-          format: int32
-          example: 1
-        description:
-          type: string
-          description: Description of where a tag was located at the time of a capturesample.
-          example: Cupboard under the stairs
-        id:
-          type: integer
-          description: Location ID
-          format: int32
-          example: 1
-        timestamp:
-          type: string
-          description: Unix timestamp in seconds since January 1st 1970
-          format: date-time
-          example: 2019-01-15T13:09:52.456Z
-    User:
-      title: User
-      required:
-      - oauth_id
-      - roles
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        oauth_id:
-          type: string
-          format: uuid
-        roles:
-          type: string
-          example: end-user
-        userinfo:
-          $ref: '#/components/schemas/UserInfo'
-    UserInfo:
-      title: UserInfo
-      type: object
-      properties:
-        family_name:
-          type: string
-          example: Bruce
-        given_name:
-          type: string
-          example: Almighty
-        locale:
-          type: string
-          example: en-GB
-        name:
-          type: string
-          example: Bruce Almighty
-        nickname:
-          type: string
-          example: bruce.almighty
-        picture:
-          type: string
-          example: https://lh5.googleusercontent.com/--nU_M9gooPA/AAAAAAAAAAI/AAAAAAAAAAA/AKxrwcZvgYJFq7AjYyLe6fih5f20MbPU0Q/mo/photo.jpg
-        sub:
-          type: string
-          example: google-oauth2|115758583297709853721
-        updated_at:
-          type: string
-          format: date-time
-          example: 2019-01-06T22:43:33.196Z
+          description: Version and Format encoded in base64. This may be zero padded so remove all but 4 last characters before use.
+          example: "000000Ae3g"
   securitySchemes:
-    oAuthSample:    # <---- arbitrary name
-      type: oauth2
-      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
-      flows:
-        implicit:   # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
-          authorizationUrl: https://api.example.com/oauth2/authorize
-          scopes:
-            read_pets: read your pets
-            write_pets: modify pets in your account
-    Bearer:
-      type: apiKey
-      name: Authorization
-      in: header
+    TagToken: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes

@@ -3,13 +3,6 @@
 Admin API Specification
 ===============================
 
-.. toctree::
-   :hidden:
-   :maxdepth: 2
+Latest yaml :githubusercontent:`AdminAPI <docs/api/admin/api.yaml>`
 
-   tag
-   capture
-   tagview
-   user
-   token
-   :caption: Contents
+

@@ -15,7 +15,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
 
     # and the expected response code and body
@@ -37,7 +37,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -56,7 +56,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       headers:
         content-type: application/json
@@ -73,13 +73,13 @@ stages:
       save:
         body:
           test_tag_id: id
-
+          test_tag_serial: serial
 
   - name: Verify that the tag can be retrieved by running a GET request
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: GET
       headers:
         content-type: application/json
@@ -98,7 +98,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: GET
       headers:
         content-type: application/json
@@ -110,11 +110,48 @@ stages:
       body:
         !anylist
 
+  - name: Verify that the tag can be retrieved by running a GET request from the consumer API.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{test_tag_serial}"
+      method: GET
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        serial: "{test_tag_serial:s}"
+        timeregistered: !anything
+        url: !anystr
+        samples_url: !anystr
+
+  - name: Verify that the tag can be retrieved by running a GET request from the random endpoint consumer API.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/random/tag"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        serial: !anystr
+        timeregistered: !anything
+        url: !anystr
+        samples_url: !anystr
+
   - name: Delete the tag by ID.
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json
@@ -138,7 +175,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -157,7 +194,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       json:
         serial: "{testtag.serial:s}"
@@ -180,6 +217,8 @@ stages:
         fwversion: "{testtag.fwversion:s}"
         hwversion: "{testtag.hwversion:s}"
         description: "{testtag.description:s}"
+        usehmac: !anybool
+        webhook: null
       save:
         body:
           test_tag_id: id
@@ -189,7 +228,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: GET
       headers:
         content-type: application/json
@@ -205,13 +244,76 @@ stages:
         fwversion: "{testtag.fwversion:s}"
         hwversion: "{testtag.hwversion:s}"
         description: "{testtag.description:s}"
+        usehmac: !anybool
+        timeregistered: !anything
+
+  - name: Verify that the tag can be retrieved by running a GET request
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        id: !int '{test_tag_id}'
+        serial: "{testtag.serial:s}"
+        secretkey: "{testtag.secretkey:s}"
+        fwversion: "{testtag.fwversion:s}"
+        hwversion: "{testtag.hwversion:s}"
+        description: "{testtag.description:s}"
+        usehmac: !anybool
+        timeregistered: !anything
+
+  - name: Make a PUT request to modify the tag description, fwversion and hwversion.
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
+      method: PUT
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+      json:
+        fwversion: "new_fw_version"
+        hwversion: "new_hw_version"
+        description: "new_description"
+    # and the expected response body
+    response:
+      status_code: 204
+
+  - name: Verify that the modified tag can be retrieved by running a GET request
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        id: !int '{test_tag_id}'
+        serial: "{testtag.serial:s}"
+        secretkey: "{testtag.secretkey:s}"
+        fwversion: "new_fw_version"
+        hwversion: "new_hw_version"
+        description: "new_description"
+        usehmac: !anybool
         timeregistered: !anything
 
   - name: Verify that the tag can be retrieved in a list by running a GET request
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: GET
       headers:
         content-type: application/json
@@ -227,7 +329,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json

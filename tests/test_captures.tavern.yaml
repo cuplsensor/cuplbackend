@@ -15,7 +15,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
 
     # and the expected response code and body
@@ -37,7 +37,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -56,7 +56,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       headers:
         content-type: application/json
@@ -84,7 +84,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: POST
       json:
         serial: "{serial}"
@@ -99,12 +99,12 @@ stages:
     response:
       status_code: 200
       body:
-        batvoltagemv: !anyfloat
+        batvoltagemv: !anyint
         tagserial: !anystr
         cursorpos: !anyint
         id: !anyint
         loopcount: !anyint
-        md5: !anystr
+        hash: !anystr
         status:
           brownout: !anybool
           parent_capture: !anyint
@@ -117,7 +117,7 @@ stages:
           watchdog: !anybool
         timeintmins: !anyint
         timestamp: !anystr
-        version: !anyint
+        format: !anystr
       save:
         body:
           test_capture_id: id
@@ -126,7 +126,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures"
+      url: "{baseurl}/api/consumer/captures"
       method: GET
       params:
         serial: "{serial}"
@@ -137,12 +137,12 @@ stages:
     response:
       status_code: 200
       body:
-        - batvoltagemv: !anyfloat
+        - batvoltagemv: !anyint
           tagserial: !anystr
           cursorpos: !anyint
           id: !int "{test_capture_id:d}"
           loopcount: !anyint
-          md5: !anystr
+          hash: !anystr
           status:
             brownout: !anybool
             parent_capture: !anyint
@@ -155,14 +155,14 @@ stages:
             watchdog: !anybool
           timeintmins: !anyint
           timestamp: !anystr
-          version: !anyint
+          format: !anystr
 
 
   - name: GET the capture for this tag and verify that it contains the correct fields
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures/{test_capture_id}"
+      url: "{baseurl}/api/consumer/captures/{test_capture_id}"
       method: GET
       headers:
         content-type: application/json
@@ -171,12 +171,12 @@ stages:
     response:
       status_code: 200
       body:
-        batvoltagemv: !anyfloat
+        batvoltagemv: !anyint
         tagserial: !anystr
         cursorpos: !anyint
         id: !int "{test_capture_id:d}"
         loopcount: !anyint
-        md5: !anystr
+        hash: !anystr
         status:
           brownout: !anybool
           parent_capture: !anyint
@@ -189,13 +189,13 @@ stages:
           watchdog: !anybool
         timeintmins: !anyint
         timestamp: !anystr
-        version: !anyint
+        format: !anystr
 
   - name: GET samples from the capture
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/captures/{test_capture_id}/samples"
+      url: "{baseurl}/api/consumer/captures/{test_capture_id}/samples"
       method: GET
       headers:
         content-type: application/json
@@ -203,15 +203,31 @@ stages:
     # and the expected response body
     response:
       status_code: 200
-      body:
-        $ext:
-          function: utils:check_samples
+
+  - name: Attempt to resubmit an identical capture to the one before.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+
+    # Server should response with HTTP 409 conflict.
+    response:
+      status_code: 409
 
   - name: Delete the tag by ID.
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json

@@ -16,7 +16,7 @@ stages:
 
     # Define the request to \be made
     request:
-      url: "{baseurl}/api/admin/v1/token"
+      url: "{baseurl}/api/admin/token"
       method: POST
       json:
         client_id: "{clientid}"
@@ -35,7 +35,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tags"
+      url: "{baseurl}/api/admin/tags"
       method: POST
       headers:
         content-type: application/json
@@ -59,7 +59,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id:d}/simulate"
+      url: "{baseurl}/api/admin/tag/{test_tag_id:d}/simulate"
       method: GET
       params:
         frontendurl: "http://localhost:5001"
@@ -84,7 +84,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/v1/tag/{test_tag_id}"
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
       method: DELETE
       headers:
         content-type: application/json

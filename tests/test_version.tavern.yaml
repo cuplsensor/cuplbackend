@@ -11,7 +11,7 @@ stages:
 
     # Define the request to be made
     request:
-      url: "{baseurl}/api/consumer/v1/version"
+      url: "{baseurl}/api/consumer/version"
       method: GET
 
     # and the expected response code and body

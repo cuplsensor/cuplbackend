@@ -14,6 +14,7 @@
 #
 import os
 import sys
+import subprocess
 # sys.path.insert(0, os.path.abspath('.'))
 
 
@@ -46,7 +47,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
-    'sphinxcontrib.openapi',
+    'sphinx.ext.extlinks',
     'sphinx_rtd_theme',
 ]
 
@@ -97,7 +98,7 @@ html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
     'navigation_depth': 4,
 }
-html_logo = 'cupl_textonly_white_small.png'
+html_logo = 'docs/cupl_textonly_white_small.png'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
@@ -113,6 +114,10 @@ html_static_path = ['_doc_static']
 #
 # html_sidebars = {}
 
+git_commit_id = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode("utf-8")
+ghusercontenturl = 'https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cuplsensor/cuplbackend/{git_commit_id}/'.format(git_commit_id=git_commit_id)
+
+extlinks = {'githubusercontent': (ghusercontenturl+'%s', '')}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

@@ -3,14 +3,4 @@
 Consumer API Specification
 ============================
 
-.. toctree::
-   :hidden:
-   :maxdepth: 2
-
-   tag
-   capture
-   samples
-   users
-   me
-   locations
-   :caption: Contents
+Latest yaml :githubusercontent:`ConsumerAPI <docs/api/consumer/api.yaml>`

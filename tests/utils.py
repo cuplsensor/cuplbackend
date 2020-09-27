@@ -2,17 +2,22 @@
 from unittest.mock import Mock
 from requests.models import Response
 import json
+import hmac
+import hashlib
+import base64
 from wscodec.encoder.pyencoder.instrumented import InstrumentedSampleTRH
 
 
-def create_capture_for_tag(response, baseurl):
-    tagserial = response.json()["serial"]
-    tagsecretkey = response.json()["secretkey"]
+def create_capture_for_tag(response, baseurl, tagserial=None, tagsecretkey=None, nsamples=10):
+    if tagserial is None:
+        tagserial = response.json()["serial"]
+    if tagsecretkey is None:
+        tagsecretkey = response.json()["secretkey"]
     capturetrh = InstrumentedSampleTRH(baseurl=baseurl,
                                        serial=tagserial,
                                        secretkey=tagsecretkey,
                                        smplintervalmins=10)
-    samplesin = capturetrh.pushsamples(10)
+    samplesin = capturetrh.pushsamples(nsamples)
     queries = capturetrh.geturlqs()
     serial = queries['s'][0]
     statusb64 = queries['x'][0]
@@ -31,12 +36,24 @@ def create_capture_for_tag(response, baseurl):
     return outlist
 
 
-def check_samples(response):
-    print(response)
+def verifyhmac(response, wh_secretkey):
+    content = json.loads(response.content)
+    url_hmac_str = content['headers'].get('x-cuplbackend-hmac-sha256')
+    url_data_str = json.dumps(content['body'])
 
-if __name__ == "__main__":
-    tagresponse = Mock(spec=Response)
-    tagresponse.json.return_value = {'serial': 'ABCDEFGH'}
-    tagresponse.status_code = 200
-    test = create_capture_for_tag(tagresponse)
-    print(test)
+    url_hmac_bytes = url_hmac_str.encode('utf-8')
+    url_data_bytes = url_data_str.encode('utf-8')
+    wh_secretkey_bytes = wh_secretkey.encode('utf-8')
+
+    digest = hmac.new(wh_secretkey_bytes, url_data_bytes, hashlib.sha256).digest()
+    computed_hmac_bytes = base64.b64encode(digest)
+    assert url_hmac_bytes == computed_hmac_bytes
+
+
+def strictkeyscheck(response, bodykeys):
+    content = json.loads(response.content)
+    url_data_dict = content['body']
+    # A set comparison is done instead of a list comparison, because item order is irrelevant.
+    bodykeys = set(bodykeys)
+    urldictkeys = set(url_data_dict.keys())
+    assert urldictkeys == bodykeys

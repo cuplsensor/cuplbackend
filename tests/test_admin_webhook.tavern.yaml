@@ -1,0 +1,202 @@
+# Every test file has one or more tests
+test_name: No webhook is created without supplying data
+strict: True
+
+
+
+marks:
+  - usefixtures:
+      - baseurl
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+# ...and each test has one or more stages (e.g. an HTTP request)
+stages:
+  - name: Without supplying a token an error code is returned
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/webhooks"
+      method: POST
+
+    # and the expected response code and body
+    response:
+      status_code: 401
+
+---
+
+test_name: Create a tag, add a webhook to it then delete the tag.
+
+marks:
+  - usefixtures:
+      - baseurl
+      - clientid
+      - clientsecret
+
+
+# Include variables
+includes:
+  - !include includes.yaml
+
+stages:
+  - name: Obtain a token
+
+    # Define the request to \be made
+    request:
+      url: "{baseurl}/api/admin/token"
+      method: POST
+      json:
+        client_id: "{clientid}"
+        client_secret: "{clientsecret}"
+      headers:
+        content-type: application/json
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      headers:
+        content-type: application/json
+      body:
+        token: !anystr
+      save:
+        body:
+          admin_token: token
+
+  - name: Use the token to create a new tag
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tags"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      headers:
+        content-type: application/json
+      body:
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        serial: !anystr
+      save:
+        body:
+          test_tag_id: id
+
+  - name: Create a webhook and add it to the tag with the serial
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/webhooks"
+      method: POST
+      json:
+        tag_id: !int "{test_tag_id:d}"
+        address: "abc"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+    # and the expected response body
+    response:
+      status_code: 200
+      headers:
+        content-type: application/json
+      body:
+        tag_id: !int "{test_tag_id:d}"
+        address: "abc"
+        fields: null
+        wh_secretkey: !anystr
+      save:
+        body:
+          test_webhook_id: id
+
+  - name: Attempt to create a duplicate webhook.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/webhooks"
+      method: POST
+      json:
+        tag_id: !int "{test_tag_id:d}"
+        address: "abc"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 409
+
+  - name: Get the webhook
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/webhook/{test_webhook_id}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+    response:
+      status_code: 200
+      headers:
+        content-type: application/json
+      body:
+        tag_id: !int "{test_tag_id:d}"
+        address: "abc"
+        fields: null
+        wh_secretkey: !anystr
+
+  - name: Verify that the tag can be retrieved by running a GET request
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
+      method: GET
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        id: !int '{test_tag_id}'
+        serial: !anystr
+        secretkey: !anystr
+        fwversion: !anystr
+        hwversion: !anystr
+        description: !anystr
+        usehmac: !anybool
+        timeregistered: !anything
+        webhook: !anydict
+
+  - name: Delete the webhook.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/webhook/{test_webhook_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 204
+
+  - name: Delete the tag by ID.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 204

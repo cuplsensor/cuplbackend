@@ -4,29 +4,15 @@ from dotenv import load_dotenv
 import sys
 import pytz
 import datetime
-import requests
 from . import defaults
 
 from .helpers.capturehelper import CaptureListHelper
-from ..wsapiwrapper.admin import request_admin_token
-from ..wsapiwrapper.admin.tag import TagWrapper
-from ..wsapiwrapper.consumer.user import UserWrapper
-from ..wsapiwrapper.consumer.mecapture import MeCaptureWrapper
-from ..wsapiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
-from ..wsapiwrapper.consumer.tagview import TagViewWrapper
-from ..wsapiwrapper.consumer.tagscanned import TagScannedWrapper
-from ..wsapiwrapper.consumer.location import LocationWrapper
-from ..wsapiwrapper.consumer.sample import SampleWrapper
+from tests.apiwrapper.admin import request_admin_token
+from tests.apiwrapper.admin.tag import TagWrapper
+from tests.apiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
+from tests.apiwrapper.consumer.sample import SampleWrapper
 
 sys.path.append(".")
-
-
-@pytest.fixture(scope="function")
-def token_fixture(idporigin):
-    payload = {'grant_type': 'authorization_code'}
-    r = requests.post('{idporigin}/token'.format(idporigin=idporigin), data=payload)
-    unverified_token = r.json().get('access_token')
-    return unverified_token
 
 
 def pytest_runtest_setup(item):
@@ -94,14 +80,6 @@ def baseurl():
     return '{wsb_protocol}{wsb_host}:{wsb_port}'.format(wsb_protocol=wsb_protocol, wsb_host=wsb_host, wsb_port=str(wsb_port))
 
 @pytest.fixture
-def idporigin():
-    idp_protocol = os.getenv("IDP_PROTOCOL", defaults.IDP_PROTOCOL)
-    idp_host = os.getenv("IDP_HOST", defaults.IDP_HOST)
-    idp_port = os.getenv("IDP_PORT", defaults.IDP_PORT)
-    return '{idp_protocol}{idp_host}:{idp_port}'.format(idp_protocol=idp_protocol, idp_host=idp_host, idp_port=str(idp_port))
-
-
-@pytest.fixture
 def clientid():
     """ Return client id environment variable. """
     return os.getenv("ADMINAPI_CLIENTID", defaults.ADMINAPI_CLIENTID)
@@ -111,7 +89,6 @@ def clientid():
 def clientsecret():
     """ Return client secret environment variable. """
     return os.getenv("ADMINAPI_CLIENTSECRET", defaults.ADMINAPI_CLIENTSECRET)
-
 
 @pytest.fixture
 def admintoken(baseurl, clientid, clientsecret):
@@ -131,11 +108,6 @@ def tag_fixture(request, baseurl, admintoken):
 
     tagresponse = taghelper.post()
     return tagresponse
-
-@pytest.fixture(scope="function")
-def mecapture_fixture(token_fixture, baseurl):
-    mecaphelper = MeCaptureWrapper(baseurl, tokenstr=token_fixture)
-    return mecaphelper
 
 
 @pytest.fixture(scope="function")
@@ -163,37 +135,15 @@ def tag_fixture_b(request, baseurl, admintoken):
     request.addfinalizer(teardown)
     return bf
 
+
 @pytest.fixture(scope="function")
-def capture_fixture(baseurl, token_fixture):
+def capture_fixture(baseurl):
     return ConsumerCaptureWrapper(baseurl)
 
-@pytest.fixture(scope="function")
-def tagview_fixture(baseurl, token_fixture):
-    return TagViewWrapper(baseurl, token_fixture)
 
 @pytest.fixture(scope="function")
-def tagscanned_fixture(baseurl, token_fixture):
-    return TagScannedWrapper(baseurl, token_fixture)
-
-@pytest.fixture(scope="function")
-def location_fixture(baseurl, token_fixture):
-    return LocationWrapper(baseurl, token_fixture)
-
-@pytest.fixture(scope="function")
-def sample_fixture(baseurl, token_fixture):
-    return SampleWrapper(baseurl, token_fixture)
-
-@pytest.fixture(scope="function")
-def user_fixture(request, baseurl, token_fixture):
-    userhelper = UserWrapper(baseurl, tokenstr=token_fixture)
-
-    def teardown():
-        print("teardown test user")
-        userhelper.delete()
-
-    request.addfinalizer(teardown)
-    return userhelper.post()
-
+def sample_fixture(baseurl):
+    return SampleWrapper(baseurl)
 
 
 @pytest.fixture(scope="function")
