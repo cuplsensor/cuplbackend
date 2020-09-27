@@ -4,11 +4,10 @@
     ~~~~
     top level module
 """
-from werkzeug.debug import DebuggedApplication
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from cuplbackend.api import admin, consumer
-from rootapp.rootapp import rootapp
-from docsapp import docsapp
+from otherapps.rootapp.rootapp import rootapp
+from otherapps.docsapp import docsapp
 import os
 
 
