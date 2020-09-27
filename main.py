@@ -2,12 +2,12 @@
 """
     wsgi
     ~~~~
-    overholt wsgi module
+    top level module
 """
 from werkzeug.debug import DebuggedApplication
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from flaskapp.api import admin, consumer
-from rootapp import rootapp
+from cuplbackend.api import admin, consumer
+from rootapp.rootapp import rootapp
 from docsapp import docsapp
 import os
 
@@ -18,8 +18,3 @@ app = DispatcherMiddleware(rootapp, {
         '/api/admin': admin.create_app(),
         '/api/consumer': consumer.create_app()
     })
-
-if __name__ == "__main__":
-    app = DebuggedApplication(app, evalex=False)
-    app.debug = False
-    app.run()

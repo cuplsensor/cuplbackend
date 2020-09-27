@@ -2,8 +2,8 @@ from datetime import timedelta
 import pytz
 import random
 from string import ascii_lowercase
-from ...wsapiwrapper.admin.capture import CaptureWrapper
-from ...wsapiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
+from tests.apiwrapper.admin.capture import CaptureWrapper
+from tests.apiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
 
 tz = pytz.timezone("Europe/London")
 

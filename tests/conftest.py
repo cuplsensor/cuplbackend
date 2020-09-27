@@ -4,14 +4,13 @@ from dotenv import load_dotenv
 import sys
 import pytz
 import datetime
-import requests
 from . import defaults
 
 from .helpers.capturehelper import CaptureListHelper
-from ..wsapiwrapper.admin import request_admin_token
-from ..wsapiwrapper.admin.tag import TagWrapper
-from ..wsapiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
-from ..wsapiwrapper.consumer.sample import SampleWrapper
+from tests.apiwrapper.admin import request_admin_token
+from tests.apiwrapper.admin.tag import TagWrapper
+from tests.apiwrapper.consumer.capture import CaptureWrapper as ConsumerCaptureWrapper
+from tests.apiwrapper.consumer.sample import SampleWrapper
 
 sys.path.append(".")
 
