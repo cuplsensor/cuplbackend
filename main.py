@@ -5,7 +5,7 @@
     top level module
 """
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from cuplbackend.api import admin, consumer
+from backendapp.api import admin, consumer
 from otherapps.rootapp.rootapp import rootapp
 from otherapps.docsapp import docsapp
 import os

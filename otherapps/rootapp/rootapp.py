@@ -1,4 +1,4 @@
-from cuplbackend.api.consumer.version import versioninfo
+from backendapp.api.consumer.version import versioninfo
 import os
 
 f = open(os.path.join(os.path.dirname(__file__), 'logostr.txt'), 'r')

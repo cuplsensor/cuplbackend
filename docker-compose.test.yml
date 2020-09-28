@@ -48,5 +48,5 @@ services:
    - SECRET_KEY=efasfsaeflksena
    - WSB_HOST=nginx
    - WSB_PORT=80
-  command: bash -c "cd tests && python3 -m pytest -vvvv --showlocals"
+  command: bash -c "python3 -m pytest tests"
   
