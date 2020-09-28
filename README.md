@@ -32,10 +32,6 @@ Hosted on [DockerHub](https://hub.docker.com/r/cupl/backend). Pull the image wit
 
 If the Affero GPLv3 licence is too restrictive for your needs, a commercial licence can be purchased from Plotsensor Ltd.
 
-### cuplapiwrapper
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
-
 ### Documentation
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
