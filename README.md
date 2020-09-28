@@ -8,8 +8,6 @@ Environmental sensor samples decoded by the latter are persisted in a [postgres]
 
 API endpoints are tested with [pytest](https://docs.pytest.org/en/stable/) with [Tavern](https://tavern.readthedocs.io/en/latest/). 
 
-Some endpoints require a [JSON Web Token](https://jwt.io/introduction/) (JWT) from an authenticated user. This is normally supplied by a 3rd party [OAuth2 Provider](https://oauth.net/2/) such as [Auth0](https://auth0.com). To enable automatic test, this provider is mocked with [oauth2-mock-server](https://www.npmjs.com/package/oauth2-mock-server), which generates and validates JWTs. 
-
 ## Documentation 
 
 [![Documentation Status](https://readthedocs.org/projects/wsbackend/badge/?version=latest)](https://cupl.readthedocs.io/projects/backend/en/latest/?badge=latest) 
