@@ -17,7 +17,9 @@ services:
    - HASHIDS_SALT=salfkna04afksnl
    - CSRF_SESSION_KEY=aslfenalkse
    - SECRET_KEY=efasfsaeflksena
+   - WSB_HOST=localhost
    - WSB_PORT=5001
+   - SERVER_NAME=nginx
    - DROP_ON_INIT=True
 
  postgres:
@@ -48,5 +50,5 @@ services:
    - SECRET_KEY=efasfsaeflksena
    - WSB_HOST=nginx
    - WSB_PORT=80
-  command: bash -c "python3 -m pytest tests"
+  command: bash -c "export PYTHONPATH="$PYTHONPATH:tests" && python3 -m pytest tests"
   
