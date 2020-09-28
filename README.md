@@ -24,16 +24,6 @@ Hosted on [DockerHub](https://hub.docker.com/r/cupl/backend). Pull the image wit
          
     docker pull cupl/backend
     
-## API Wrapper Python Package
-
-[![PyPI version](https://badge.fury.io/py/cuplcodec.svg)](https://badge.fury.io/py/cuplcodec)
-
-cuplapiwrapper provides a Python interface to the cuplbackend web API. It is designed to be imported by a frontend web application. It might move to its own repository in future, but for now it is used in some test routines.
-
-Install it with: 
-
-    pip install cuplapiwrapper
-    
 ## Licence
 
 ### cuplbackend
