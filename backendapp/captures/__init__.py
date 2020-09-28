@@ -31,9 +31,9 @@ class CaptureService(Service):
         typestr = decodedurl.__class__.__name__
         typestrsplit = [a for a in typestr.split('.') if a]
         format = '.'.join(typestrsplit[-2:])
-        if format is "TempRH_URL":
+        if format == "TempRH_URL":
             samples = [CaptureSample(sample.timestamp, sample.temp, sample.rh) for sample in decodedurl.samples]
-        elif format is "Temp_URL":
+        elif format == "Temp_URL":
             samples = [CaptureSample(sample.timestamp, sample.temp) for sample in decodedurl.samples]
         else:
             raise ValueError(format)
