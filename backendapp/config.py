@@ -63,5 +63,7 @@ WSB_HOST = os.getenv('WSB_HOST', defaults.WSB_HOST)
 WSB_PROTOCOL = os.getenv('WSB_PROTOCOL', defaults.WSB_PROTOCOL)
 SERVER_NAME = os.getenv('SERVER_NAME', "{host}:{port}".format(host=WSB_HOST, port=WSB_PORT))
 
+CORS_EXPOSE_HEADERS = ["Link", "X-CuplBackend-Hmac-SHA256"]
+
 PREFERRED_URL_SCHEME = WSB_PORT.replace("://", "")
 
