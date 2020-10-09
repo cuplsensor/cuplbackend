@@ -14,7 +14,7 @@ from ...services import tags, captures, capturesamples
 from ...captures.schemas import CaptureSampleSchema
 from ..baseresource import BaseResource, SingleResource
 from dateutil.parser import parse
-from datetime import datetime
+import datetime
 
 bp = Blueprint('samples', __name__)
 api = Api(bp)
@@ -75,7 +75,7 @@ class Samples(BaseResource):
         per_page = int(parsedargs.get('per_page', 100))
 
         if endtimestr is None:
-            endtime = datetime.now()
+            endtime = datetime.datetime.utcnow()
         else:
             endtime = parse(endtimestr)
 
