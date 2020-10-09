@@ -80,7 +80,7 @@ class Samples(BaseResource):
             endtime = parse(endtimestr)
 
         if starttimestr is None:
-            starttime = tagobj.timeregistered
+            starttime = datetime.datetime.utcfromtimestamp(0) # A very long time ago.
         else:
             starttime = parse(starttimestr)
 

@@ -157,6 +157,14 @@ stages:
           timestamp: !anystr
           format: !anystr
 
+  - name: Samples
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/samples"
+      method: GET
+    # and the expected response body (still writing this).
+    response:
+      status_code: 200
 
   - name: GET the capture for this tag and verify that it contains the correct fields
 
