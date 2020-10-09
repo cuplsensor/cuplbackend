@@ -67,7 +67,7 @@ class TagSimulate(SingleAdminResource):
 
         frontendurl = parsedargs['frontendurl']
         nsamples = int(parsedargs.get('nsamples', 100))
-        smplintervalmins = int(parsedargs.get('sampleintervalmins', 10))
+        smplintervalmins = int(parsedargs.get('smplintervalmins', 10))
         format = int(parsedargs.get('format', 1))
         usehmac = (parsedargs.get('usehmac', 'True').lower() == 'true')
         batvoltagemv = int(parsedargs.get('batvoltagemv', 3000))

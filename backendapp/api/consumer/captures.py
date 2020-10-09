@@ -101,8 +101,8 @@ class Captures(MultipleResource):
                                               optlist=['page', 'per_page'])
 
         serial = parsedargs['serial']
-        page = parsedargs.get('page', 1)
-        per_page = parsedargs.get('per_page', 10)
+        page = int(parsedargs.get('page', 1))
+        per_page = int(parsedargs.get('per_page', 10))
 
         tagobj = tags.get_by_serial(serial)
         capturepages = tagobj.captures.options(noload('samples')).paginate(page=page, per_page=per_page, max_per_page=25)
