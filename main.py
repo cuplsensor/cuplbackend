@@ -13,8 +13,8 @@ import os
 
 
 app = DispatcherMiddleware(rootapp, {
-        '/docs/admin': admin_docsapp.create_app(),
-        '/docs/consumer': consumer_docsapp.create_app(),
+        '/docs/admin': admin_docsapp,
+        '/docs/consumer': consumer_docsapp,
         '/api/admin': admin.create_app(),
         '/api/consumer': consumer.create_app()
     })
