@@ -12,7 +12,7 @@ from docs.api.consumer.docsapp import docsapp as consumer_docsapp
 import os
 
 
-app = DispatcherMiddleware(rootapp, {
+app = DispatcherMiddleware(rootapp.wsgi_app, {
         '/docs/admin': admin_docsapp,
         '/docs/consumer': consumer_docsapp,
         '/api/admin': admin.create_app(),
