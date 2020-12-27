@@ -7,6 +7,8 @@ logostr = f.read()
 from flask import Flask
 rootapp = Flask(__name__)
 
+rootapp.config["APPLICATION_ROOT"] = "/backend"
+
 @rootapp.route('/')
 def root_page():
     versiondict = versioninfo()
