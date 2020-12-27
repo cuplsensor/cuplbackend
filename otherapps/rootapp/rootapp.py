@@ -23,4 +23,4 @@ def root_page():
                  "<li><a href='api/admin'>Admin API Root</a></li>" \
                  "<li><a href='api/consumer'>Consumer API Root</a></li>" \
                  "</ul>".format(logostr, backendversion, codecversion)
-    return logostr + "\n" + versionstr
+    return versionstr
