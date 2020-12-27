@@ -17,8 +17,8 @@ def rootapp(env, resp):
                  "<li><a href='/docs/consumer'>Consumer API Docs</a></li>" \
                  "</ul>" \
                  "<ul>" \
-                 "<li><a href='/api/admin'>Admin API Root</a></li>" \
-                 "<li><a href='/api/consumer'>Consumer API Root</a></li>" \
+                 "<li><a href='api/admin'>Admin API Root</a></li>" \
+                 "<li><a href='api/consumer'>Consumer API Root</a></li>" \
                  "</ul>".format(logostr, backendversion, codecversion)
     resp('200 OK', [('Content-Type', 'text/html')])
     return [versionstr.encode('utf-8')]
