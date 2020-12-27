@@ -29,8 +29,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 # operations using the other.
 THREADS_PER_PAGE = 2
 
-APPLICATION_ROOT = os.getenv('APPLICATION_ROOT', '/')
-
 # Enable protection agains *Cross-site Request Forgery (CSRF)*
 CSRF_ENABLED = True
 
