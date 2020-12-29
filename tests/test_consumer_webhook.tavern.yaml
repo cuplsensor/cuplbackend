@@ -5,6 +5,7 @@ marks:
       - baseurl
       - clientid
       - clientsecret
+      - pborigin
 
 stages:
   - name: With a client_id and a client_secret a token is returned
@@ -116,7 +117,7 @@ stages:
   - name: Create a postbin for testing the webhook
 
     request:
-      url: "https://postb.in/api/bin"
+      url: "{pborigin}/api/bin"
       method: POST
 
     response:
@@ -132,7 +133,7 @@ stages:
       url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
       headers:
         content-type: application/json
         Authorization: "bearer {test_tagtoken:s}"
@@ -140,7 +141,7 @@ stages:
     response:
       status_code: 200
       body:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
         wh_secretkey: !anystr
         created_on: !anystr
       save:
@@ -161,7 +162,7 @@ stages:
       headers:
         content-type: application/json
       body:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
         fields: null
         created_on: !anystr
 
@@ -227,7 +228,7 @@ stages:
   - name: GET and verify the webhook contents from the postb.in API.
 
     request:
-      url: "https://postb.in/api/bin/{test_postbin_id:s}/req/shift"
+      url: "{pborigin}/api/bin/{test_postbin_id:s}/req/shift"
       method: GET
       headers:
         content-type: application/json
@@ -273,7 +274,7 @@ stages:
       url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
         fields: '["timeintmins", "batvoltagemv"]'
       headers:
         content-type: application/json
@@ -312,7 +313,7 @@ stages:
   - name: GET and verify the webhook contains only the fields configured.
 
     request:
-      url: "https://postb.in/api/bin/{test_postbin_id:s}/req/shift"
+      url: "{pborigin}/api/bin/{test_postbin_id:s}/req/shift"
       method: GET
       headers:
         content-type: application/json
@@ -357,7 +358,7 @@ stages:
       url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
         fields: '["timeintmins", "batvoltagemv", "invalid field"]'
       headers:
         content-type: application/json

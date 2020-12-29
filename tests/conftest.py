@@ -72,6 +72,12 @@ def two_captures_on_two_tags_fixture(tag_with_captures_fixture, user_fixture):
 
 
 @pytest.fixture
+def pborigin():
+    """ Return the postbin origin environment variable. """
+    return os.getenv("PBORIGIN", defaults.PBORIGIN)
+
+
+@pytest.fixture
 def baseurl():
     """ Return baseurl environment variable. """
     wsb_protocol = os.getenv("WSB_PROTOCOL", defaults.WSB_PROTOCOL)

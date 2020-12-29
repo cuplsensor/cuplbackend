@@ -1,6 +1,7 @@
 WSB_PROTOCOL = "http://"
 WSB_HOST = "localhost"
 WSB_PORT = 5000
+PBORIGIN = "http://localhost:6969"
 ADMINAPI_AUDIENCE = "default_adminapi_audience"
 ADMINAPI_CLIENTID = "default_adminapi_clientid"
 ADMINAPI_CLIENTSECRET = "rakfnlsakenaslk"

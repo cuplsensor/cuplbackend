@@ -38,6 +38,11 @@ services:
   depends_on:
    - wsbackend
 
+ postbin:
+  restart: 'no'
+  image: ruby:2.7.2-buster
+  command: bash -c "gem install postbin && postbin"
+
  sut:
   restart: 'no'
   build: .
@@ -50,5 +55,6 @@ services:
    - SECRET_KEY=efasfsaeflksena
    - WSB_HOST=nginx
    - WSB_PORT=80
+   - PBORIGIN=http://postbin
   command: bash -c "export PYTHONPATH="$PYTHONPATH:tests" && python3 -m pytest tests"
   
