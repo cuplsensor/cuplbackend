@@ -28,9 +28,19 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install and run postbin for testing webhooks.
+    - name: Cache Postbin
+      id: cache-postbin
+      uses: actions/cache@v2
+      with:
+        path: postbin
+        key: ${{ runner.os }}-postbin
+
+    - name: Install postbin for testing webhooks.
+      if: steps.cache-postbin.outputs.cache-hit != 'true'
       run: sudo gem install postbin
-    - run: postbin
+
+    - name: Run postbin without blocking the terminal.
+      run: postbin &
 
     - name: Install postgres
       uses: harmon758/postgresql-action@v1
