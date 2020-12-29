@@ -41,7 +41,7 @@ services:
  postbin:
   restart: 'no'
   image: ruby:2.7.2-buster
-  command: bash -c "gem install postbin && postbin"
+  command: bash -c "sudo gem install postbin && postbin"
 
  sut:
   restart: 'no'

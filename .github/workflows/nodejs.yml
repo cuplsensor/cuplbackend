@@ -29,7 +29,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Install and run postbin for testing webhooks.
-      run: gem install postbin
+      run: sudo gem install postbin
     - run: postbin
 
     - name: Install postgres
