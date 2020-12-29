@@ -37,6 +37,7 @@ jobs:
 
     - name: Bundle install
       run: |
+        sudo gem install bundler
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
 
