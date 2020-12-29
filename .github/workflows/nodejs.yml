@@ -28,16 +28,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Cache Postbin
-      id: cache-postbin
-      uses: actions/cache@v2
+    - uses: actions/cache@v2
       with:
-        path: postbin
-        key: ${{ runner.os }}-postbin
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
 
-    - name: Install postbin for testing webhooks.
-      if: steps.cache-postbin.outputs.cache-hit != 'true'
-      run: sudo gem install postbin
+    - name: Bundle install
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
 
     - name: Run postbin without blocking the terminal.
       run: postbin &
