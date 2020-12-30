@@ -9,7 +9,7 @@ click==7.1.2
 contextlib2==0.6.0.post1
 cuplcodec==2.0.6
 docopt==0.6.2
-ecdsa==0.16.0
+ecdsa
 Flask==1.1.2
 Flask-Cors==3.0.9
 Flask-Limiter==1.4
