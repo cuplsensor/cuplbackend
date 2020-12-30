@@ -38,8 +38,8 @@ def create_capture_for_tag(response, baseurl, tagserial=None, tagsecretkey=None,
 
 def verifyhmac(response, wh_secretkey):
     content = json.loads(response.content)
-    url_hmac_str = content['headers'].get('x-cuplbackend-hmac-sha256')
-    url_data_str = json.dumps(content['body'])
+    url_hmac_str = content['headers'].get('x-cuplbackend-hmac-sha256')[0]
+    url_data_str = content['content']
 
     url_hmac_bytes = url_hmac_str.encode('utf-8')
     url_data_bytes = url_data_str.encode('utf-8')
@@ -51,8 +51,7 @@ def verifyhmac(response, wh_secretkey):
 
 
 def strictkeyscheck(response, bodykeys):
-    content = json.loads(response.content)
-    url_data_dict = content['body']
+    url_data_dict = json.loads(response.content)
     # A set comparison is done instead of a list comparison, because item order is irrelevant.
     bodykeys = set(bodykeys)
     urldictkeys = set(url_data_dict.keys())

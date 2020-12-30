@@ -117,14 +117,14 @@ stages:
   - name: Create a postbin for testing the webhook
 
     request:
-      url: "{pborigin}/api/bin"
+      url: "{pborigin}/token"
       method: POST
 
     response:
       status_code: 201
       save:
         body:
-          test_postbin_id: binId
+          test_postbin_id: uuid
 
   - name: Post a new webhook
 
@@ -223,36 +223,51 @@ stages:
     response:
       status_code: 200
 
-    delay_after: 1
+    delay_after: 3
 
-  - name: GET and verify the webhook contents from the postb.in API.
+  - name: GET and verify the webhook contents from the postb.in API. Step 1, body as string.
 
     request:
-      url: "{pborigin}/api/bin/{test_postbin_id:s}/req/shift"
+      url: "{pborigin}/token/{test_postbin_id:s}/request/latest"
       method: GET
       headers:
         content-type: application/json
 
     response:
+      strict: false
       status_code: 200
       body:
         method: POST
         headers:
-          x-cuplbackend-hmac-sha256: !anystr
-          content-type: !anystr
-        body:
-          samples: !anylist
-          batvoltagemv: !anyint
-          id: !anyint
-          timestamp: !anystr
-          loopcount: !anyint
-          tagserial: !anystr
-          timeintmins: !anyint
-          cursorpos: !anyint
+          x-cuplbackend-hmac-sha256:
+           - !anystr
+          content-type:
+           - !anystr
       verify_response_with:
         function: utils:verifyhmac
         extra_kwargs:
           wh_secretkey: "{test_wh_secretkey:s}"
+
+  - name: GET and verify the webhook contents from the postb.in API. Step 2, body as JSON.
+
+    request:
+      url: "{pborigin}/token/{test_postbin_id:s}/request/latest/raw"
+      method: GET
+      headers:
+        content-type: application/json
+
+    response:
+      strict: false
+      status_code: 200
+      body:
+        samples: !anylist
+        batvoltagemv: !anyint
+        id: !anyint
+        timestamp: !anystr
+        loopcount: !anyint
+        tagserial: !anystr
+        timeintmins: !anyint
+        cursorpos: !anyint
 
   - name: Delete the webhook.
 
@@ -310,10 +325,9 @@ stages:
       status_code: 200
     delay_after: 3
 
-  - name: GET and verify the webhook contains only the fields configured.
-
+  - name: GET and verify the webhook contains only the fields configured. Step 1.
     request:
-      url: "{pborigin}/api/bin/{test_postbin_id:s}/req/shift"
+      url: "{pborigin}/token/{test_postbin_id:s}/request/latest"
       method: GET
       headers:
         content-type: application/json
@@ -323,15 +337,29 @@ stages:
       body:
         method: POST
         headers:
-          x-cuplbackend-hmac-sha256: !anystr
-          content-type: !anystr
-        body:
-          timeintmins: !anyint
-          batvoltagemv: !anyint
+          x-cuplbackend-hmac-sha256:
+           - !anystr
+          content-type:
+           - !anystr
       verify_response_with:
         function: utils:verifyhmac
         extra_kwargs:
           wh_secretkey: "{test_wh3_secretkey:s}"
+
+
+  - name: GET and verify the webhook contains only the fields configured. Step 2.
+    request:
+      url: "{pborigin}/token/{test_postbin_id:s}/request/latest/raw"
+      method: GET
+      headers:
+        content-type: application/json
+
+    response:
+      status_code: 200
+      body:
+        timeintmins: !anyint
+        batvoltagemv: !anyint
+      verify_response_with:
         function: utils:strictkeyscheck
         extra_kwargs:
           bodykeys:
