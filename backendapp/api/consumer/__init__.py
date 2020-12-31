@@ -26,5 +26,7 @@ def create_app(settings_override=None):
     app.register_blueprint(capturesbp)
     app.register_blueprint(samplesbp)
     app.register_blueprint(webhooksbp)
+    
+    app.logger.info(''.join(['%s' % rule for rule in app.url_map.iter_rules()]))
 
     return app
