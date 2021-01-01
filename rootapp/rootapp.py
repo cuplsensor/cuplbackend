@@ -1,4 +1,5 @@
 from backendapp.api.consumer.version import versioninfo
+from flask import jsonify, request, current_app, url_for
 import os
 
 f = open(os.path.join(os.path.dirname(__file__), 'logostr.txt'), 'r')
@@ -7,10 +8,23 @@ logostr = f.read()
 from flask import Flask
 rootapp = Flask(__name__)
 
+
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
+
 @rootapp.errorhandler(404)
 def page_not_found(e):
+    links = []
+    for rule in current_app.url_map.iter_rules():
+        # Filter out rules we can't navigate to in a browser
+        # and rules that require parameters
+        if "GET" in rule.methods and has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            links.append((url, rule.endpoint))
     # note that we set the 404 status explicitly
-    return "Page not found (rootapp)", 404
+    return jsonify(error="not found (rootapp)", url=url, urlmap=links), 404
 
 @rootapp.route('/')
 def root_page():
