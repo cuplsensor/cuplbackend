@@ -16,11 +16,23 @@ from .tags import bp as tagsbp
 from .captures import bp as capturesbp
 from .webhooks import bp as webhooksbp
 
-
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)    
+    
 def page_not_found(e):
+    links = []
+    for rule in app.url_map.iter_rules():
+        # Filter out rules we can't navigate to in a browser
+        # and rules that require parameters
+        if "GET" in rule.methods and has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            links.append((url, rule.endpoint))
+    # links is now a list of url, endpoint tuples
     # note that we set the 404 status explicitly
     url = request.url
-    return jsonify(error=str(e), url=url), 404
+    return jsonify(error=str(e), url=url, urlmap=''.join(links)), 404
 
 def create_app(settings_override=None):
     """Returns the Web API application instance"""
