@@ -22,12 +22,12 @@ API_CONSUMER_PREFIX = '/api/consumer'
 def create_app(settings_override=None):
     """Returns the Web API application instance"""
     (app, limiter) = factory.create_api_app(__name__, __path__, settings_override)
-    app.register_blueprint(rootbp, url_prefix=API_CONSUMER_PREFIX)
-    app.register_blueprint(versionbp, url_prefix=API_CONSUMER_PREFIX)
-    app.register_blueprint(tagsbp, url_prefix=API_CONSUMER_PREFIX)
-    app.register_blueprint(capturesbp, url_prefix=API_CONSUMER_PREFIX)
-    app.register_blueprint(samplesbp, url_prefix=API_CONSUMER_PREFIX)
-    app.register_blueprint(webhooksbp, url_prefix=API_CONSUMER_PREFIX)
+    app.register_blueprint(rootbp)
+    app.register_blueprint(versionbp)
+    app.register_blueprint(tagsbp)
+    app.register_blueprint(capturesbp)
+    app.register_blueprint(samplesbp)
+    app.register_blueprint(webhooksbp)
     
     app.logger.info(''.join(['%s' % rule for rule in app.url_map.iter_rules()]))
 
