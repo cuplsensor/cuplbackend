@@ -7,7 +7,7 @@
 """
 
 from functools import wraps
-from flask import jsonify, request, current_app
+from flask import jsonify, request, current_app, url_for
 from ... import factory
 
 from .root import bp as rootbp
