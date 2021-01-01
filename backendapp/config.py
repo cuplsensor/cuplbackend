@@ -61,7 +61,7 @@ RATELIMIT_STRATEGY = os.getenv('RATELIMIT_STRATEGY', defaults.RATELIMIT_STRATEGY
 WSB_PORT = os.getenv('WSB_PORT', defaults.WSB_PORT)
 WSB_HOST = os.getenv('WSB_HOST', defaults.WSB_HOST)
 WSB_PROTOCOL = os.getenv('WSB_PROTOCOL', defaults.WSB_PROTOCOL)
-SERVER_NAME = os.getenv('SERVER_NAME', "{host}:{port}".format(host=WSB_HOST, port=WSB_PORT))
+SERVER_NAME = os.environ['SERVER_NAME'] #os.getenv('SERVER_NAME', "{host}:{port}".format(host=WSB_HOST, port=WSB_PORT))
 
 CORS_EXPOSE_HEADERS = ["Link", "X-CuplBackend-Hmac-SHA256"]
 
