@@ -7,7 +7,7 @@
 """
 
 from functools import wraps
-from flask import jsonify, request
+from flask import jsonify, request, current_app
 from ... import factory
 
 from .root import bp as rootbp
@@ -23,7 +23,7 @@ def has_no_empty_params(rule):
     
 def page_not_found(e):
     links = []
-    for rule in app.url_map.iter_rules():
+    for rule in current_app.url_map.iter_rules():
         # Filter out rules we can't navigate to in a browser
         # and rules that require parameters
         if "GET" in rule.methods and has_no_empty_params(rule):
