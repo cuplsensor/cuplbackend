@@ -7,7 +7,7 @@
 """
 
 from functools import wraps
-from flask import jsonify
+from flask import jsonify, request
 from ... import factory
 
 from .root import bp as rootbp
@@ -19,7 +19,8 @@ from .webhooks import bp as webhooksbp
 
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return jsonify(error=str(e)), 404
+    url = request.args.get('url')
+    return jsonify(error=str(e), url=url), 404
 
 def create_app(settings_override=None):
     """Returns the Web API application instance"""
