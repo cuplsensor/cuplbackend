@@ -32,7 +32,7 @@ def page_not_found(e):
     # links is now a list of url, endpoint tuples
     # note that we set the 404 status explicitly
     url = request.url
-    return jsonify(error=str(e), url=url, urlmap=''.join(links)), 404
+    return jsonify(error=str(e), url=url, urlmap=links), 404
 
 def create_app(settings_override=None):
     """Returns the Web API application instance"""
