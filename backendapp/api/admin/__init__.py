@@ -19,7 +19,7 @@ from .webhooks import bp as webhooksbp
 
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    url = request.args.get('url')
+    url = request.url
     return jsonify(error=str(e), url=url), 404
 
 def create_app(settings_override=None):
