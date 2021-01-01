@@ -16,9 +16,6 @@ from .captures import bp as capturesbp
 from .samples import bp as samplesbp
 from .webhooks import bp as webhooksbp
 
-API_CONSUMER_PREFIX = '/api/consumer'
-
-
 def create_app(settings_override=None):
     """Returns the Web API application instance"""
     (app, limiter) = factory.create_api_app(__name__, __path__, settings_override)
