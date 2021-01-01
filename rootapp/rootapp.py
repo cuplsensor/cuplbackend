@@ -7,6 +7,11 @@ logostr = f.read()
 from flask import Flask
 rootapp = Flask(__name__)
 
+@rootapp.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return "Page not found (rootapp)", 404
+
 @rootapp.route('/')
 def root_page():
     versiondict = versioninfo()
