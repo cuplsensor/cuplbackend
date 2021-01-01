@@ -16,6 +16,10 @@ from .captures import bp as capturesbp
 from .webhooks import bp as webhooksbp
 
 
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return "Page not found (rootapp)", 404
+
 def create_app(settings_override=None):
     """Returns the Web API application instance"""
     (app, limiter) = factory.create_api_app(__name__, __path__, settings_override)
@@ -24,6 +28,7 @@ def create_app(settings_override=None):
     app.register_blueprint(tagsbp)
     app.register_blueprint(capturesbp)
     app.register_blueprint(webhooksbp)
+    app.register_error_handler(404, page_not_found)
     limiter.exempt(tagsbp)
     limiter.exempt(capturesbp)
     limiter.exempt(webhooksbp)
