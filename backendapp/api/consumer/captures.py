@@ -15,7 +15,6 @@ import hmac
 import json
 from hashlib import sha256
 from base64 import b64encode
-from urllib3.exceptions import HTTPError, ConnectionError, ProtocolError
 from ...services import captures, tags
 from ...captures.schemas import ConsumerCaptureSchema, ConsumerCaptureSchemaWithSamples
 from ..baseresource import SingleResource, MultipleResource
@@ -92,14 +91,14 @@ class Captures(MultipleResource):
         hmacstr = self.generatehmac(jsonstr=capturejson, secretkey=webhook.wh_secretkey)
         headers = {'X-CuplBackend-Hmac-SHA256': hmacstr}
         # Thanks to https://stackoverflow.com/questions/16511337/correct-way-to-try-except-using-python-requests-module
+
         try:
-            requests.post(webhook.address, json=capturedict, headers=headers, timeout=2)
-        except requests.exceptions.Timeout:
-            print("Timeout. Carry on, this is not reported yet.")
-        except requests.exceptions.TooManyRedirects:
-            print("Too many redirects. Carry on, this is not reported yet.")
+            response = requests.post(webhook.address, json=capturedict, headers=headers, timeout=2)
+            response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            print("Bad webhook address. Carry on, this is not reported yet.")
+            print(str(e))
+            print("New connection error. Bad URL but must carry on. Not reported to user yet.")
+
 
     def get(self):
         """
