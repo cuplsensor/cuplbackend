@@ -163,7 +163,10 @@ class Captures(MultipleResource):
             return make_response(jsonify(ecode=103, description=str(e), urlhash=e.urlhash, calchash=e.calchash), 401)
 
         except NoCircularBufferError as e:
-            return make_response(jsonify(ecode=104, description=str(e), status=e.status), 400)
+            # Should be a serialiser built into the Status object that outputs a dictionary. This will be added later.
+            responsedict = {'ecode': 104, 'description': str(e), 'status': e.status.__dict__}
+            responsejson = json.dumps(responsedict)
+            return make_response(responsejson, 400)
 
         except DelimiterNotFoundError as e:
             return make_response(jsonify(ecode=105, description=str(e), status=e.status, circb64=e.circb64), 422)

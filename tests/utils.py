@@ -8,7 +8,7 @@ import base64
 from wscodec.encoder.pyencoder.instrumented import InstrumentedSampleTRH
 
 
-def create_capture_for_tag(response, baseurl, tagserial=None, tagsecretkey=None, nsamples=10):
+def create_capture_for_tag(response, baseurl, tagserial=None, tagsecretkey=None, tagerror=False, nsamples=10):
     if tagserial is None:
         tagserial = response.json()["serial"]
     if tagsecretkey is None:
@@ -16,13 +16,17 @@ def create_capture_for_tag(response, baseurl, tagserial=None, tagsecretkey=None,
     capturetrh = InstrumentedSampleTRH(baseurl=baseurl,
                                        serial=tagserial,
                                        secretkey=tagsecretkey,
+                                       tagerror=tagerror,
                                        smplintervalmins=10)
     samplesin = capturetrh.pushsamples(nsamples)
     queries = capturetrh.geturlqs()
     serial = queries['s'][0]
     statusb64 = queries['x'][0]
     timeintb64 = queries['t'][0]
-    circbufb64 = queries['q'][0]
+    if 'q' in queries:
+        circbufb64 = queries['q'][0]
+    else:
+        circbufb64 = ""
     vfmtb64 = queries['v'][0]
     outlist = {
             'serial': serial,
