@@ -405,3 +405,96 @@ stages:
     # and the expected response body
     response:
       status_code: 204
+
+  - name: Use the token to create a 2nd new tag
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tags"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        usehmac: !anybool
+        serial: !anystr
+        webhook: null
+      save:
+        body:
+          test_tag_id: id
+          test_tag_serial: serial
+          test_tag_secretkey: secretkey
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+
+  - name: Create a capture on the 2nd tag and save the tagtoken
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        tagtoken_type: "Bearer"
+        tagtoken: !anystr
+      save:
+        body:
+          test_capture_id: id
+          test_tagtoken: tagtoken
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+            tagserial: "{test_tag_serial}"
+            tagsecretkey: "{test_tag_secretkey}"
+            nsamples: 12
+
+  - name: Attempt to post a 5th webhook to the 2nd tag. This will contain an invalid address.
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: POST
+      json:
+        address: "http://not-a-valid-webhook-url.com/{test_postbin_id:s}"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+    response:
+      status_code: 200
+
+  - name: Create a capture on the 2nd tag. This should fire the bad webhook.
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+    delay_after: 3
