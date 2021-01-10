@@ -35,7 +35,8 @@ class Captures(MultipleAdminResource):
         Returns:
 
         """
-        return super().get_filtered(optfilterlist=['parent_tag'])
+        captures = super().get_filtered(optfilterlist=['tag_id'])
+        return captures
 
     def post(self):
         """

@@ -394,17 +394,18 @@ stages:
     response:
       status_code: 400
 
-  - name: Delete the 1st tag by ID.
-    # Define the request to be made
-    request:
-      url: "{baseurl}/api/admin/tag/{test_tag_id}"
-      method: DELETE
-      headers:
-        content-type: application/json
-        Authorization: "bearer {admin_token:s}"
-    # and the expected response body
-    response:
-      status_code: 204
+
+#  - name: Delete the 1st tag by ID.
+#    # Define the request to be made
+#    request:
+#      url: "{baseurl}/api/admin/tag/{test_tag_id}"
+#      method: DELETE
+#      headers:
+#        content-type: application/json
+#        Authorization: "bearer {admin_token:s}"
+#    # and the expected response body
+#    response:
+#      status_code: 204
 
   - name: Use the token to create a 2nd new tag
 
@@ -498,3 +499,19 @@ stages:
     response:
       status_code: 200
     delay_after: 3
+
+  - name: Get captures from the 2nd tag.
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/captures"
+      method: GET
+      params:
+        page: 1
+        per_page: 100
+        tag_id: "{test_tag_id:d}"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+    # and the expected response body
+    response:
+      status_code: 200
