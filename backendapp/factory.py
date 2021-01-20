@@ -6,7 +6,7 @@
     web factory module for creating apps
 """
 
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -33,6 +33,12 @@ def create_api_app(package_name, package_path, settings_override=None):
         app,
         key_func=get_remote_address
     )
+
+    # Do not apply a limit to OPTIONS. If the OPTIONS pre-flight returns 429
+    # then the browser displays a CORS error and the underlying API error is hidden
+    # behind a 'fetch failed' message. Many thanks to tkrajca at
+    # https://github.com/alisaifee/flask-limiter/issues/70
+    limiter.request_filter(lambda: request.method.upper() == 'OPTIONS')
 
     return app, limiter
 

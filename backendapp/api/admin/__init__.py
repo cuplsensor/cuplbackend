@@ -34,6 +34,7 @@ def page_not_found(e):
     url = request.url
     return jsonify(error=str(e), url=url, urlmap=links), 404
 
+
 def create_app(settings_override=None):
     """Returns the Web API application instance"""
     (app, limiter) = factory.create_api_app(__name__, __path__, settings_override)
