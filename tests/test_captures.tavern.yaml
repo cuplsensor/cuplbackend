@@ -1,3 +1,27 @@
+#  A web application that stores samples from a collection of NFC sensors.
+#
+#  https://github.com/cuplsensor/cuplbackend
+#
+#  Original Author: Malcolm Mackay
+#  Email: malcolm@plotsensor.com
+#  Website: https://cupl.co.uk
+#
+#  Copyright (c) 2021. Plotsensor Ltd.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License
+#  as published by the Free Software Foundation, either version 3
+#  of the License, or (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the
+#  GNU Affero General Public License along with this program.
+#  If not, see <https://www.gnu.org/licenses/>.
+
 # Every test file has one or more tests
 test_name: No capture is created without supplying data
 
@@ -157,6 +181,14 @@ stages:
           timestamp: !anystr
           format: !anystr
 
+  - name: Samples
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/samples"
+      method: GET
+    # and the expected response body (still writing this).
+    response:
+      status_code: 200
 
   - name: GET the capture for this tag and verify that it contains the correct fields
 
@@ -222,6 +254,66 @@ stages:
     # Server should response with HTTP 409 conflict.
     response:
       status_code: 409
+
+  - name: Delete the tag by ID.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tag/{test_tag_id}"
+      method: DELETE
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response body
+    response:
+      status_code: 204
+
+  - name: Use the token to create a new tag and create an error capture.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/tags"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        serial: !anystr
+      save:
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+            tagerror: true
+        body:
+          test_tag_id: id
+
+  - name: Submit the error capture.
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+
+    # Server should response with HTTP 400 error.
+    response:
+      status_code: 400
 
   - name: Delete the tag by ID.
 

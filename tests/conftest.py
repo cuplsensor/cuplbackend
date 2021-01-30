@@ -1,3 +1,27 @@
+#  A web application that stores samples from a collection of NFC sensors.
+#
+#  https://github.com/cuplsensor/cuplbackend
+#
+#  Original Author: Malcolm Mackay
+#  Email: malcolm@plotsensor.com
+#  Website: https://cupl.co.uk
+#
+#  Copyright (c) 2021. Plotsensor Ltd.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License
+#  as published by the Free Software Foundation, either version 3
+#  of the License, or (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the
+#  GNU Affero General Public License along with this program.
+#  If not, see <https://www.gnu.org/licenses/>.
+
 import os
 import pytest
 from dotenv import load_dotenv
@@ -69,6 +93,12 @@ def two_captures_on_two_tags_fixture(tag_with_captures_fixture, user_fixture):
     tag_with_captures_fixture.get(capspec3) # We do not expect these captures to be returned
 
     return tagcaptures
+
+
+@pytest.fixture
+def pborigin():
+    """ Return the postbin origin environment variable. """
+    return os.getenv("PBORIGIN", defaults.PBORIGIN)
 
 
 @pytest.fixture

@@ -59,6 +59,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        pip install psycopg2==2.8.6
         pip install -r requirements.txt
         pip install uwsgi
 

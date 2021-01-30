@@ -1,3 +1,27 @@
+#  A web application that stores samples from a collection of NFC sensors.
+#
+#  https://github.com/cuplsensor/cuplbackend
+#
+#  Original Author: Malcolm Mackay
+#  Email: malcolm@plotsensor.com
+#  Website: https://cupl.co.uk
+#
+#  Copyright (c) 2021. Plotsensor Ltd.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License
+#  as published by the Free Software Foundation, either version 3
+#  of the License, or (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the
+#  GNU Affero General Public License along with this program.
+#  If not, see <https://www.gnu.org/licenses/>.
+
 version: '3.1'
 services:
  wsbackend:
@@ -5,20 +29,22 @@ services:
   build: .
   depends_on:
    - postgres
-   - oauth-mock
   environment:
+   - ADMINAPI_CLIENTSECRET=dasgasesdave
+   - TAGTOKEN_CLIENTSECRET=aelkfnaekflnas
    - DB_PASS=test_db_password
    - DB_USER=test_db_user
    - DB_NAME=test_db_name
    - DB_HOST=postgres
    - DB_PORT=5432
    - ADMINAPI_CLIENTSECRET=rakfnlsakenaslk
+   - HASHIDS_SALT=salfkna04afksnl
    - CSRF_SESSION_KEY=aslfenalkse
    - SECRET_KEY=efasfsaeflksena
+   - WSB_HOST=localhost
    - WSB_PORT=5001
-   - API_ISSUER=http://oauth-mock:3000
-   - IDP_HOST=oauth-mock
-   - IDP_PORT=3000
+   - SERVER_NAME=nginx
+   - DROP_ON_INIT=True
 
  postgres:
   restart: 'no'
@@ -27,13 +53,6 @@ services:
    - POSTGRES_PASSWORD=test_db_password
    - POSTGRES_USER=test_db_user
    - POSTGRES_DB=test_db_name
-
- oauth-mock:
-  restart: 'no'
-  build: ./tests/oauth2-mock/
-  environment:
-   - IDP_HOST=oauth-mock
-   - IDP_PORT=3000
 
  nginx:
   restart: 'no'
@@ -55,7 +74,5 @@ services:
    - SECRET_KEY=efasfsaeflksena
    - WSB_HOST=nginx
    - WSB_PORT=80
-   - IDP_HOST=oauth-mock
-   - IDP_PORT=3000
-  command: bash -c "cd tests && python3 -m pytest -vvvv --showlocals"
+  command: bash -c "export PYTHONPATH="$PYTHONPATH:tests" && python3 -m pytest tests"
   

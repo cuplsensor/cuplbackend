@@ -1,3 +1,27 @@
+#  A web application that stores samples from a collection of NFC sensors.
+#
+#  https://github.com/cuplsensor/cuplbackend
+#
+#  Original Author: Malcolm Mackay
+#  Email: malcolm@plotsensor.com
+#  Website: https://cupl.co.uk
+#
+#  Copyright (c) 2021. Plotsensor Ltd.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License
+#  as published by the Free Software Foundation, either version 3
+#  of the License, or (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the
+#  GNU Affero General Public License along with this program.
+#  If not, see <https://www.gnu.org/licenses/>.
+
 test_name: Create a webhook with the consumer API
 
 marks:
@@ -5,6 +29,7 @@ marks:
       - baseurl
       - clientid
       - clientsecret
+      - pborigin
 
 stages:
   - name: With a client_id and a client_secret a token is returned
@@ -116,14 +141,14 @@ stages:
   - name: Create a postbin for testing the webhook
 
     request:
-      url: "https://postb.in/api/bin"
+      url: "{pborigin}/token"
       method: POST
 
     response:
       status_code: 201
       save:
         body:
-          test_postbin_id: binId
+          test_postbin_id: uuid
 
   - name: Post a new webhook
 
@@ -132,7 +157,7 @@ stages:
       url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
       headers:
         content-type: application/json
         Authorization: "bearer {test_tagtoken:s}"
@@ -140,7 +165,7 @@ stages:
     response:
       status_code: 200
       body:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
         wh_secretkey: !anystr
         created_on: !anystr
       save:
@@ -161,7 +186,7 @@ stages:
       headers:
         content-type: application/json
       body:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
         fields: null
         created_on: !anystr
 
@@ -222,36 +247,51 @@ stages:
     response:
       status_code: 200
 
-    delay_after: 1
+    delay_after: 3
 
-  - name: GET and verify the webhook contents from the postb.in API.
+  - name: GET and verify the webhook contents from the postb.in API. Step 1, body as string.
 
     request:
-      url: "https://postb.in/api/bin/{test_postbin_id:s}/req/shift"
+      url: "{pborigin}/token/{test_postbin_id:s}/request/latest"
       method: GET
       headers:
         content-type: application/json
 
     response:
+      strict: false
       status_code: 200
       body:
         method: POST
         headers:
-          x-cuplbackend-hmac-sha256: !anystr
-          content-type: !anystr
-        body:
-          samples: !anylist
-          batvoltagemv: !anyint
-          id: !anyint
-          timestamp: !anystr
-          loopcount: !anyint
-          tagserial: !anystr
-          timeintmins: !anyint
-          cursorpos: !anyint
+          x-cuplbackend-hmac-sha256:
+           - !anystr
+          content-type:
+           - !anystr
       verify_response_with:
         function: utils:verifyhmac
         extra_kwargs:
           wh_secretkey: "{test_wh_secretkey:s}"
+
+  - name: GET and verify the webhook contents from the postb.in API. Step 2, body as JSON.
+
+    request:
+      url: "{pborigin}/token/{test_postbin_id:s}/request/latest/raw"
+      method: GET
+      headers:
+        content-type: application/json
+
+    response:
+      strict: false
+      status_code: 200
+      body:
+        samples: !anylist
+        batvoltagemv: !anyint
+        id: !anyint
+        timestamp: !anystr
+        loopcount: !anyint
+        tagserial: !anystr
+        timeintmins: !anyint
+        cursorpos: !anyint
 
   - name: Delete the webhook.
 
@@ -273,7 +313,7 @@ stages:
       url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
         fields: '["timeintmins", "batvoltagemv"]'
       headers:
         content-type: application/json
@@ -309,10 +349,9 @@ stages:
       status_code: 200
     delay_after: 3
 
-  - name: GET and verify the webhook contains only the fields configured.
-
+  - name: GET and verify the webhook contains only the fields configured. Step 1.
     request:
-      url: "https://postb.in/api/bin/{test_postbin_id:s}/req/shift"
+      url: "{pborigin}/token/{test_postbin_id:s}/request/latest"
       method: GET
       headers:
         content-type: application/json
@@ -322,15 +361,29 @@ stages:
       body:
         method: POST
         headers:
-          x-cuplbackend-hmac-sha256: !anystr
-          content-type: !anystr
-        body:
-          timeintmins: !anyint
-          batvoltagemv: !anyint
+          x-cuplbackend-hmac-sha256:
+           - !anystr
+          content-type:
+           - !anystr
       verify_response_with:
         function: utils:verifyhmac
         extra_kwargs:
           wh_secretkey: "{test_wh3_secretkey:s}"
+
+
+  - name: GET and verify the webhook contains only the fields configured. Step 2.
+    request:
+      url: "{pborigin}/token/{test_postbin_id:s}/request/latest/raw"
+      method: GET
+      headers:
+        content-type: application/json
+
+    response:
+      status_code: 200
+      body:
+        timeintmins: !anyint
+        batvoltagemv: !anyint
+      verify_response_with:
         function: utils:strictkeyscheck
         extra_kwargs:
           bodykeys:
@@ -357,7 +410,7 @@ stages:
       url: "{baseurl}/api/consumer/tag/{serial}/webhook"
       method: POST
       json:
-        address: "https://postb.in/{test_postbin_id:s}"
+        address: "{pborigin}/{test_postbin_id:s}"
         fields: '["timeintmins", "batvoltagemv", "invalid field"]'
       headers:
         content-type: application/json
@@ -365,14 +418,124 @@ stages:
     response:
       status_code: 400
 
-  - name: Delete the 1st tag by ID.
+
+#  - name: Delete the 1st tag by ID.
+#    # Define the request to be made
+#    request:
+#      url: "{baseurl}/api/admin/tag/{test_tag_id}"
+#      method: DELETE
+#      headers:
+#        content-type: application/json
+#        Authorization: "bearer {admin_token:s}"
+#    # and the expected response body
+#    response:
+#      status_code: 204
+
+  - name: Use the token to create a 2nd new tag
+
     # Define the request to be made
     request:
-      url: "{baseurl}/api/admin/tag/{test_tag_id}"
-      method: DELETE
+      url: "{baseurl}/api/admin/tags"
+      method: POST
+      headers:
+        content-type: application/json
+        Authorization: "bearer {admin_token:s}"
+
+    # and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        timeregistered: !anything
+        id: !anyint
+        secretkey: !anystr
+        usehmac: !anybool
+        serial: !anystr
+        webhook: null
+      save:
+        body:
+          test_tag_id: id
+          test_tag_serial: serial
+          test_tag_secretkey: secretkey
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+
+  - name: Create a capture on the 2nd tag and save the tagtoken
+
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+
+    # and the expected response body
+    response:
+      status_code: 200
+      body:
+        tagtoken_type: "Bearer"
+        tagtoken: !anystr
+      save:
+        body:
+          test_capture_id: id
+          test_tagtoken: tagtoken
+        $ext:
+          function: utils:create_capture_for_tag
+          extra_kwargs:
+            baseurl: "{baseurl}"
+            tagserial: "{test_tag_serial}"
+            tagsecretkey: "{test_tag_secretkey}"
+            nsamples: 12
+
+  - name: Attempt to post a 5th webhook to the 2nd tag. This will contain an invalid address.
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/tag/{serial}/webhook"
+      method: POST
+      json:
+        address: "http://not-a-valid-webhook-url.com/{test_postbin_id:s}"
+      headers:
+        content-type: application/json
+        Authorization: "bearer {test_tagtoken:s}"
+    response:
+      status_code: 200
+
+  - name: Create a capture on the 2nd tag. This should fire the bad webhook.
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/consumer/captures"
+      method: POST
+      json:
+        serial: "{serial}"
+        statusb64: "{statusb64}"
+        timeintb64: "{timeintb64}"
+        circbufb64: "{circbufb64}"
+        vfmtb64: "{vfmtb64}"
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+    delay_after: 3
+
+  - name: Get captures from the 2nd tag.
+    # Define the request to be made
+    request:
+      url: "{baseurl}/api/admin/captures"
+      method: GET
+      params:
+        page: 1
+        per_page: 100
+        tag_id: "{test_tag_id:d}"
       headers:
         content-type: application/json
         Authorization: "bearer {admin_token:s}"
     # and the expected response body
     response:
-      status_code: 204
+      status_code: 200

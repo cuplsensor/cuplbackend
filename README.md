@@ -8,8 +8,6 @@ Environmental sensor samples decoded by the latter are persisted in a [postgres]
 
 API endpoints are tested with [pytest](https://docs.pytest.org/en/stable/) with [Tavern](https://tavern.readthedocs.io/en/latest/). 
 
-Some endpoints require a [JSON Web Token](https://jwt.io/introduction/) (JWT) from an authenticated user. This is normally supplied by a 3rd party [OAuth2 Provider](https://oauth.net/2/) such as [Auth0](https://auth0.com). To enable automatic test, this provider is mocked with [oauth2-mock-server](https://www.npmjs.com/package/oauth2-mock-server), which generates and validates JWTs. 
-
 ## Documentation 
 
 [![Documentation Status](https://readthedocs.org/projects/wsbackend/badge/?version=latest)](https://cupl.readthedocs.io/projects/backend/en/latest/?badge=latest) 
@@ -24,16 +22,6 @@ Hosted on [DockerHub](https://hub.docker.com/r/cupl/backend). Pull the image wit
          
     docker pull cupl/backend
     
-## API Wrapper Python Package
-
-[![PyPI version](https://badge.fury.io/py/cuplcodec.svg)](https://badge.fury.io/py/cuplcodec)
-
-cuplapiwrapper provides a Python interface to the cuplbackend web API. It is designed to be imported by a frontend web application. It might move to its own repository in future, but for now it is used in some test routines.
-
-Install it with: 
-
-    pip install cuplapiwrapper
-    
 ## Licence
 
 ### cuplbackend
@@ -41,10 +29,6 @@ Install it with:
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 If the Affero GPLv3 licence is too restrictive for your needs, a commercial licence can be purchased from Plotsensor Ltd.
-
-### cuplapiwrapper
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
 
 ### Documentation
 

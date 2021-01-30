@@ -4,16 +4,41 @@
     ~~~~
     top level module
 """
+#  A web application that stores samples from a collection of NFC sensors.
+#
+#  https://github.com/cuplsensor/cuplbackend
+#
+#  Original Author: Malcolm Mackay
+#  Email: malcolm@plotsensor.com
+#  Website: https://cupl.co.uk
+#
+#  Copyright (c) 2021. Plotsensor Ltd.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License
+#  as published by the Free Software Foundation, either version 3
+#  of the License, or (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the
+#  GNU Affero General Public License along with this program.
+#  If not, see <https://www.gnu.org/licenses/>.
+
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from cuplbackend.api import admin, consumer
-from otherapps.rootapp.rootapp import rootapp
-from otherapps.docsapp import docsapp
+from backendapp.api import admin, consumer
+from rootapp.rootapp import rootapp
+from docs.api.admin.docsapp import docsapp as admin_docsapp
+from docs.api.consumer.docsapp import docsapp as consumer_docsapp
 import os
 
 
 app = DispatcherMiddleware(rootapp, {
-        '/docs/admin': docsapp.create_app(api_docs_folder=os.path.join(os.path.dirname(__file__), 'docs/api/admin')),
-        '/docs/consumer': docsapp.create_app(api_docs_folder=os.path.join(os.path.dirname(__file__), 'docs/api/consumer')),
+        '/docs/admin': admin_docsapp,
+        '/docs/consumer': consumer_docsapp,
         '/api/admin': admin.create_app(),
         '/api/consumer': consumer.create_app()
     })
