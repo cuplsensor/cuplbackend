@@ -7,7 +7,7 @@ cffi==1.14.3
 chardet==3.0.4
 click==7.1.2
 contextlib2==0.6.0.post1
-cuplcodec==2.0.9
+cuplcodec==2.1.0
 docopt==0.6.2
 ecdsa
 Flask==1.1.2
