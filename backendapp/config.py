@@ -48,9 +48,6 @@
 from base64 import b64decode
 from . import defaults
 
-# Statement for enabling the development environment
-DEBUG = True
-
 # Define the application directory
 import os
 BASE_DIR = 'home/debian/'
