@@ -12,6 +12,7 @@ on: [push]
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  GITHUB_SHA: ${{ env.GITHUB_SHA }}
 
 jobs:
   build-and-push-image:
@@ -34,7 +35,7 @@ jobs:
       - name: Add SHORT_SHA env property with commit short sha
         id: shortsha
         run: |
-          tags="${GITHUB_REPOSITORY}:${GITHUB_SHA::7}"
+          TAGS="${IMAGE_NAME}:${GITHUB_SHA}"
           echo ::set-output name=tags::${TAGS}
 
       - name: Extract metadata (tags, labels) for Docker
