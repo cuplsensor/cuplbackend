@@ -48,5 +48,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.shortsha.outputs.SHORT_SHA }}
+          tags: ${{ github.SHA }}
           labels: ${{ steps.meta.outputs.labels }}
