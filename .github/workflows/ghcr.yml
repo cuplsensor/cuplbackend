@@ -34,7 +34,7 @@ jobs:
       - name: Add SHORT_SHA env property with commit short sha
         id: shortsha
         run: |
-          SHORT_SHA=$(echo ${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_SHA }})
+          SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-8)
           echo "::set-output name=SHORT_SHA::$SHORT_SHA"
 
       - name: Extract metadata (tags, labels) for Docker
@@ -48,5 +48,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.shortsha.outputs.SHORT_SHA }}
+          tags: ${GITHUB_REPOSITORY}:${GITHUB_SHA}
           labels: ${{ steps.meta.outputs.labels }}
