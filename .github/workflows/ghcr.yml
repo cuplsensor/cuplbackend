@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add SHORT_SHA env property with commit short sha
-          run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+          run: "::set-output name=SHORT_SHA::$(echo ${GITHUB_SHA} | cut -c1-8)"
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
