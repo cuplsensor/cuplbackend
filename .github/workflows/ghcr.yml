@@ -48,5 +48,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: [latest, ${{ steps.shortsha.outputs.SHORT_SHA }}]
+          tags: ${{ steps.shortsha.outputs.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
