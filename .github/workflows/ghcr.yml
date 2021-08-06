@@ -41,11 +41,11 @@ jobs:
         id: tagcreator
         run: |
           if ${{ github.event_name == 'release' }}; then
-            echo ::set-output name=tags::${{ steps.meta.outputs.tags}}
-          else
             TAGS="ghcr.io/${IMAGE_NAME}:${GITHUB_SHA::7},${{ steps.meta.outputs.tags}}"
-            echo ::set-output name=tags::${TAGS}
+          else
+            TAGS="${{ steps.meta.outputs.tags}}"
           fi
+          echo ::set-output name=tags::${TAGS}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
