@@ -43,8 +43,7 @@ jobs:
           if ${{ github.event_name == 'release' }}; then
             echo ::set-output name=tags::${{ steps.meta.outputs.tags}}
           else
-            TAGS= ${{ steps.meta.outputs.tags }}
-            echo ghcr.io/${IMAGE_NAME}:${GITHUB_SHA::7},${{ steps.meta.outputs.tags }}
+            TAGS= ghcr.io/${IMAGE_NAME}:${GITHUB_SHA::7}
             echo ::set-output name=tags::${TAGS}
           fi
 
