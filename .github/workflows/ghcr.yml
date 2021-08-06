@@ -31,22 +31,28 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Add SHORT_SHA env property with commit short sha
-        id: shortsha
-        run: |
-          TAGS="ghcr.io/${IMAGE_NAME}:${GITHUB_SHA::7}"
-          echo ::set-output name=tags::${TAGS}
-
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      - name: Add SHORT_SHA env property with commit short sha
+          id: tagcreator
+          run: |
+            if ${{ github.event_name == 'release' }}; then
+              TAGS=("ghcr.io/${IMAGE_NAME}:${GITHUB_SHA::7}" "${{ steps.meta.outputs.tags }}")
+              echo ::set-output name=tags::${TAGS}
+            else
+              TAGS= ${{ steps.meta.outputs.tags }}
+              echo ("ghcr.io/${IMAGE_NAME}:${GITHUB_SHA::7}" "${{ steps.meta.outputs.tags }}")
+              echo ::set-output name=tags::${TAGS}
+            fi
+
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
-          tags: ${{ steps.shortsha.outputs.TAGS }}
+          tags: ${{ steps.tagcreator.outputs.TAGS }}
           labels: ${{ steps.meta.outputs.labels }}
