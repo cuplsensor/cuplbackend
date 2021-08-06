@@ -41,8 +41,7 @@ jobs:
         id: tagcreator
         run: |
           if ${{ github.event_name == 'release' }}; then
-            TAGS= echo ghcr.io/${IMAGE_NAME}:${GITHUB_SHA::7},${{ steps.meta.outputs.tags}}
-            echo ::set-output name=tags::${TAGS}
+            echo ::set-output name=tags::${{ steps.meta.outputs.tags}}
           else
             TAGS= ${{ steps.meta.outputs.tags }}
             echo ghcr.io/${IMAGE_NAME}:${GITHUB_SHA::7},${{ steps.meta.outputs.tags }}
