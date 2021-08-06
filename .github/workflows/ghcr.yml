@@ -7,7 +7,11 @@
 
 name: Create and publish a Docker image
 
-on: [push]
+on:
+  workflow_run:
+    workflows: ["Install and test"]
+    types:
+      - completed
 
 env:
   REGISTRY: ghcr.io
