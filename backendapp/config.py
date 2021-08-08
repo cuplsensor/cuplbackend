@@ -60,13 +60,15 @@ DB_USER = os.environ['DB_USER']
 DB_PASS = os.environ['DB_PASS']
 DB_HOST = os.environ['DB_HOST']
 DB_PORT = os.environ['DB_PORT']
-DB_SSLMODE = os.getenv('DB_SSLMODE', None) # Should be 'require', 'verify-ca' or 'verify-full' for SSL to work.
+DB_SSLMODE = os.getenv('DB_SSLMODE', None) # Needs to be 'require' or 'verify-ca' for SSL to work.
+DB_SSLROOTCERT = os.getenv('DB_SSLROOTCERT', None)
 
 # https://stackoverflow.com/questions/36372772/flask-sqlalchemy-ssl-connection-with-aws-rds-error
+sslstr = ''
 if isinstance(DB_SSLMODE, str):
-    sslstr = '?sslmode={0}'.format(DB_SSLMODE)
-else:
-    sslstr = ''
+    sslstr += '?sslmode={0}'.format(DB_SSLMODE, DB_SSLROOTCERT)
+    if isinstance(DB_SSLROOTCERT, str):
+        sslstr += '&sslrootcert={0}'.format(DB_SSLROOTCERT)
 
 SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}{5}'.format(
         DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME, sslstr

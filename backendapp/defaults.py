@@ -35,4 +35,3 @@ DROP_ON_INIT = 'False'
 WSB_PORT = 5000
 WSB_HOST = "localhost"
 WSB_PROTOCOL = "http://"
-DB_SSLROOTCERT = "~/.postgresql/root.crt" # https://www.postgresql.org/docs/11/libpq-connect.html
