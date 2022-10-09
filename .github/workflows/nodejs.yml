@@ -1,4 +1,4 @@
-name: Install cuplbackend and run tests.
+name: Install and test
 
 on: [push]
 

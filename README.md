@@ -2,6 +2,8 @@
 This is a [WSGI](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface) web application. It wraps a REST API around [cuplcodec](https://github.com/cuplsensor/cuplcodec). 
 Environmental sensor samples decoded by the latter are persisted in a [postgres](https://www.postgresql.org/) database using the [SQLAlchemy](https://www.sqlalchemy.org/) ORM.
 
+![cuplbackend screenshot](cuplbackend_screenshot.png)
+
 ## Tests
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/cuplsensor/cuplbackend/Install%20cuplbackend%20and%20run%20tests.)
@@ -10,25 +12,19 @@ API endpoints are tested with [pytest](https://docs.pytest.org/en/stable/) with 
 
 ## Documentation 
 
-[![Documentation Status](https://readthedocs.org/projects/wsbackend/badge/?version=latest)](https://cupl.readthedocs.io/projects/backend/en/latest/?badge=latest) 
-
-Hosted on [ReadTheDocs](https://cupl.readthedocs.io/projects/backend/en/latest/). This includes information on how to install the software from scratch without Docker.
+Hosted on [ReadTheDocs](https://cupl.readthedocs.io/projects/backend/en/latest/). This includes information on how to install the software from scratch without Docker. Work is in progress on the documentation for cuplbackend. For now, refer to [cupldeploy](https://github.com/cuplsensor/cupldeploy) for more information.
 
 ## Docker Image
 
-![Docker Build Status](https://img.shields.io/docker/cloud/build/cupl/backend)
-
-Hosted on [DockerHub](https://hub.docker.com/r/cupl/backend). Pull the image with: 
+Hosted on [GitHub Packages](https://github.com/cuplsensor/cuplbackend/pkgs/container/cuplbackend). Pull the image with: 
          
-    docker pull cupl/backend
+    docker pull ghcr.io/cuplsensor/cuplbackend:master
     
 ## Licence
 
 ### cuplbackend
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-
-If the Affero GPLv3 licence is too restrictive for your needs, a commercial licence can be purchased from Plotsensor Ltd.
 
 ### Documentation
 
