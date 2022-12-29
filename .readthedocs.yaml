@@ -10,8 +10,11 @@ build:
   os: ubuntu-20.04
   tools:
     python: "3.8"
+  apt_packages:
+    - postgresql
+    - postgresql-contrib
   jobs:
-    post_install:
+    post_system_dependencies:
       - echo "Command run at 'post_install' step"
       - /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
     # You can also specify other tool versions:
@@ -22,12 +25,7 @@ build:
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
    configuration: conf.py
-
-build:
-  apt_packages:
-    - postgresql
-    - postgresql-contrib
-
+  
 # If using Sphinx, optionally build your docs in additional formats such as PDF
 # formats:
 #    - pdf
