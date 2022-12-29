@@ -13,6 +13,7 @@ build:
   apt_packages:
     - postgresql
     - postgresql-contrib
+    - sudo
   jobs:
     pre_install:
       - echo "Command run at 'post_install' step"
