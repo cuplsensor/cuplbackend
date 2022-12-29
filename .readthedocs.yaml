@@ -21,7 +21,7 @@ sphinx:
 
 build:
   apt_packages:
-    - postgresql-11
+    - postgresql
 
 # If using Sphinx, optionally build your docs in additional formats such as PDF
 # formats:
