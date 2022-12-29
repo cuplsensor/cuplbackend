@@ -19,6 +19,10 @@ build:
 sphinx:
    configuration: conf.py
 
+build:
+  apt_packages:
+    - postgres
+
 # If using Sphinx, optionally build your docs in additional formats such as PDF
 # formats:
 #    - pdf
