@@ -10,14 +10,15 @@ build:
   os: ubuntu-20.04
   tools:
     python: "3.8"
-  apt_packages:
-    - postgresql
-    - postgresql-contrib
-    - sudo
   jobs:
     pre_install:
       - echo "Command run at 'post_install' step"
-      - sudo pg_ctlcluster 12 main start
+      - conda create --name myenv
+      - conda activate myenv
+      - conda install -y -c conda-forge postgresql
+      - initdb -D postgres
+      - pg_ctl -D postgres -l logfile start
+    
     # You can also specify other tool versions:
     # nodejs: "16"
     # rust: "1.55"
