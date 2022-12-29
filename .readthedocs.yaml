@@ -14,7 +14,7 @@ build:
     - postgresql
     - postgresql-contrib
   jobs:
-    post_system_dependencies:
+    pre_build:
       - echo "Command run at 'post_install' step"
       - /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
     # You can also specify other tool versions:
