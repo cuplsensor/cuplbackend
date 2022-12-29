@@ -1,3 +1,4 @@
 sphinxcontrib-openapi
 sphinx-git
 sphinx_rtd_theme
+psycopg2-binary
