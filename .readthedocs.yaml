@@ -16,7 +16,7 @@ build:
   jobs:
     pre_build:
       - echo "Command run at 'post_install' step"
-      - /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
+      - pg_ctlcluster 12 main start
     # You can also specify other tool versions:
     # nodejs: "16"
     # rust: "1.55"
