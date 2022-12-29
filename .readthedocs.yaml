@@ -10,6 +10,10 @@ build:
   os: ubuntu-20.04
   tools:
     python: "3.8"
+  jobs:
+    post_install:
+      - echo "Command run at 'post_install' step"
+      - /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
     # You can also specify other tool versions:
     # nodejs: "16"
     # rust: "1.55"
