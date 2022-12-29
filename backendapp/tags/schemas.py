@@ -32,17 +32,37 @@ __all__ = ['TagSchema', 'ConsumerTagSchema']
 
 
 class TagSchema(ma.ModelSchema):
+    """
+    Schema for serialising a :py:class:`Tag` read from the database.
+
+    This is for administrators only. Nearly all attributes (including the secretkey) are returned.
+    """
     class Meta:
+        """
+        For brevity, do not include a list of captures with each serialized tag. A URL to these data will suffice.
+        """
         model = Tag
         exclude = ('captures',)
 
     def admin_tag_url(self, obj):
+        """
+        :param obj: The tag SQLAlchemy object to be serialised.
+        :return: A self-referencing URL for this tag in the Admin API.
+        """
         return url_for('admintags.tag', id=obj.id, _external=True)
 
     def admin_captures_url(self, obj):
+        """
+        :param obj: The tag SQLAlchemy object to be serialised.
+        :return: A URL to the list of captures made by this tag.
+        """
         return url_for('admincaptures.captures', tag_id=obj.id, _external=True)
 
     def admin_simulate_url(self, obj):
+        """
+        :param obj: The tag SQLAlchemy object to be serialised.
+        :return: A URL that simulates text (actually another URL) that will be read from the tag over NFC.
+        """
         return url_for('admintags.tagsimulate', id=obj.id, _external=True)
 
     url = fields.Method("admin_tag_url")
@@ -52,21 +72,48 @@ class TagSchema(ma.ModelSchema):
 
 
 class ConsumerTagSchema(ma.ModelSchema):
+    """
+    A schema for serialising :py:class:`Tag` instances, which excludes sensitive information like the secretkey.
+
+    It is for use with open-access (consumer) API-endpoints.
+    """
     class Meta:
+        """
+        Do not serialise the secretkey. The database ID is excluded as well, because consumer endpoints refer to
+        tags by the 8-character serial string only.
+
+        However, it is still possible to deserialize the secretkey and ID etc. into a database object.
+        """
         model = Tag
         exclude = ('secretkey', 'captures', 'id',)
         dump_only = ('timeregistered', 'id', 'secretkey', 'usehmac', 'serial')
 
     def consumer_tag_url(self, obj):
+        """
+        :param obj: The tag SQLAlchemy object to be serialised.
+        :return: A self-referencing URL for this tag in the Consumer API.
+        """
         return url_for('tags.tag', serial=obj.serial, _external=True)
 
     def consumer_captures_url(self, obj):
+        """
+        :param obj: The tag SQLAlchemy object to be serialised.
+        :return: A URL to the list of captures made by this tag, from the Consumer API.
+        """
         return url_for('captures.captures', serial=obj.serial, _external=True)
 
     def consumer_samples_url(self, obj):
+        """
+        :param obj: The tag SQLAlchemy object to be serialised.
+        :return: A URL to the samples captured from this tag, from the Consumer API.
+        """
         return url_for('samples.samples', serial=obj.serial, _external=True)
 
     def consumer_webhook_url(self, obj):
+        """
+        :param obj: The tag SQLAlchemy object to be serialised.
+        :return: A URL to the webhook associated with this tag, from the Consumer API.
+        """
         return url_for('webhooks.webhook', serial=obj.serial, _external=True)
 
     url = fields.Method("consumer_tag_url")

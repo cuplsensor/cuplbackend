@@ -37,11 +37,19 @@ from wscodec.decoder.hdc2021 import Temp_URL, TempRH_URL
 
 
 class CaptureService(Service):
+    """Create and find captures for a tag. """
     __model__ = Capture
 
-    def decode_and_create(self, tagobj, statb64, timeintb64, circb64, vfmtb64):
-        """Returns a new, saved instance of the capture model class.
-        :param **kwargs: instance parameters
+    def decode_and_create(self, tagobj, statb64, timeintb64, circb64, vfmtb64) -> Capture:
+        """
+        Decode the URL parameters read from a Tag and use these to create a Capture.
+
+        :param tagobj: The Tag that the cupl URL parameters were read from.
+        :param statb64: Base64 encoded tag status information.
+        :param timeintb64: Base64 encoded time interval between samples.
+        :param circb64: Base64 encoded circular buffer containing temperature and humidity samples.
+        :param vfmtb64: Base64 encoded format code.
+        :return: A new Capture made from decoded URL parameters.
         """
         decodedurl = decode(secretkey=tagobj.secretkey,
                             usehmac=tagobj.usehmac,
@@ -81,7 +89,6 @@ class CaptureService(Service):
                                  hash=decodedurl.hash,
                                  samples=samples)
 
-        # Assign serial to the tag and commit to the db.
         return capture
 
     def create(self,
@@ -95,8 +102,21 @@ class CaptureService(Service):
                timeintmins,
                hash,
                samples):
+        """
+        Create a new Capture from unencoded data that are not part of a URL.
 
-
+        :param tagobj: The Capture will be assigned to this Tag instance.
+        :param timestamp: When this capture was created.
+        :param loopcount: Number of times the circular buffer cursor has wrapped around from the end to the start.
+        :param status: Reference to a CaptureStatus object.
+        :param batvoltagemv: Voltage in milliVolts of the battery powering cuplTag.
+        :param cursorpos: Position of the circular buffer cursor relative to the start of the string.
+        :param format: Indicates how to decode parameters in the cupl URL.
+        :param timeintmins: Time interval between samples in minutes.
+        :param hash: MD5 or HMAC of Capture data.
+        :param samples: A list of CaptureSamples objects.
+        :return: A new Capture made from decoded URL parameters.
+        """
 
         # Call base class constructor. By committing to the db we get an id.
         capture = super().create(tag_id=tagobj.id,
@@ -114,4 +134,5 @@ class CaptureService(Service):
 
 
 class CaptureSampleService(Service):
+    """Create and find timestamped environmental sensor samples. """
     __model__ = CaptureSample

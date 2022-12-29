@@ -50,24 +50,30 @@ def time_to_radians(timeofday: time) -> float:
     return secondsofday * radianspersecond
 
 
-def simsamples(tm=None, smplintervalmins: int=10, nsamples: int=144, valmax: float=110, valmin: float=-10):
-    """Produces a list of simulated samples prior to a given time (now by default).
-    These vary in a sine wave scaled between valmax and valmin, according to the time of day.
+def simsamples(tm=None,
+               smplintervalmins: int = 10,
+               nsamples: int = 144,
+               valmax: float = 110,
+               valmin: float = -10) -> (list, int):
+    """
+    Produce a list of samples, to simulate the output from a temperature or humidity sensor.
 
-    The purpose of this function is to produce a virtual sensor. Data for previous timestamps will not change each time
-     the function is run.
+    These vary in a sine wave that ranges between valmax and valmin, according to the time of day. The function
+    can be called at different times (tm) to see the effect of adding new samples and removing old ones.
 
-    Args:
-        tm: time of the most recent sensor sample
-        smplintervalmins: time difference between sensor samples in minutes
-        nsamples: number of samples to output including the most recent
-        valmax: maximum value of the sine wave
-        valmin: minimum value of the sine wave
+    With all other parameters equal, a sample at a given point in time will not change,
+    regardless of the number before or after. This mimics the behaviour of a cuplTag, which stores samples
+    one-at-a-time on a circular buffer.
 
-    Returns:
-        A list of samples, oldest first. If the product of smplintervalmins and nsamples is 24 hours, these will range between
-        valmax and valmin.
-        modintervalmins is offset in minutes to the most recent time interval.
+    :rtype: list, int
+    :param tm: Time closest to the most recent sample. Defaults to now.
+    :param smplintervalmins: Time difference between samples in minutes.
+    :param nsamples: The number of samples to return.
+    :param valmax: Maximum value of the sine wave.
+    :param valmin: Minimum value of the sine wave.
+
+    :return: A list of timestamped samples, with one value per sample. Sorted oldest first.
+             timeoffset_mins is offset in minutes to the most recent sample.
 
     """
     tm = tm or datetime.utcnow()
@@ -98,7 +104,26 @@ def simsamples(tm=None, smplintervalmins: int=10, nsamples: int=144, valmax: flo
     return smpl_list, timeoffset_mins
 
 
-def trhsamples(tm=None, smplintervalmins=10, nsamples=144, tempmax=110, tempmin=-10, rhmax=100, rhmin=0):
+def trhsamples(tm=None,
+               smplintervalmins: int = 10,
+               nsamples: int = 144,
+               tempmax: float = 110,
+               tempmin: float = -10,
+               rhmax: float = 100,
+               rhmin: float = 0):
+    """
+
+    :rtype: list, int
+    :param tm: Time closest to the most recent sample. Defaults to now.
+    :param smplintervalmins: Time difference between samples in minutes.
+    :param nsamples: The number of samples to return.
+    :param tempmax: Maximum value of the temperature sine wave.
+    :param tempmin: Minimum value of the temperature sine wave.
+    :param rhmax: Maximum value of the relative humidity sine wave.
+    :param rhmin: Minimum value of the relative humidity sine wave.
+    :return: A list of timestamped samples, each containing temperature and humidity readings. Sorted oldest first.
+             timeoffset_mins is the offset in minutes to the most recent sample.
+    """
     tm = tm or datetime.utcnow()
     tempsim, _ = simsamples(tm=tm, smplintervalmins=smplintervalmins, nsamples=nsamples, valmax=tempmax, valmin=tempmin)
     rhsim, timeoffset_mins = simsamples(tm=tm, smplintervalmins=smplintervalmins, nsamples=nsamples, valmax=rhmax, valmin=rhmin)

@@ -36,6 +36,9 @@ __all__ = ['CaptureSchema', 'ConsumerCaptureSchema', 'ConsumerCaptureSchemaWithS
 
 
 class CaptureStatusSchema(ModelSchema):
+    """
+    Schema for serialising a :py:class:`CaptureStatus` model instance.
+    """
     class Meta:
         model = CaptureStatus
         sqla_session = db.session
@@ -43,6 +46,11 @@ class CaptureStatusSchema(ModelSchema):
 
 
 class CaptureSampleSchema(ModelSchema):
+    """
+    Schema for serialising a :py:class:`CaptureSample` model instance.
+
+    The POSIX timestamp is excluded.
+    """
     class Meta:
         model = CaptureSample
         sqla_session = db.session
@@ -51,15 +59,22 @@ class CaptureSampleSchema(ModelSchema):
 
 
 class CaptureSchema(ModelSchema):
+    """
+    Schema for serialising a :py:class:`Capture` read from the database.
+
+    This is intended for administrators. Links to other Admin API endpoints are included.
+    """
     class Meta:
         model = Capture
         sqla_session = db.session
         strict = True
 
     def admin_tag_url(self, obj):
+        """Produce an absolute URL for the parent tag in the Admin API. """
         return url_for('admintags.tag', id=obj.tag_id, _external=True)
 
     def admin_capture_url(self, obj):
+        """Produce an absolute URL for this capture in the Admin API. """
         return url_for('admincaptures.capture', id=obj.id, _external=True)
 
     tag_url = fields.Method("admin_tag_url")
@@ -70,16 +85,24 @@ class CaptureSchema(ModelSchema):
 
 
 class ConsumerCaptureSchema(CaptureSchema):
+    """
+    Schema for serialising a :py:class:`Capture`, which excludes the ID of the parent tag.
+
+    Includes a link to download samples for this capture, which saves bandwidth.
+    """
     class Meta(CaptureSchema.Meta):
         exclude = ('samples', 'tag_id', 'parent_tag')
 
     def consumer_tag_url(self, obj):
+        """Produce an absolute URL for the parent tag in the Consumer API. """
         return url_for('tags.tag', serial=obj.tagserial, _external=True)
 
     def consumer_capture_url(self, obj):
+        """Produce an absolute URL for this capture in the Consumer API. """
         return url_for('captures.capture', id=obj.id, _external=True)
 
     def consumer_capturesamples_url(self, obj):
+        """Produce an absolute URL for the list of samples associated with this capture. """
         return url_for('samples.capturesamples', id=obj.id, _external=True)
 
     tagserial = fields.String()
@@ -89,6 +112,9 @@ class ConsumerCaptureSchema(CaptureSchema):
 
 
 class ConsumerCaptureSchemaWithSamples(ConsumerCaptureSchema):
+    """
+    Schema for serialising a :py:class:`Capture`, including tag status information and a list of samples.
+    """
     class Meta(CaptureSchema.Meta):
         exclude = ('tag_id', 'parent_tag')
     status = fields.Nested(CaptureStatusSchema)

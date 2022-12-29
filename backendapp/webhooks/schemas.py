@@ -34,15 +34,22 @@ __all__ = ['WebhookSchema', 'ConsumerWebhookSchemaWithKey', 'ConsumerWebhookSche
 
 
 class WebhookSchema(ModelSchema):
+    """
+    Schema for serialising a :py:class:`Webhook` read from the database.
+
+    This is intended for administrators only.
+    """
     class Meta:
         model = Webhook
         sqla_session = db.session
         strict = True
 
     def admin_tag_url(self, obj):
+        """Produce an absolute URL for the parent tag in the Admin API. """
         return url_for('admintags.tag', id=obj.tag_id, _external=True)
 
     def admin_webhook_url(self, obj):
+        """Produce an absolute URL for this webhook in the Admin API. """
         return url_for('adminwebhooks.webhook', id=obj.id, _external=True)
 
     tag_url = fields.Method("admin_tag_url")
@@ -52,6 +59,12 @@ class WebhookSchema(ModelSchema):
 
 
 class ConsumerWebhookSchemaWithKey(WebhookSchema):
+    """
+    Schema for serialising a :py:class:`Webhook`, which excludes the ID of the parent tag, but includes the
+    serial string (as used in consumer API endpoints).
+
+    The webhook secret key is part of this schema. It must only be used for POSTing a new webhook.
+    """
     class Meta(WebhookSchema.Meta):
         exclude = ('parent_tag',)
 
@@ -69,6 +82,11 @@ class ConsumerWebhookSchemaWithKey(WebhookSchema):
 
 
 class ConsumerWebhookSchema(ConsumerWebhookSchemaWithKey):
+    """
+    A schema identical to :py:class:`ConsumerWebhookSchemaWithKey` but with the webhook secret key omitted.
+
+    This is used for API endpoints that GET information about existing webhooks.
+    """
     class Meta(WebhookSchema.Meta):
         exclude = ('parent_tag', 'wh_secretkey',)
 

@@ -9,11 +9,20 @@ See also :ref:`cuplcodec <wscodec:index>` and :ref:`cuplfrontend <wsfrontend:ind
 
    docs/api/index
    docs/development
-   docs/wsbackend/index
+
+   docs/wsbackend/reference/api/index
+   docs/wsbackend/reference/service/index
+   docs/wsbackend/reference/model/index
+
+
 
 
 
    :caption: Contents:
+
+.. automodule:: main
+   :members:
+   :private-members:
 
 
 

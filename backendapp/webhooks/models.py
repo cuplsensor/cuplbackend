@@ -37,6 +37,22 @@ from secrets import token_urlsafe
 
 
 class Webhook(db.Model):
+    """
+    Webhooks are a means of integrating cuplbackend with a 3rd-party web application.
+
+    These are user-defined HTTP callbacks.
+
+    When a Tag is read via NFC and a new Capture is created, cuplbackend makes an HTTP POST request to a
+    user-specified URL. The body includes Capture data (e.g. a list of timestamped samples) encoded as JSON.
+
+    The use of webhooks obviates the need for a 3rd-party application to poll for new Capture data.
+
+    An end-user or administrator can add one webhook to each tag.
+
+    Webhooks have a simple authentication mechanism; a secret key shared between the cuplbackend and the
+    3rd-party application. Without this, it would be possible to post fake captures to the 3rd-party application with
+    knowledge of the webhook URL only.
+    """
     id = db.Column(db.Integer, primary_key=True)
     # ID of the owning tag object. By setting unique to True, an IntegrityError will be raised
     # when 2 webhooks with the same parent_tag are inserted.
@@ -48,6 +64,7 @@ class Webhook(db.Model):
 
     @hybrid_property
     def tagserial(self):
+        """Return a serial string for the Tag that this webhook belongs to. """
         return self.parent_tag.serial
 
     def __init__(self,
@@ -55,7 +72,14 @@ class Webhook(db.Model):
                  address: str,
                  fields: str = None,
                  wh_secretkey: str = None):
+        """
+        Assign a webhook to a tag. A random secret key is generated if none is supplied.
 
+        :param tag_id: ID of the Tag.
+        :param address: An HTTP POST request is made to this URL when the Tag is read via NFC.
+        :param fields: A list of fields in the Capture model. These will be included with the POST request payload.
+        :param wh_secretkey: A string of up to 256 characters, to authenticate this application with the POST recipient.
+        """
         if isinstance(wh_secretkey, str):
             self.wh_secretkey = wh_secretkey
         else:
@@ -68,8 +92,7 @@ class Webhook(db.Model):
 
     @staticmethod
     def gen_secret_key():
-        """Generate a random secret key.
-        """
+        """Generate a random secret key with URL-safe characters. """
         skeylenbytes = 12
         return token_urlsafe(skeylenbytes)
 

@@ -59,23 +59,25 @@ class TagDecodeFailedError(Exception):
 
 
 class TagService(Service):
+    """Create, find, simulate and delete tags. """
     __model__ = Tag
     hashids = Hashids(min_length=8, salt=HASHIDS_SALT)
 
-    def get_by_serial(self, serial):
-        """Return the first instance of a tag in the database with
-        with the given serial.
-        There will only be one because because serial is unique.
-        :param serial: 6 character base 32 serial number
+    def get_by_serial(self, serial: str) -> Tag:
+        """
+        Find a :py:class:`Tag` in the database. Raise a 404 :py:exc:`HTTPException` if none exists.
+
+        :param serial: 8 character alphanumeric string.
+        :return: The tag.
         """
         return self.first_or_404(serial=serial)
 
-    def update_description(self, serial, description):
-        super().update()
+    def create(self, **kwargs) -> Tag:
+        """
+        Return a new :py:class:`Tag` instance, which is saved into the database.
 
-    def create(self, **kwargs):
-        """Returns a new, saved instance of the tag model class.
         :param **kwargs: instance parameters
+        :return: The newly created tag.
         """
         # Call base class constructor. By committing to the db we get an id.
         tag = super().create(**kwargs)

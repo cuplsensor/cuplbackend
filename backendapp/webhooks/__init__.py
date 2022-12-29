@@ -35,4 +35,5 @@ from .models import Webhook
 
 
 class WebhookService(Service):
+    """Create and find instances of the Webhook model. """
     __model__ = Webhook

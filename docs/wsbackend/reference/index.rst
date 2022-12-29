@@ -1,5 +1,5 @@
 Reference
-============
+++++++++++
 .. toctree::
    :hidden:
    :maxdepth: 2

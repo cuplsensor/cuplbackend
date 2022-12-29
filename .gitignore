@@ -7,3 +7,4 @@
 /node_modules/
 /venv2/
 /venv3/
+docs/build/*
