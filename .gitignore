@@ -8,3 +8,6 @@
 /venv2/
 /venv3/
 docs/build/*
+..readthedocs.yaml.un~
+*.swp
+*.yaml~
