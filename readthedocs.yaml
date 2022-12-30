@@ -7,7 +7,7 @@ build:
   os: ubuntu-20.04
   tools:
     python: "miniconda3-4.7"
-  commands:
-    - echo "Command run at 'post_create_environment' step"
+  pre_build:
+    - echo "Command run at 'pre_build' step"
     - initdb -D postgres
     - pg_ctl -D postgres -l logfile start
