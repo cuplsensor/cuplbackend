@@ -11,6 +11,7 @@ build:
     pre_build:
       - echo "Command run at 'pre_build' step"
       - initdb -D postgres
+      - pg_ctl -D postgres -l logfile start
       - createuser --encrypted --no-password postgres
       - createdb --owner=postgres postgres
-      - pg_ctl -D postgres -l logfile start
+

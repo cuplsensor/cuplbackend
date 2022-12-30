@@ -12,3 +12,5 @@ dependencies:
     - sphinx-git
     - sphinx_rtd_theme
     - -r requirements.txt
+variables:
+  DB_PASS: 
