@@ -1,0 +1,14 @@
+name: rtdenvironment
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - postgresql==11.5
+  - python=3.8
+  - psycopg2
+  - pip>=20.1  # pip is needed as dependency
+  - pip:
+    - sphinxcontrib-openapi
+    - sphinx-git
+    - sphinx_rtd_theme
+    - -r requirements.txt
