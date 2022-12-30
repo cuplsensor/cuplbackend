@@ -1,15 +1,15 @@
-Model Layer
-------------
+Models
+-------
 
-.. automodule:: backendapp.tags.models
-    :members:
-    :private-members:
+.. toctree::
+   :maxdepth: 2
 
-.. automodule:: backendapp.captures.models
-    :members:
-    :private-members:
+   tags
+   captures
+   webhooks
 
-.. automodule:: backendapp.webhooks.models
-    :members:
-    :private-members:
+
+
+
+
 

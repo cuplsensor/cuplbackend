@@ -1,15 +1,14 @@
-Schemas Layer
---------------
+Schemas
+--------
 
-.. automodule:: backendapp.tags.schemas
-    :members:
-    :private-members:
+.. toctree::
+   :maxdepth: 2
 
-.. automodule:: backendapp.captures.schemas
-    :members:
-    :private-members:
+   tags
+   captures
+   webhooks
 
-.. automodule:: backendapp.webhooks.schemas
-    :members:
-    :private-members:
+
+
+
 

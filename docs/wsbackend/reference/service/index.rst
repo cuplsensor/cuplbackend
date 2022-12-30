@@ -1,14 +1,9 @@
-Service Layer
---------------
+Services
+---------
 
-.. automodule:: backendapp.tags
-    :members:
-    :private-members:
+.. toctree::
+   :maxdepth: 2
 
-.. automodule:: backendapp.captures
-    :members:
-    :private-members:
-
-.. automodule:: backendapp.webhooks
-    :members:
-    :private-members:
+   tags
+   captures
+   webhooks

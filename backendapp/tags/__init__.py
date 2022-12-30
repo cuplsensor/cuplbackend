@@ -1,15 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on 01 August 2020
-@author: Malcolm Mackay
-"""
-
-"""
-    web.tags
-    ~~~~~~~~~~
-
-    tags package
-"""
 
 #  A web application that stores samples from a collection of NFC sensors.
 #
