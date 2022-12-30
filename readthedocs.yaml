@@ -6,7 +6,7 @@ conda:
 build:
   os: ubuntu-20.04
   tools:
-    python: "3.8"
+    python: "miniconda3-4.7"
   commands:
     - echo "Command run at 'post_create_environment' step"
     - initdb -D postgres
