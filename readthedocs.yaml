@@ -8,7 +8,7 @@ build:
   tools:
     python: "3.8"
   jobs:
-    post_create_environment:
+    post_install:
       - echo "Command run at 'post_create_environment' step"
       - initdb -D postgres
       - pg_ctl -D postgres -l logfile start
