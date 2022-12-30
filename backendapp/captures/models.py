@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-    web.captures.models
-    ~~~~~~~~~~~~~~~~~
-
-    Capture model
-"""
 
 #  A web application that stores samples from a collection of NFC sensors.
 #

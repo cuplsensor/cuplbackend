@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-    flaskapp.webhook.models
-    ~~~~~~~~~~~~~~~~~
-
-    Webhook model
-"""
 
 #  A web application that stores samples from a collection of NFC sensors.
 #

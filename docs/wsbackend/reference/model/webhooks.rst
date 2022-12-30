@@ -1,6 +1,6 @@
 Webhooks
 +++++++++
 
-.. autoclass:: backendapp.webhooks.models.Webhook
+.. automodule:: backendapp.webhooks.models
     :members:
     :private-members:

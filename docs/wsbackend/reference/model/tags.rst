@@ -1,6 +1,6 @@
 Tags
 +++++
 
-.. autoclass:: backendapp.tags.models.Tag
+.. automodule:: backendapp.tags.models
     :members:
     :private-members:

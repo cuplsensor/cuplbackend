@@ -1,6 +1,6 @@
 Captures
 +++++++++
 
-.. autoclass:: backendapp.captures.models.Capture
+.. automodule:: backendapp.captures.models
     :members:
     :private-members:

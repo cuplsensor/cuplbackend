@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-    backendapp.tags.models
-    ~~~~~~~~~~~~~~~~~
-
-    A module that describes the Tag data model.
-"""
 
 #  A web application that stores samples from a collection of NFC sensors.
 #
