@@ -24,8 +24,8 @@
 
 # Inspired by overholt
 """
-    flaskapp.api.baseresource
-    ~~~~~~~~~~~~~~
+    backendapp.api.baseresource
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Base resource from https://marshmallow.readthedocs.io/en/3.0/examples.html
 """
