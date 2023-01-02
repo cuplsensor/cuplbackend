@@ -34,9 +34,9 @@ admintokenauth = TokenAuthSymmetric(issuer=ADMINAPI_CLIENTID,
 
 def requires_admin_token(f):
     """
-    A decorator, which reads and verifies an Admin API token before calling the function :param:`f`.
+    A decorator, which reads and verifies an Admin API token before calling the function ``f``.
 
-    :param f: The function to decorate. This is normally bound to an HTTP method (GET, POST, PUT) for a REST Resource.
+    :param f: The function to decorate.
     :return: The decorated function.
     """
     @wraps(f)

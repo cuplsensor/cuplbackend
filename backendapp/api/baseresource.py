@@ -42,8 +42,8 @@ class BaseResource(Resource):
     def __init__(self, Schema, service):
         """
         Constructor for the BaseResource class.
-        :param Schema: Marshamallow schema for the model
-        associated with the service.
+
+        :param Schema: Marshamallow schema for the model associated with the service.
         :param service: for creating and retrieving model instances.
         """
         self.Schema = Schema
