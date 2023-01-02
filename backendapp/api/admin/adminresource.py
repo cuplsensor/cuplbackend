@@ -29,10 +29,20 @@ from marshmallow import ValidationError
 
 
 class SingleAdminResource(SingleResource):
+    """
+    A :py:class:`~backendapp.api.baseresource.SingleResource` for administrators.
+
+    All methods are decorated with :py:method:`~backendapp.api.admin.admintokenauth.requires_admin_token`.
+    """
     method_decorators = [requires_admin_token]
 
 
 class MultipleAdminResource(MultipleResource):
+    """
+    A :py:class:`~backendapp.api.baseresource.MultipleResource` for administrators.
+
+    All methods are decorated with :py:method:`~backendapp.api.admin.admintokenauth.requires_admin_token`.
+    """
     method_decorators = [requires_admin_token]
 
 

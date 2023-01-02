@@ -1,10 +1,3 @@
-"""
-    flaskapp.api.admin.token
-    ~~~~~~~~~~~~~~
-
-    Token endpoints
-"""
-
 #  A web application that stores samples from a collection of NFC sensors.
 #
 #  https://github.com/cuplsensor/cuplbackend

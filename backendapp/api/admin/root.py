@@ -1,10 +1,3 @@
-"""
-    flaskapp.api.admin.root
-    ~~~~~~~~~~~~~~
-
-    Token endpoints
-"""
-
 #  A web application that stores samples from a collection of NFC sensors.
 #
 #  https://github.com/cuplsensor/cuplbackend
@@ -38,9 +31,14 @@ api = Api(bp)
 
 
 class Root(Resource):
+    """
+    Define a Resource for the Root of the Admin API.
+    """
     def get(self):
         """
-        Get version information about wsbackend.
+        Return URLs for the 4 top-level resources in this API.
+
+        HATEOAS stipulates that an API cannot assume an HTTP client is aware of its structure.
         """
         signpost = {'token': url_for('tokens.token', _external=True),
                     'tags': url_for('admintags.tags', _external=True),
@@ -51,4 +49,5 @@ class Root(Resource):
         return response
 
 
+# Add the Root resource to the API root.
 api.add_resource(Root, '/')

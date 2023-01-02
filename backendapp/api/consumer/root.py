@@ -38,9 +38,14 @@ api = Api(bp)
 
 
 class Root(Resource):
+    """
+    Define a Resource for the Root of the Consumer API.
+    """
     def get(self):
         """
-        Get version information about wsbackend.
+        Return 3 URLs for obtaining version information, a list of captures or a random tag.
+
+        This is a starting point for an HTTP client with no knowledge of the API structure (HATEOAS).
         """
         signpost = {'version': url_for('version.version', _external=True),
                     'captures': url_for('captures.captures', _external=True),
@@ -50,4 +55,5 @@ class Root(Resource):
         return response
 
 
+# Add the Root resource to the API root.
 api.add_resource(Root, '/')

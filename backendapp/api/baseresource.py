@@ -90,7 +90,11 @@ class BaseResource(Resource):
 
 
 class SingleResource(BaseResource):
-    """Get, delete or modify one model instance. """
+    """
+    A Resource that returns or deletes one model instance.
+
+    It is used to retrieve one capture as JSON or delete one tag.
+    """
     def __init__(self, Schema, service):
         super().__init__(Schema, service)
 
@@ -122,7 +126,11 @@ class SingleResource(BaseResource):
 
 
 class MultipleResource(BaseResource):
-    """Get all model instances or post a new one. """
+    """
+    A Resource that appends to or returns a list of model instances.
+
+    This is used to post one capture or return a list of tags.
+    """
     def __init__(self, Schema, service):
         super().__init__(Schema, service)
 
