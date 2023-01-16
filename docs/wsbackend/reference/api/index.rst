@@ -8,10 +8,5 @@ There are two APIs:
 
    admin/index
    consumer/index
-
-
-An API consists of resources that inherit from :py:class:`~backendapp.api.baseresource.BaseResource`.
-
-.. automodule:: backendapp.api.baseresource
-    :members:
-    :private-members:
+   baseresource
+   tokenauth

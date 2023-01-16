@@ -27,7 +27,7 @@
     backendapp.api.baseresource
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Base resource from https://marshmallow.readthedocs.io/en/3.0/examples.html
+    An API consists of resources that inherit from :py:class:`~backendapp.api.baseresource.BaseResource`.
 """
 
 from flask_restful import Resource, abort

@@ -22,42 +22,86 @@
 #  GNU Affero General Public License along with this program.
 #  If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    backendapp.api.tokenauth
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Access to some API resources is controlled via token-based authentication.
+
+    https://www.okta.com/uk/identity-101/what-is-token-based-authentication/
+
+    For the Admin API, nearly all resources require an admintoken. This can only be obtained with knowledge of a secret key.
+    It is read from an environment variable known only to a system administrator.
+
+    For the Consumer API, some resources require a tagtoken. These prove that an end-user has recently
+    captured a tag and therefore has physical access to a device.
+"""
+
 from flask import request
-import json
 from jose import jwt
 from flask_restful import abort
-from urllib.request import urlopen
+from typing import Union
 import traceback
 
-class NoRSAError(Exception):
-    pass
 
-class TokenAuth():
-    def __init__(self, issuer, audience):
+def get_token_auth_header() -> str:
+    """
+    Obtains an access token from the Authorization HTTP Header.
+
+    The value of the authorization header must be in the format: Bearer <token> where token is a JSON Web Token.
+
+    https://swagger.io/docs/specification/authentication/bearer-authentication/
+    """
+    auth = request.headers.get("Authorization", None)
+    if not auth:
+        abort(401, description="authorization_header_missing")
+
+    parts = auth.split()
+
+    if parts[0].lower() != "bearer":
+        abort(401, description="Authorization header must start with bearer")
+    elif len(parts) == 1:
+        abort(401, description="Token not found")
+    elif len(parts) > 2:
+        abort(401, description="Authorization header must be bearer token")
+
+    token = parts[1]
+    return token
+
+
+class TokenAuth:
+    """
+    Token authenticator base class.
+    """
+    def __init__(self, issuer: str, audience: str):
+        """
+        Instantiate a token authenticator. A JSON Web Token includes a header, a payload and a signature. For more
+        information see https://jwt.io/.
+
+        A token is rejected if the payload does not include a set of claims. Each is a key-value pair.
+
+        Specify the expected values of two standard claims: issuer and audience.
+
+        https://en.wikipedia.org/wiki/JSON_Web_Token#Standard_fields
+
+        :param issuer: Identifies the principal that issued the token (this application).
+        :param audience: Identifies the audience that the token is intended for.
+        """
         self.issuer = issuer
         self.audience = audience
 
-    # Format error response and append status code
-    def get_token_auth_header(self):
-        """Obtains the access token from the Authorization Header
+    def verify_token(self, token: str, key: Union[str, dict]) -> dict:
         """
-        auth = request.headers.get("Authorization", None)
-        if not auth:
-            abort(401, description="authorization_header_missing")
+        Decode a JSON Web Token and verify its signature with a key. Confirm that the received token
+        has expected values for the audience and issuer claims in its payload.
 
-        parts = auth.split()
+        If verification fails, :py:func:`abort` is called. This raises an HTTP Exception with
+        the 401 unauthorized status.
 
-        if parts[0].lower() != "bearer":
-            abort(401, description="Authorization header must start with bearer")
-        elif len(parts) == 1:
-            abort(401, description="Token not found")
-        elif len(parts) > 2:
-            abort(401, description="Authorization header must be bearer token")
-
-        token = parts[1]
-        return token
-
-    def verify_token(self, token, key):
+        :param token: The JSON Web Token.
+        :param key: Either an individual JSON Web Key or a JWK set.
+        :return: The decoded JSON Web Token.
+        """
         try:
             decoded = jwt.decode(
                 token,
@@ -82,41 +126,28 @@ class TokenAuth():
 
 
 class TokenAuthSymmetric(TokenAuth):
-    def __init__(self, issuer, audience, secret):
+    """
+    An authenticator for tokens with signatures that are encrypted and decrypted with the same key.
+    """
+    def __init__(self, issuer: str, audience: str, secret: str):
+        """
+        Instantiate an authenticator for tokens with symmetrically encrypted signatures. Verification fails
+        when the signature is not decrypted with the same secret key used for encryption.
+
+        :param issuer: The principal that issued the token (this application).
+        :param audience: The audience that the token is intended for.
+        :param secret: Used to generate and verify the token signature. Must not be shared outside this application.
+        """
         super().__init__(issuer, audience)
         self.secret = secret
         self.algorithms = ["HS256"]
 
-    def get_decoded_token(self):
-        unverified_token = self.get_token_auth_header()
+    def get_decoded_token(self) -> dict:
+        """
+        Obtain a JSON Web Token from the authorization HTTP header and verify that it was issued by this
+        application, using a secret known only to this application.
+
+        :return: The decoded token.
+        """
+        unverified_token = get_token_auth_header()
         return self.verify_token(token=unverified_token, key=self.secret)
-
-
-class TokenAuthAsymmetric(TokenAuth):
-    def __init__(self, issuer, audience, jwksurl):
-        super().__init__(issuer, audience)
-        self.jwksurl = jwksurl
-        self.algorithms = ["RS256"]
-
-    def get_rsa_key(self, token):
-        jwksurlresponse = urlopen(self.jwksurl)
-        jwks = json.loads(jwksurlresponse.read())
-        unverified_header = jwt.get_unverified_header(token)
-        for key in jwks["keys"]:
-            if key["kid"] == unverified_header["kid"]:
-                rsa_key = {
-                    "kty": key["kty"],
-                    "kid": key["kid"],
-                    "use": key["use"],
-                    "n": key["n"],
-                    "e": key["e"]
-                }
-        if rsa_key == None:
-            raise NoRSAError('No RSA key found')
-
-        return rsa_key
-
-    def get_decoded_token(self):
-        unverified_token = self.get_token_auth_header()
-        rsa_key = self.get_rsa_key(token=unverified_token)
-        return self.verify_token(token=unverified_token, key=rsa_key)
